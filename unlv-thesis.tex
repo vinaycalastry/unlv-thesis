@@ -24,7 +24,7 @@
 
 %%%
 %%% opens all chapters on right hand sides (needed for double sided printing)
-\rightchapter
+\leftchapter
 %%% add \twosided if you are printing on both sides
 %\twosided
 %%%
@@ -102,14 +102,17 @@ Jawaharlal Nehru Technological University, Hyderabad\\ \vspace*{-0.12in}
 %%
 %% \electronicapprovalpage for the page that needs to be used when submitting the PDF
 
-%\approvalpage
-\electronicapprovalpage
-
+%%
+%% %\approvalpage
+%% \electronicapprovalpage
+%%
 
 \begin{thesisabstract}
-High utility item set mining is an important data mining problem which considers profit factors besides quantity from the transactional database. It helps find the most valuable products/items that are difficult to track using only the mere frequent data mining set. An item that has a high-profit value might be rare in the transactional database despite its tremendous importance. While there are many existing algorithms which generate comparatively large candidate sets while finding high utility itemsets, the major focus is to reduce the computational time significantly with the introduction of pruning strategies. Another aspect of high utility itemset mining is to compute the large dataset. There are very few algorithms that can handle large dataset to find high utility itemset mining in a parallel (distributed) system.
 
-In this thesis, there are two proposed methods: High utility itemset mining using pruning strategies approach (HUI-PR) and Parallel EFIM (EFIM-Par). In the method I, the proposed algorithm constructs the candidate sets in the form of a tree structure, which traverses the itemsets with high transaction weighted utility (HTWUs). It uses a pruning strategies to reduce the computational time by refraining the visit to unnecessary nodes of an itemset to reduce the search space. It significantly minimizes the transaction database generated on each node. In the method II, the distributed approach is proposed dividing the search space among different worker nodes to compute high utility itemsets which are aggregated to find the result. The experimental results for both methods show that they significantly improve the execution time for computing the high utility itemsets.
+Internet of Things (IoT) is a set of technologies that enable network connected devices to perform an action or share data among themselves or to a central location. These actions can be anything from switching on an Air Conditioning device to turning on the ignition of a car through a command issued from a remote location using a web application or a smart phone or asking Alexa to search for weather conditions in a particular area. IoT has proved to be game changing for many industries such as Supply Chain, Shipping and Transportation providing updates on the status of shipments etc. in real time. This has resulted in a huge amount of data created by a lot of these devices all of which need to be processed in real time. 
+
+In this thesis, we propose a method to collect telemetry data from IoT Sensors and use a blockchain to store and retrieve the collected data in a decentralized fashion within a closed system, suitable for a single enterprises or a group of companies in industries like shipping where sharing data with each other required. Much like blockchain, we envision a future where IoT devices can connect and disconnect at will to distributed systems without causing a lapse in data collection or storage or relying on a cloud-based storage system for our data. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare to more traditional database systems. 
+
 \end{thesisabstract}
 
 
@@ -120,15 +123,13 @@ In this thesis, there are two proposed methods: High utility itemset mining usin
 %%% Here goes the acknowledgements if you have any - if none then delete or
 %%% comment out completely
 \begin{thesisacknowledgments}
-I would like to express my sincere gratitude to my advisor, Dr. Justin Zhan, for his continuous motivation, guidance and support to drive me into research not only for my thesis but throughout my Master's program.
+I would like to express my sincere gratitude to my advisor, Dr. Yoohwan Kim, for his continuous guidance and support and insights not only for my thesis but also throughout my Master's program.
 
 Furthermore, I would like to acknowledge Dr. Laxmi Gewali, Dr. Fatma Nasoz, and Dr. Ge Lin Kan for their support and being part of my thesis committee. I am thankful to Dr. Ajoy Datta who has always been available to me whenever I needed guidance since the beginning of my Master's program.
 
-I am truly grateful to all my Big Data Hub labmates for their support. I am thankful to Dr. Ming-Tai Wu (Jimmy) and Pradip Singh Maharjan who have provided me with insightful suggestions and comments throughout my thesis.
+I would also like to acknowledge my dad Ramesh Calastry, my mom Vijayalakshmi Calastry Ramesh and my sister Vandhana Calastry Ramesh for being my source of strength and confidence throughout my Master's program at UNLV.
 
-I must thank my dad Anand Krishna Tamrakar, my mom Shanti Tamrakar and my sister Arati Tamrakar for their unconditional love, support, and care without whom I would not have been here. And, I am especially thankful to Shuveksha Tuladhar, for her continuous support and motivation.
-
-Last but not the least, I am thankful to all my friends, seniors, and juniors who made my time here in UNLV very enjoyable one.
+Last but not the least, I am thankful to all my friends, peers, and colleagues who have made my stay at UNLV one of the best experiences of my life. 
 \end{thesisacknowledgments}
 
 %%%
@@ -154,21 +155,22 @@ Last but not the least, I am thankful to all my friends, seniors, and juniors wh
 \listoffigures
 \clearpage
 % if you want a list of algorithms, make sure to use the Makefile-loa instead of Makefile.
-\listofalgorithmes
+\listofalgorithms
 \clearpage
 
 %%%
 %%% This is the start of the first 
 \chapter{Introduction}\label{chapter:introduction} 
 
-In recent years, blockchain has been rapidly gaining momentum in areas other than its most famous use-case as a crypto-currency to be used as a drop-in replacement for regular currency. Blockchain/ Distributed Ledger implementations such as Ethereum and Hyperledger Fabric have introduced a concept called programmable blockchain which has opened the avenues in which blockchain can be effectively used to improve and optimize industries like Shipping, Supply chain and Internet of Things (IoT). Rather than just storing data such as Balance Amounts of a certain wallet for a crypto currency in the blockchain, programmable blockchain has allowed us to store and execute code which can be used to store and retrieve all kinds of data in a decentralized manner. This concept in Ethereum is called Smart Contracts which can be written and deployed to any Ethereum network. 
-Information of Things (IoT) is another exciting field in Computer Science which has the potential to disrupt several industries such as Health, Energy and Utilities, Transportation and Retail. Devices like the Apple Smartwatch has the capability to detect a heart attack and alert emergency services if needed using its EKG sensors. However, the vast amounts of data generated requires a secure and trusted storage model with means to protect that data from being stolen. 
+Information of Things (IoT) is an exciting field in Computer Science with the potential to disrupt several industries such as Health, Energy and Utilities, Transportation, Shipping and Retail. Devices like the Apple Smartwatch has the capability to detect a heart attack and alert emergency services if needed using its EKG sensors. However, the vast amounts of data generated requires a secure and trusted storage model with means to protect that data from being stolen. 
+
+In recent years, blockchain has been rapidly gaining momentum in areas other than its most famous use-case as a crypto-currency to be used as a drop-in replacement for regular currency. Blockchain/ Distributed Ledger implementations such as Ethereum and Hyperledger Fabric have introduced a concept called programmable blockchain which has opened up avenues in which blockchain can be effectively used to improve and optimize industries like Shipping, Supply chain and Internet of Things (IoT). Rather than just storing data such as Balance Amounts of a certain wallet for a crypto currency in the blockchain, programmable blockchain has allowed us to store and execute code which can be used to store and retrieve all kinds of data in a decentralized manner. This concept in Ethereum is called Smart Contracts which can be written and deployed to any Ethereum network.
 
 
 
 
 \section{Objective}\label{section:objective}
-In this thesis, we propose an encrypted storage model for IoT data where data generated by sensors is stored securely in multiple distributed nodes of either Ethereum Swarm (or) IPFS while the order of data collected is preserved using the Ethereum Blockchain using Smart Contracts. Setup of IPFS, Ethereum Swarm and the Private Ethereum Blockchain was done and data was collected from Sensors such as the DHT11 (Digital Humidity and Temperature). Edge Nodes (Non-mining light Ethereum and Swarm nodes) on tiny computers like Raspberry Pi 3B+ are used to collect and store sensor readings to the network while miner nodes running on more powerful machines are used to process and validate these transactions in the network. The strength of this model lies in its design where there is no single point of failure and any node, miner or non-miner can be added, removed and replaced without affecting the functioning of the overall  network, provided another node is added before the previous one is removed. However, the presence of distributed devices adds a significant overhead of securing the information shared between them. We propose both hardware and software-based methods such as a Trusted Privacy Module (TPM) to fully encrypt contents of the storage medium on the edge devices and store Key Encrypting Keys (KEK) on the hardware itself. A locally hosted PKI system was used to create and securely transport keys to the edge nodes and were locked to these nodes using their respective Key Encrypting Keys.
+In this thesis, we will build an encrypted storage model for IoT data where data generated by sensors is stored securely in multiple distributed nodes of either Ethereum Swarm (or) IPFS while the order of data collected is preserved using the Ethereum Blockchain using Smart Contracts. Setup of IPFS, Ethereum Swarm and the Private Ethereum Blockchain was done and data was collected from Sensors such as the Digital Humidity and Temperature Sensor (DHT11). Edge Nodes (Non-mining light Ethereum and Swarm nodes) on tiny computers like Raspberry Pi 3B+ are used to collect and store these sensor readings to the network while miner nodes running on more powerful machines are used to process and validate these transactions in the network. The strength of this model lies in its design where there is no single point of failure and any node, miner or non-miner can be added, removed and replaced without affecting the functioning of the overall  network, provided another node is added before the previous one is removed. However, the presence of distributed devices adds a significant overhead of securing the information shared between them. We propose both hardware security mechanisms and software-based methods such as a Trusted Privacy Module (TPM) to fully encrypt File system of the storage medium on the edge devices using Linux Unified Key System (LUKS) and store secret keys used for symmetric encryption on the device storage securely by locking it to the system with the private key of TPM.
 
 \section{Outline}\label{section:outline}
 
@@ -178,7 +180,7 @@ In Chapter \ref{chapter:introduction}, we provide a brief introduction to Intern
 
 \noindent In Chapter \ref{chapter:proposed_system}, we describe the proposed system of Off-chain and on-chain storage to store data from sensors in a decentralized fashion. We also describe security challenges faced by edge devices used for IoT and means to deal with them.\newline
 
-\noindent In Chapter \ref{chapter:proposed_system}, we perform experiments regarding data storage using traditional databases as well as the proposed system using blockchain and IPFS/Swarm. To understand the cost of IoT security, we also perform experiments to find the transaction rate of the proposed system with and without encryption.\newline
+\noindent In Chapter \ref{chapter:experiment_results}, we perform experiments regarding data storage using traditional databases as well as the proposed system using blockchain and IPFS/Swarm. To understand the cost of IoT security, we also perform experiments to find the transaction rate of the proposed system with and without encryption.\newline
 
 \noindent In Chapter \ref{chapter:conclusion}, we will attempt to summarize findings from this thesis and end with a retrospection of what worked well and what approaches left something to be desired.\newline 
 
@@ -190,7 +192,7 @@ Many researchers have been focusing their efforts in the field of high utility i
 
 High utility itemset mining (HUIM) \cite{Ahmed2009, Yao2006, Erwin2007, Yen2007, Lin2011, Wu2012, Yao2004, Tseng2013} gives the importance to the item quantities and profit value (external utility). This concept was firstly proposed by Yao et al.~\cite{Yao2004}. Liu et al.~\cite{Liu2005} proposed a Two-Phase algorithm based on Apriori to find high utility itemsets using multiple database scans. The initial scan generates the high transaction weighted utility items (1-HTWUIs) for the first level which accepts only items that have transaction weighted utility (TWU) higher than the threshold value. The second scan generates the candidate sets based on the 1-HTWUIs and considers only those itemsets with TWU higher than the minimum threshold. The next scan selects the high utility itemsets (HUI) with higher utility value than the minimum threshold value. This maintains the downward closure property. However, for each level of the tree, this algorithm generates a large number of candidate sets. 
 
-To reduce the overestimated utilities, different pruning approaches have been proposed \cite{Chu2009, Liu2012, Lan2014, Krishnamoorthy2015, Zida2015, Tseng2013, Fournier-Viger2014, Song2014, Fournier-Viger2016}. Liu et al.~\cite{Liu2012} proposed the mining of high utility itemsets without candidate generation. A utility-list was used to store the information about utilities for itemsets. These utility-lists also helped to prune unnecessary candidates. However, this algorithm uses a large amount of memory for utility list for each itemset. Zida et al.~\cite{Zida2015} also use the concept of utility-lists and proposed two upper bounds named sub-tree utility and local utility for pruning the search space. These bounds are described in the following sections. It also uses the fast utility counting technique to reduce the memory usage. Fournier-Viger et al.~\cite{Fournier-Viger2016} introduced the pruning strategy of length upper bound reduction by constraining the generation of candidate sets up to given maximum length of itemsets. 
+To reduce the overestimated utilities, different pruning approaches have been proposed \cite{Chu2009, Liu2012, Lan2014, Krishnamoorthy2015, Zida2015, Tseng2013, Fournier-Viger2014, Song2014, Fournier-Viger2016}. Liu et al.~\cite{Liu2012} proposed the mining of high utility itemsets without candidate generation. A utility-list was used to store the information about utilities for itemsets. These utility-lists also helped to prune unnecessary candidates. However, this algorithm uses a large amount of memory for utility list for each itemset. Zida et al.~\cite{Zida2015} also use the concept of utility-lists and proposed two upper bounds named sub-tree utility and local utility for pruning the search space. These bounds are described in the following sections. It also uses the fast utility counting technique to reduce the memory usage. Fournier-Viger et al.~\cite{Fournier-Viger2016} introduced the pruning strategy of length upper bound reduction by constraining the generation of candidate sets up to given maximum length of itemsets.
 
 Since the advent of Big data, many research works have been on computing the very large datasets using parallel computing. Initially, simple approaches for map-reduce framework have been used for frequent itemset mining\cite{Yang2010,Cryans2010}. There are very few algorithms proposed so far for both the frequent itemset mining and high utility itemset mining. Li et.al~\cite{Li2008} proposed the Parallel FP-Growth algorithm to find the frequent itemsets in a distributed approach with multiple map-reduce stages. For the parallel high utility itemset mining, Lin et.al~\cite{Lin2015} proposed the parallel UP-Growth (PHUI-Growth) algorithm with counting map-reduce phase and mining phase using Hadoop framework \cite{Dean2008}. Another algorithm proposed by Chen et.al~\cite{Chen2016} implemented the distributed approach (PHUI-Miner) on HUI-Miner algorithm \cite{Liu2012} to perform better than PHUI-Growth. PHUI-Miner replaces the Hadoop framework \cite{Dean2008} with more efficient Spark framework \cite{Zaharia2010}. Spark performs much better because of its ability to perform an in-memory computation.
 
@@ -198,27 +200,73 @@ Hence, the number of candidate sets reduction by applying pruning rule for small
 
 
 \section{Preliminaries}\label{section:preliminaries}
+
+\subsection{IoT}
+Information of Things (IOT) is attributed to any device which can be connected to the internet. This opens a lot of possibilities that can be achieved through IOT. A device that is connected to the internet can monitor itself and schedule its own maintenance when it needs one or an IOT device connected to a shipping container or truck can be tracked anywhere from the globe or it can even be a simple microwave that notifies you via an app when your popcorn is ready.
+
+\subsection{IoT sensors and devices used}
+\subsubsection{Raspberry Pi 3}
+A raspberry pi (Version used is 3B) is a cheap (costs ), credit card sized general purpose computer with a 1.2 GHz ARM Cortex A53 quad-core processor with 1GB of RAM. It can run a variety of OSes like Raspbian (the default Linux OS from Adafruit, manufacturer of Raspberry Pi) and third-part OSes like Ubuntu Snappy Core, Windows IOT Core and RISC OS. The device also provides a set of General-Purpose IO headers which can be used to connect several electronic devices to this machine which makes it a suitable candidate for use in our project. This device provides no BIOS (Basic Input/Output System) and can be booted from a USB flash drive or an externally connected hard disk. However, a micro SD card is the standard way to install an OS and boot up the system.  
+
+\subsubsection{Rasbpian}
+Raspbian Stretch Lite was used as the linux-kernel based OS for the Raspberry Pi. This allows us to run everything from general purpose programming languages like Python and C to binaries for running software for blockchain and other storage to user developed code.
+
+\subsubsection{General Purpose I/O}
+A raspberry pi 3B+ model has 40 General Purpose I/O (GPIO) headers used for different purposes like reading data, providing a voltage of 3.3V or 5V or allowing serial protocols such as I2C.
+
+Sensors are usually transistors and must be connected to 
+1. GPIO headers for sending or receiving data.
+2. Ground header 
+3. 3.3V or 5V pins for maintaining voltage
+
+\subsubsection{Digital Humidity and Temperature Sensor}
+Sensors like the Digital Humidity and Temperature Sensor (DHT11) are used to collect telemetry data, temperature and humidity readings in this case, and are read by python scripts running on the raspberry pi using the signals from GPIO header pins provided on it.
+
+\subsubsection{RGB LED}
+An RGB LED can light up individually in colors of RED, BLUE or GREEN or in groups providing different colors. It can be programmed GPIO modules in C/ Python and are available as part of the Raspbian OS. Supplying power to the GPIO header which is connected to the corresponding color’s pin in the LED results in that color being displayed. 
+
+\subsubsection{I2C LCD}
+I2C is a serial protocol 
+An LCD with a 16x2 display matrix and a I2C backpack attached is used to display the latest data saved to the blockchain and is used for demonstration purposes. 
+
+\subsubsection{Hardware Security Mechanisms}
+Tiny Edge devices like the Raspberry Pi 3 provide little to no security.
+The primary storage mechanism is an micro SD card which can be easily imaged and data including encryption keys can be stolen easily as the data is stored as plain text. There is also no storage for sensitive data such as secret keys for cloud based APIs or encryption keys used for authentication.
+
+Hardware Security Mechanisms such as a Trusted Privacy Module (TPM) are used to help enhance the relatively weak security on a base Raspberry Pi. TPM is used to store important keys in the hardware as well as encrypt the file system and decrypt only while using the device. TPM used in this thesis is called Zymbit 4i, which is an add-on board for the Raspberry Pi and communicates with it via the I2C interface.
+
 \subsection{Blockchain}
-Blockchain is a distributed ledger technology which was built to power the storage and transfer of a new form of currency called Cryptocurrency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto. Due to the runaway success of Bitcoin, it has become synonymous with blockchain. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a variety of use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing and real estate.
+Blockchain, or more accurately Distributed Ledger Technology was built to power the storage and transfer of a new form of currency called Crypto-currency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto. Due to the runaway success of Bitcoin, it has become synonymous with blockchain. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a variety of use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing and real estate.
+
 Blockchain is decentralized by design and having the same information across all nodes that are shared with it results it in being a resource owned by everyone and doesn’t have a single point of failure. 
-If we are using blockchain technology to process transactions, we need to run some cryptographic algorithms to validate these transactions. This can be done by anyone who runs the blockchain software and once they are successful in validating these transactions called consensus, a new block can be added to the chain. This process is called mining. A fee is paid to the successful miner in the form of btc for bitcoin and ether for Ethereum.
+
+If we are using blockchain technology to process transactions, we need to run some cryptographic algorithms to validate these transactions. This can be done by anyone who runs the blockchain software and once they are successful in validating these transactions called consensus, a new block can be added to the chain. This process is called mining. A fee is paid to the successful miner in the form of BTC for bitcoin and ether for Ethereum.
 
 \subsection{Distributed Apps}
-Any application (web or standalone) which provides front-end functionality to access the methods written in a smart contract is called a distributed app (dapp). Dapps can be the webpage of a voting app, betting application or can be a simple script storing some information in the blockchain using a smart contract.
+The term Distributed Apps(dapps) is used to refer to any application (web or standalone) which is able interface with the functionality written in a smart contract. The dapps are only different from regular web-apps or mobile apps in the sense that their 
+Dapps can be the webpage of a voting app, betting application or can be a simple script storing some information in the blockchain using a smart contract.
 
 \subsection{Ethereum}
-Ethereum is another popular implementation of blockchain and provides a platform to run smart contracts. These smart contracts can be used to facilitate monetary transactions and store important data in a distributed ledger. Ethereum has two types of currencies, ‘gas’ and ‘ether’. Gas is the ether that must be paid by a node that runs a smart contract function. Ether is the cryptocurrency in Ethereum which can be used to transfer money and to pay for gas to run smart contracts.
+Ethereum is another popular implementation of blockchain and provides a platform to run smart contracts. These smart contracts can be used to facilitate monetary transactions and store important data in a distributed ledger. Ethereum has two types of currencies, ‘gas’ and ‘ether’. Gas is the ether that must be paid by a node that runs a smart contract function. Ether is the crypto-currency in Ethereum which can be used to transfer money and to pay for gas to run smart contracts.
 
-
-\subsubsection{Smart Contract}
-A smart contract is a piece of code that lives in the Ethereum blockchain which can be run as a transaction by any node which has enough ether to pay for running that transaction. This contract can be accessed by the outside world through distributed apps (also called dapps).
 
 \subsubsection{Geth}
 An Ethereum node is a client called Geth which is implemented in Golang and is used to connect to the Ethereum network. Other implementations in C++ and Python are also available. Once installed, it can be initiated with a genesis block (the first block in the blockchain), started and connected to different networks available in Ethereum. These networks are identified by their network ID. Since this is a peer to peer protocol, different nodes with the same genesis block and network ID can synchronize with each other and mine transactions. Network ID: 1 is for the main network, 2 and 3 are reserved for Test networks. We can use a different network ID for setting up a private network. Different versions for Windows, Linux, MacOS and Android are available and can be downloaded from the below website.
 https://geth.ethereum.org/install/
 
+\subsubsection{Ethereum Virtual Machine}
+Ethereum Virtual Machine (EVM) is a Virtual environment that runs on all geth nodes and execute the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL etc are available for writing code which can be compiled and run in the EVM.
+
+\subsubsection{Smart Contract}
+A smart contract is a Class like code that lives in the Ethereum blockchain (EVM). The methods declared within the smart contract can be run as a transaction by any node which has enough ether to pay for running that transaction. This contract can be accessed by the outside world through distributed apps (also called dapps). Solidity compiler (solc) is used to compile these smart contracts into EVM bytecode (containing machine-code like instructions compiled from solidity) and ABI Definition containing meta-data like the variables and methods used in the smart contract. 
+
+A typical Smart Contract consists of variables, setter and getter methods with access modifiers to regulate access exactly like Object-Oriented languages such as C++ and Java. Setter methods involve changing the state of the data contained within in blockchain and thus incur a transaction charge which must be paid in gas. Getter methods only retrieve the data stored within the full node or from a peer and does not incur any charge.
+
+\subsubsection{JSON-RPC}
+JSON-RPC is the interface using which a front-end application written in any programming language can communicate with the business logic and data stored in the blockchain.
+
 \subsubsection{Solidity}
-Solidity is the programming language available for Ethereum to write Smart contracts. It is a high-level language supporting all features of a modern programming language such as static-typing, inheritance and complex user-defined data types. This enables us to build smart contracts capable of building distributed apps like Maintaining Land ownership records, Voting, Auction and Betting apps among others.
+Solidity is a Turing complete programming language available for Ethereum to write Smart contracts. It is a high-level language supporting all features of a modern programming language such as static-typing, inheritance and complex user-defined data types. This enables us to build smart contracts capable of building distributed apps like Maintaining Land ownership records, Voting, Auction and Betting apps among others.
 
 \subsubsection{Remix}
 Smart contracts can be written and tested using a browser-based IDE called Remix. It is available at the below website.
@@ -234,34 +282,9 @@ Various plugins and frameworks to make the development process easier are availa
 \subsubsection{Ganache}
 Ganache is another framework which can be used to bootstrap a quick private blockchain to test your smart contract.
 
-\subsection{IoT}
-Information of Things (IOT) is attributed to any device which can be connected to the internet. This opens a lot of possibilities that can be achieved through IOT. A device that is connected to the internet can monitor itself and schedule its own maintenance when it needs one or an IOT device connected to a shipping container or truck can be tracked anywhere from the globe or it can even be a simple microwave that notifies you via an app when your popcorn is ready.
-
-\subsection{IoT sensors and devices used}
-\subsubsection{Raspberry Pi 3}
-A raspberry pi (Version used is 3B) is a cheap (costs ), credit card sized general purpose computer with a 1.2 GHz ARM Cortex A53 quad-core processor with 1GB of RAM. It can run a variety of OSes like Raspbian (the default Linux OS from Adafruit, manufacturer of Raspberry Pi) and third-part OSes like Ubuntu Snappy Core, Windows IOT Core and RISC OS. The device also provides a set of General-Purpose IO headers which can be used to connect several electronic devices to this machine which makes it a suitable candidate for use in our project.
-
-\subsubsection{General Purpose I/O}
-A raspberry pi has several headers used for different purposes. Sensors are usually transistors and must be connected to 
-1. GPIO headers for sending or receiving data.
-2. A Ground header
-3. A header for power in sensors where a voltage needs to be maintained.
-
-\subsubsection{Digital Humidity and Temperature Sensor}
-The DHT11 sensor can collect gather temperature and humidity readings and send it to the raspberry pi through the GPIO header pins provided on it.
-
-\subsubsection{RGB LED}
-An RGB LED can light up as RED, BLUE or GREEN. It can be programmed using the available RPI.GPIO module for python. Supplying power to the GPIO header which is connected to the corresponding color’s pin in the LED results in that color being displayed. 
-
-\subsubsection{I2C LCD}
-This is an LCD with a 16x2 display matrix and a I2C backpack attached which is useful to transfer data to and from the edge node(Raspberry PI) and is used for demonstration purposes.
-
-\subsubsection{Hardware Security Module}
-Zymbit 4i is used as a hardware based Trusted Privacy Module to help enhance the relatively weak security on a base Raspberry Pi. The biggest drawback of a raspberry pi is that the primary storage mechanism is an un-encrypted micro SD card which can be easily imaged and data including encryption keys can be stolen easily. TPM is used to store important keys in the hardware as well as encrypt the filesystem and decrypt and use when booted up.
-
 \subsection{Storage Systems}
 \subsubsection{Etheruem Swarm}
-Ethereum Swarm is a storage solution aiming to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data  in a decentralized fashion distributed in a large number of nodes. It is part of the geth toolchain and uses a lot of technologies invented by the Ethereum foundation. 
+Ethereum Swarm is a storage solution aiming to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data  in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The data stored in the  
 
 \subsubsection{Inter Planetary File System}
 The Inter Planetary File System (IPFS) is a storage solution, very similar to Ethereum Swarm and solves a lot of the same issues faced by Swarm. However, it has been around for much longer than Ethereum and is much easier to setup and use.
@@ -270,24 +293,24 @@ The Inter Planetary File System (IPFS) is a storage solution, very similar to Et
 MariaDB is a fork of the popular MySQL database and is completely maintained by the open source community. It is a relational Database and is used in this thesis to compare performance metrics between a locally stored Database system and the proposed fully distributed storage system.
 
 \subsection{IOT Security}
-IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. Due to this challenge, strong encryption might not always be possible and 
+IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. IoT Security is a huge area of research where 
 
 \subsection{Evaluation and Performance Metrics}
 Once the network is setup, performance of the system will be tested in terms of TPS, latency between two transactions, data size, update time in blockchain and swarm/IPFS with and without encryption, read time in blockchain with and without decryption, sign/verification times of the data with SHA-256, CPU and memory usage
 
-\chapter{METHODOLOGY and DESIGN} \label{chapter:proposed_system}
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.7]{images/Final_Implementation.png}
-	\caption{Implementation Diagram}
-	\label{fig:impldiagram_architechture}
-\end{figure}
-\section{Proposed System}
+\chapter{Methodology} \label{chapter:proposed_system}
+
 <<>>
 
 \subsection{High-level Design} \label{ss:construct_architecture}
 Below is a high-level design to build a private Ethereum network with a raspberry pi generating and saving IOT data from sensors into the blockchain and another raspberry pi retrieving this data and controlling the led attached to it. Another machine serves as the miner node for this network.
-
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{images/Final_Implementation.png}
+	\caption{Implementation Diagram}
+	\label{fig:impldiagram_architechture}
+\end{figure}
+\section{Proposed System}
 
 
 \subsection{Node Selection Rule} {
@@ -917,14 +940,13 @@ From the Table \ref{table:result-huis-distributed}, we found that our algorithm 
 \chapter{Conclusion and Future Work} \label{chapter:conclusion}
 The next areas of focus would be to enhance the quality and types of Sensor data stored and retrieved, secure the IoT devices even further and develop a faster Proof of Work algorithm to validate transactions on the Ethereum blockchain. 
 
-A major area of improvement would be to allow multiple producers to send their sensor data to a single timestamped Swarm link between time intervals. This would allow for much easier processing of data collected from differed sources.
- Another area of improvement from a blockchain perspective is to use a permissioned blockchain instead of a private one which allows for much better Access Control and permission for users.
+A major area of improvement would be to allow multiple producers to send their sensor data to a single time-stamped Swarm link between time intervals. This would allow for much easier processing of data collected from differed sources.
 
-IoT devices are usually underpowered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
+Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum instead of a open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
 
-A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IOT data than that is used currently to approve cryptocurrency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases.
+IoT devices are usually under powered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
 
-
+A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases.
 
 
 %%%
