@@ -111,7 +111,7 @@ Jawaharlal Nehru Technological University, Hyderabad\\ \vspace*{-0.12in}
 
 Internet of Things (IoT) is a set of technologies that enable network connected devices to perform an action or share data among themselves or to a central location. These actions can be anything from switching on an Air Conditioning device to turning on the ignition of a car through a command issued from a remote location using a web application or a smart phone or asking Alexa to search for weather conditions in a particular area. IoT has proved to be game changing for many industries such as Supply Chain, Shipping and Transportation providing updates on the status of shipments etc. in real time. This has resulted in a huge amount of data created by a lot of these devices all of which need to be processed in real time. 
 
-In this thesis, we propose a method to collect telemetry data from IoT Sensors and use a blockchain to store and retrieve the collected data in a decentralized fashion within a closed system, suitable for a single enterprises or a group of companies in industries like shipping where sharing data with each other required. Much like blockchain, we envision a future where IoT devices can connect and disconnect at will to distributed systems without causing a lapse in data collection or storage or relying on a cloud-based storage system for our data. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare to more traditional database systems. 
+In this thesis, we propose a method to collect telemetry data from IoT Sensors and use blockchain to store and retrieve the collected data in a decentralized fashion within a closed system, suitable for a single enterprises or a group of companies in industries like shipping where sharing data with each other required. Much like blockchain, we envision a future where IoT devices can connect and disconnect to distributed systems without causing a down-time for the data collection or storage or relying on a cloud-based storage system for synchronizing data between devices. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare to more traditional database systems.
 
 \end{thesisabstract}
 
@@ -162,15 +162,17 @@ Last but not the least, I am thankful to all my friends, peers, and colleagues w
 %%% This is the start of the first 
 \chapter{Introduction}\label{chapter:introduction} 
 
-Information of Things (IoT) is an exciting field in Computer Science with the potential to disrupt several industries such as Health, Energy and Utilities, Transportation, Shipping and Retail. Devices like the Apple Smartwatch has the capability to detect a heart attack and alert emergency services if needed using its EKG sensors. However, the vast amounts of data generated requires a secure and trusted storage model with means to protect that data from being stolen. 
+Information of Things (IoT) is an exciting field in Computer Science with the potential to disrupt several industries such as Health, Energy and Utilities, Transportation, Shipping and Retail. Devices like the Apple Smartwatch has the capability to detect a heart attack and alert emergency services if needed using its EKG sensors. Recent research has suggested that a lot of these devices will be coming online in coming years and each of these devices will be generating small payloads of data in large quantities. This requires a secure and trusted storage model with means to protect that data from being stolen. 
 
-In recent years, blockchain has been rapidly gaining momentum in areas other than its most famous use-case as a crypto-currency to be used as a drop-in replacement for regular currency. Blockchain/ Distributed Ledger implementations such as Ethereum and Hyperledger Fabric have introduced a concept called programmable blockchain which has opened up avenues in which blockchain can be effectively used to improve and optimize industries like Shipping, Supply chain and Internet of Things (IoT). Rather than just storing data such as Balance Amounts of a certain wallet for a crypto currency in the blockchain, programmable blockchain has allowed us to store and execute code which can be used to store and retrieve all kinds of data in a decentralized manner. This concept in Ethereum is called Smart Contracts which can be written and deployed to any Ethereum network.
+In recent years, blockchain has been rapidly gaining momentum in areas other than its most famous use-case as a crypto-currency to be used as a drop-in replacement for regular currency. Blockchain/ Distributed Ledger implementations such as Ethereum and Hyperledger Fabric have introduced a concept called programmable blockchain which has opened up avenues in which blockchain can be effectively used to improve and optimize industries like Shipping, Supply chain and Internet of Things (IoT). Rather than just storing data such as balance amounts of a certain wallet for a crypto currency in the blockchain, programmable blockchain has allowed us to store and execute code which can be used to store and retrieve all kinds of data in a decentralized manner. This concept in Ethereum is called Smart Contracts which can be written and deployed to any Ethereum network.
 
+Data Storage on the blockchain is expensive for large quantities of data. Decentralized technologies like Inter Planetary File System (IPFS) or Ethereum Swarm may be used to store the actual payload while the Blockchain implementation such as Ethereum can be used to store links to the actual data stored in these systems. The edge devices need not store either the links to the data or the actual payload itself. Any number of high performance devices can be added or removed to take up the work of storing data on the storage system and blockchain.
 
+IoT security is a major concern for edge devices like Raspberry Pi where data privacy concerns need to be addressed, data confidentiality and integrity must be guaranteed if we are to trust the data from an IoT device. 
 
 
 \section{Objective}\label{section:objective}
-In this thesis, we will build an encrypted storage model for IoT data where data generated by sensors is stored securely in multiple distributed nodes of either Ethereum Swarm (or) IPFS while the order of data collected is preserved using the Ethereum Blockchain using Smart Contracts. Setup of IPFS, Ethereum Swarm and the Private Ethereum Blockchain was done and data was collected from Sensors such as the Digital Humidity and Temperature Sensor (DHT11). Edge Nodes (Non-mining light Ethereum and Swarm nodes) on tiny computers like Raspberry Pi 3B+ are used to collect and store these sensor readings to the network while miner nodes running on more powerful machines are used to process and validate these transactions in the network. The strength of this model lies in its design where there is no single point of failure and any node, miner or non-miner can be added, removed and replaced without affecting the functioning of the overall  network, provided another node is added before the previous one is removed. However, the presence of distributed devices adds a significant overhead of securing the information shared between them. We propose both hardware security mechanisms and software-based methods such as a Trusted Privacy Module (TPM) to fully encrypt File system of the storage medium on the edge devices using Linux Unified Key System (LUKS) and store secret keys used for symmetric encryption on the device storage securely by locking it to the system with the private key of TPM.
+In this thesis, we will build an encrypted storage model for IoT data where data generated by sensors is stored securely in multiple distributed nodes of either Ethereum Swarm (or) IPFS while the order of data collected is preserved using the Ethereum Blockchain using Smart Contracts. Setup of IPFS, Ethereum Swarm and the Private Ethereum Blockchain was done and data was collected from Sensors such as the Digital Humidity and Temperature Sensor (DHT11). Edge Nodes (Non-mining light Ethereum and Swarm nodes) on tiny computers like Raspberry Pi 3B+ are used to collect and store these sensor readings to the network while miner nodes running on more powerful machines are used to process and validate these transactions in the network. The strength of this model lies in its design where there is no single point of failure and any node, miner or non-miner can be added, removed and replaced without affecting the functioning of the overall  network, provided another node is added before the previous one is removed. However, the presence of distributed devices adds a significant overhead of securing the information shared between them. Public-Private key encryption such as RSA can be coupled with symmetric encryption like AES and authenticity may be verified using HMAC. We propose both hardware security mechanisms and software-based methods such as a Trusted Privacy Module (TPM) to fully encrypt File system of the storage medium on the edge devices using Linux Unified Key System (LUKS) and store secret keys used for symmetric encryption on the device storage securely by locking it to the system with the private key of TPM.
 
 \section{Outline}\label{section:outline}
 
@@ -182,7 +184,7 @@ In Chapter \ref{chapter:introduction}, we provide a brief introduction to Intern
 
 \noindent In Chapter \ref{chapter:experiment_results}, we perform experiments regarding data storage using traditional databases as well as the proposed system using blockchain and IPFS/Swarm. To understand the cost of IoT security, we also perform experiments to find the transaction rate of the proposed system with and without encryption.\newline
 
-\noindent In Chapter \ref{chapter:conclusion}, we will attempt to summarize findings from this thesis and end with a retrospection of what worked well and what approaches left something to be desired.\newline 
+\noindent In Chapter \ref{chapter:conclusion}, we will attempt to summarize findings from this thesis and end with a retrospection of the performance measurements of each of these storage systems with blockchain.\newline 
 
 
 
@@ -277,32 +279,41 @@ Web3 is a framework which enables a developer to build a client which can intera
 https://github.com/ethereum/web3.js/
 
 \subsubsection{Truffle}
-Various plugins and frameworks to make the development process easier are available. Truffle is a framework which makes developing and deploying Smart Contracts in Ethereum easier.
+Truffle is a framework which makes developing and deploying Smart Contracts in Ethereum easier. It can be setup to compile our smart contract and deploy it to our network. Additional functions such as retrieving the smart contract's address and ABI definition can also be done using truffle.
 
 \subsubsection{Ganache}
-Ganache is another framework which can be used to bootstrap a quick private blockchain to test your smart contract.
+Ganache is framework which can be useful for testing our smart contract during development. It provides a bootstrapped private blockchain with test accounts with pre-loaded ether.
 
 \subsection{Storage Systems}
 \subsubsection{Etheruem Swarm}
-Ethereum Swarm is a storage solution aiming to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data  in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The data stored in the  
+Ethereum Swarm is a storage solution aiming to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data  in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The current implementation is at version 0.3.x or Proof of Concept 3. Its primary objective is to allow dapps to store data efficiently for applications such as messaging, data streaming and mutable resource updates.
 
 \subsubsection{Inter Planetary File System}
-The Inter Planetary File System (IPFS) is a storage solution, very similar to Ethereum Swarm and solves a lot of the same issues faced by Swarm. However, it has been around for much longer than Ethereum and is much easier to setup and use.
+The Inter Planetary File System (IPFS) is a storage solution, very similar to Ethereum Swarm and solves a lot of the same issues faced by Swarm. However, it has been around for much longer than Ethereum and is much easier to setup and use. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes.
 
 \subsubsection{MariaDB}
 MariaDB is a fork of the popular MySQL database and is completely maintained by the open source community. It is a relational Database and is used in this thesis to compare performance metrics between a locally stored Database system and the proposed fully distributed storage system.
 
 \subsection{IOT Security}
-IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. IoT Security is a huge area of research where 
+IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. We also use a Hardware Security Mechanism (TPM) to lock the keys transferred to the edge devices thereby ensuring that the keys are never transferred or stored in plain text format on these devices. Once transfer is complete, the keys generated on the edge devices may be deleted.
+
+Finally, the storage medium (SD card is this case) is encrypted fully using LUKS (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt the file system contents shared by several users/ services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible. LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them to services and revoking them when required. However, all these keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, the master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using its private key stored within the hardware.
+
+\subsection{Cryptography Algorithms used}
+\subsubsection{Public Key Cryptography}
+Ron Rivest, Adi Shamir and Leonard Adleman (RSA) developed this algorithm which utilizes a public-private key pair to encrypt and decrypt data. It can also be used for verifying signatures. The public key of a recipient is used to encrypt data which can then be used by the recipient to decrypt the data using their private key. Due to payload size constraints, it is typically used to transfer symmetric encryption keys
+
+\subsubsection{Symmetric Encryption}
+Advanced Encryption Standard (AES) utilizes a strong secret key to encrypt actual data. We use this algorithm to encrypt and store data in Swarm or IPFS. Since the system we are proposing requires many devices sharing the same key, using public key cryptography was considered for this thesis.  
+\subsubsection{Hashing}
+A hash algorithm (HMAC) is used to sign the un-encrypted payload and is used to verify the authenticity of the data.
 
 \subsection{Evaluation and Performance Metrics}
-Once the network is setup, performance of the system will be tested in terms of TPS, latency between two transactions, data size, update time in blockchain and swarm/IPFS with and without encryption, read time in blockchain with and without decryption, sign/verification times of the data with SHA-256, CPU and memory usage
+Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), data size, update time in blockchain and swarm/IPFS with and without encryption, read time in blockchain with and without decryption, sign/verification times of the data with SHA-256, CPU and memory usage
 
 \chapter{Methodology} \label{chapter:proposed_system}
 
-<<>>
-
-\subsection{High-level Design} \label{ss:construct_architecture}
+\section{High-level Design} \label{ss:construct_architecture}
 Below is a high-level design to build a private Ethereum network with a raspberry pi generating and saving IOT data from sensors into the blockchain and another raspberry pi retrieving this data and controlling the led attached to it. Another machine serves as the miner node for this network.
 \begin{figure}
 	\centering
