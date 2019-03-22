@@ -244,17 +244,57 @@ Blockchain is decentralized by design and having the same information across all
 
 If we are using blockchain technology to process transactions, we need to run some cryptographic algorithms to validate these transactions. This can be done by anyone who runs the blockchain software and once they are successful in validating these transactions called consensus, a new block can be added to the chain. This process is called mining. A fee is paid to the successful miner in the form of BTC for bitcoin and ether for Ethereum.
 
+\subsection{Peer to Peer Discovery}
+Peer to Peer discovery(P2P) is the cornerstone of any blockchain. This is how different peers find each other and share their information with them. P2P isn't new and has been used previously in applications such as Bit Torrent, Napster to name a few.
+
 \subsection{Distributed Apps}
-The term Distributed Apps(dapps) is used to refer to any application (web or standalone) which is able interface with the functionality written in a smart contract. The dapps are only different from regular web-apps or mobile apps in the sense that their 
-Dapps can be the webpage of a voting app, betting application or can be a simple script storing some information in the blockchain using a smart contract.
+The term Distributed Apps(dapps) is used to refer to any application (web or standalone) which is able interface with the functionality written in a smart contract. The dapps are only different from regular web-apps or mobile apps in the sense that their Dapps can be the webpage of a voting app, betting application or can be a simple script storing some information in the blockchain using a smart contract.
 
 \subsection{Ethereum}
 Ethereum is another popular implementation of blockchain and provides a platform to run smart contracts. These smart contracts can be used to facilitate monetary transactions and store important data in a distributed ledger. Ethereum has two types of currencies, ‘gas’ and ‘ether’. Gas is the ether that must be paid by a node that runs a smart contract function. Ether is the crypto-currency in Ethereum which can be used to transfer money and to pay for gas to run smart contracts.
 
+\subsection{Ethereum Concepts}
+Ethereum introduces a number of concepts to enable sending and receiving ether, executing smart contract transactions and reading data to and from the blockchain in general.
+
+\subsubsection{Genesis block}
+A genesis block is the first block of chain. This has to be created manually and will contain a hash of all zeros.
+
+\subsubsection{Networking Modes}
+\subsubsection{Public Network}
+There are 2 kinds of public networks run and maintained by the Ethereum network. 
+First is the main network with a network id of 1. There are other test networks which can be used by developers to test features of their distributed apps built using ethereum.
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Public Ethereum Networks}
+	\label{pub_eth_networks}
+	\centering
+	\begin{tabular}{|c||c|c|c|}
+		\hline
+		\bfseries Network & \bfseries Type & \bfseries Network ID & \bfseries Network Status \\
+		\hline\hline
+		$main$ & Main & 1 & Online \\ \hline
+		$morden$ & Test & 2 & Retired \\ \hline
+		$ropsten$ & Test & 3 & Current \\ \hline
+		$rinkeby$ & Test & 4 & Current \\ \hline
+
+	\end{tabular}
+\end{table}
+
+\subsubsection{Private Network}
+Private networks can be setup in both closed and open modes. All nodes in this network need to be started with an ID other than the ones used by public networks. Another requirement is that all the nodes in the private network need to be initialized with the same genesis block. A random number \textbf{63723} was chosen for this thesis. If we require that the private network should not be accessed by any one with the network id and genesis block, we can turn off the discovery mode for other peers and instead add them manually.
 
 \subsubsection{Geth}
 An Ethereum node is a client called Geth which is implemented in Golang and is used to connect to the Ethereum network. Other implementations in C++ and Python are also available. Once installed, it can be initiated with a genesis block (the first block in the blockchain), started and connected to different networks available in Ethereum. These networks are identified by their network ID. Since this is a peer to peer protocol, different nodes with the same genesis block and network ID can synchronize with each other and mine transactions. Network ID: 1 is for the main network, 2 and 3 are reserved for Test networks. We can use a different network ID for setting up a private network. Different versions for Windows, Linux, MacOS and Android are available and can be downloaded from the below website.
 https://geth.ethereum.org/install/
+
+\subsubsection{Geth Synchronization modes}
+Geth can be run in 3 different modes: Full, Fast or light.
+Full: This is the default mode of geth when run without any synchronization options. It requests the entire state database, gets all the headers, bodies and validates every element from genesis block.
+
+Fast: This mode gets the block headers, bodies and doesn't process any transaction until it reaches the current block. Thereafter, it works like a full synchronization.
+
+Light: This mode only gets the current state. To verify elements, it needs to request full nodes for the previous states. This is perfect for edge devices like the raspberry pi where we do not want to store much data. However, it requires a full node dedicating some of its resources to serve requests from a light node.
 
 \subsubsection{Ethereum Virtual Machine}
 Ethereum Virtual Machine (EVM) is a Virtual environment that runs on all geth nodes and execute the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL etc are available for writing code which can be compiled and run in the EVM.
@@ -284,17 +324,17 @@ Truffle is a framework which makes developing and deploying Smart Contracts in E
 \subsubsection{Ganache}
 Ganache is framework which can be useful for testing our smart contract during development. It provides a bootstrapped private blockchain with test accounts with pre-loaded ether.
 
-\subsection{Storage Systems}
-\subsubsection{Etheruem Swarm}
+\section{Storage Systems}
+\subsection{Etheruem Swarm}
 Ethereum Swarm is a storage solution aiming to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data  in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The current implementation is at version 0.3.x or Proof of Concept 3. Its primary objective is to allow dapps to store data efficiently for applications such as messaging, data streaming and mutable resource updates.
 
-\subsubsection{Inter Planetary File System}
+\subsection{Inter Planetary File System}
 The Inter Planetary File System (IPFS) is a storage solution, very similar to Ethereum Swarm and solves a lot of the same issues faced by Swarm. However, it has been around for much longer than Ethereum and is much easier to setup and use. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes.
 
-\subsubsection{MariaDB}
+\subsection{MariaDB}
 MariaDB is a fork of the popular MySQL database and is completely maintained by the open source community. It is a relational Database and is used in this thesis to compare performance metrics between a locally stored Database system and the proposed fully distributed storage system.
 
-\subsection{IOT Security}
+\section{IOT Security}
 IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. We also use a Hardware Security Mechanism (TPM) to lock the keys transferred to the edge devices thereby ensuring that the keys are never transferred or stored in plain text format on these devices. Once transfer is complete, the keys generated on the edge devices may be deleted.
 
 Finally, the storage medium (SD card is this case) is encrypted fully using LUKS (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt the file system contents shared by several users/ services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible. LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them to services and revoking them when required. However, all these keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, the master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using its private key stored within the hardware.
@@ -308,25 +348,34 @@ Advanced Encryption Standard (AES) utilizes a strong secret key to encrypt actua
 \subsubsection{Hashing}
 A hash algorithm (HMAC) is used to sign the un-encrypted payload and is used to verify the authenticity of the data.
 
-\subsection{Evaluation and Performance Metrics}
+\subsection{Evaluation Methods}
 Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), data size, update time in blockchain and swarm/IPFS with and without encryption, read time in blockchain with and without decryption, sign/verification times of the data with SHA-256, CPU and memory usage
 
 \chapter{Methodology} \label{chapter:proposed_system}
 
 \section{High-level Design} \label{ss:construct_architecture}
-Below is a high-level design to build a private Ethereum network with a raspberry pi generating and saving IOT data from sensors into the blockchain and another raspberry pi retrieving this data and controlling the led attached to it. Another machine serves as the miner node for this network.
+The proposed system would consist of number of applications running on a Local machine (miner nodes) whose sole purpose is to validate the transactions called by the set methods in the smart contract. One of the raspberry pis, called IoT Producer will be used to gather readings. The IoT producer will be running geth in light mode, swarm and ipfs applications to send data to rest of the network. The other raspberry pi, called IoT consumer will be used to get the readings from the network and use them to send out the data to other end-points such as APIs or LCD displays. The connections between the Producer and Consumer isn't rigid and each connect to the Ethereum, Swarm or IPFS network.
+
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.5]{images/Final_Implementation.png}
 	\caption{Implementation Diagram}
 	\label{fig:impldiagram_architechture}
 \end{figure}
+
+
 \section{Proposed System}
+This section explains in detail, the different systems working together to achieve the expected results.
 
+\subsection{Local Machine}
+The test machine validating the mining operations is a laptop with Core i7-7700HQ processor rated at 2.8GHz with 4 physical cores and 16 GB RAM. This machine runs two geth miner nodes (for redundancy). One of the miner nodes dedicates a few of its resources to serve requests from light geth nodes.
 
-\subsection{Node Selection Rule} {
-	This section describes how our proposed algorithm chooses our nodes. The node with highest TWU is traversed first. From the Figure \ref{fig:htwui_tree_structure}, the highest TWU item, $Item B$, is traversed and then next item $Item E$ is traversed along with its child nodes. The case is same when traversing inside the child of child nodes. For example, the child nodes of $Item A$ are $Item E$ and $Item B$. The node with $Item B$ is traversed first and then $Item E$ is traversed. Therefore, some of the itemsets formed by traversing the tree are as  $\{B\}, \{E\}, \{E,B\}, \{A\},\{A,B\}, \{A,E\}, \{A,E,B\}$
-}
+\subsection{IoT Edge Nodes}
+We will setup two identical Raspberry Pis, each serving different purposes. One of the raspberry pi's will be used to read telemetry data from sensors while the other will be used to output this data to a display device or the console.
+The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHZ quad-core ARM Cortex A53 processor with 1 GB DDR2 RAM. A 32GB class 10 SD card encrypted by LUKS and dm-crypt serves as the storage medium.
+
+\subsection{IoT Producer}
+The IoT Producer is used to 
 
 \subsection{Construction of Sub-tree of Itemsets} \label{ss:sub-tree-itemsets}
 For the construction of sub-tree of itemsets, a recursive approach is used in which traversing of node starts from the node with higher TWU itemset and the next subsequent node is taken and traversed. It utilizes depth-first search strategy to traverse every node.
