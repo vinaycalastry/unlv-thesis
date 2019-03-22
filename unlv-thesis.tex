@@ -380,6 +380,8 @@ The IoT Producer is used to read data from all the sensors, encrypt and store da
 \subsection{IoT Consumer}
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
+\section{Software Setup}
+
 \section{Payload Format} \label{ss:payload format}
 The payload stored in the storage systems from the sensors can be modified at will, and is independent of the data format enforced by the blockchain. It also allows data to be encrypted before storage.
 
@@ -397,305 +399,76 @@ Payload is generated and stored in the following JSON format. All values are sto
 		$1$ & Temperature & Temperature collected from the sensor in Celsius & 23 \\ \hline
 		$2$ & Humidity & Humidity collection from the sensor in percentage points & 44 \\ \hline
 		$3$ & Temperature Units & Units used for temperature (C or F) & F \\ \hline
-		$4$ & Humidity Units & Units used for humidity & "" \\ \hline
-		$6$ & Timestamp & Time at which data was collected & "" \\ \hline
+		$4$ & Humidity Units & Units used for humidity & \% \\ \hline
+		$6$ & Timestamp & Time at which data was collected & 2019-03-13 22:06:09 \\ \hline
 		$6$ & Device ID & ID of the device which collected the data & IoTProducer1 \\ \hline
-		$7$ & Device Type & Device which collected the data & Raspberry Pi3B \\ \hline
+		$7$ & Device Type & Device which collected the data & RaspberryPi3 B \\ \hline
 		$8$ & Device IP & IP of the device from which the information was collected & 192.168.0.16 \\ \hline
 		$9$ & Sensor Type & Type of the Sensor Used & DHT11 \\ \hline
-
 	\end{tabular}
 \end{table}
 
-Different computation undergoes in the algorithm as shown in Algorithm \ref{alg:build-sub-tree} which includes the computation of projected database, checking the pruning table to prune the transactions, calculation of utility of an itemset, calculation of sub-tree utilities, local utilities and transaction weighted utilities for all its following items, next child nodes of a current itemset and follower nodes of the child node is computed and the insertion of an itemset to pruning table is also carried out in this process.
+\section{Data Storage and Retrieval Steps}
+The steps to collect and retrieve the sensor data after applying encryption, verification or decryption.
+\subsection{Sensor Data Collection}
+\ref{alg:data_collection}
+\subsection{Sensor Data Retrieval}
+\ref{alg:data_retrieval}
 
- {\SetAlgoNoLine
- 	\begin{algorithm}[h]
- 		\SetKwInOut{Input}{Input}
- 		\Input{Transactional Database $D$, ThresholdRatio $\delta$, Total Utility $TU$}
- 		\Fn {constructSubTree($\gamma$, $D$, nextNodes($\gamma$), followerItems($\gamma$), $\delta$, TU)}{
- 			\For{each item $i_j$ in $nextNodes(\gamma)$}{
- 				$\rho \gets \gamma \cup \{i_j\}$\;
- 				\While{scan each $T_j$ in $D$}{
- 					\uIf {checkPruningTable($T_j$)}{
- 						continue from while loop\;}
- 					Compute ${\rho}D$\;
- 					Calculate $u(\rho)$\;
- 				}
- 				\uIf{$u(\rho) \ge \delta \times TU$} {$HUIs \gets \rho$\;}
- 				Calculate $subU(\rho, x), locU(\rho, x)$ and $TWU(\rho, x)$ for all the items $i_j$ in $followerItems(\gamma)$ by scanning ${\rho}D$\;
- 				$nextNodes(\rho) = \{x \in followerItems(\gamma)|subU(\rho, x)\ge \delta \times TU\}$\;
- 				$followerItems(\rho) = \{x \in followerItems(\gamma)|locU(\rho, x) \ge \delta \times TU \}$\;
- 				\While{scan each item $i_k$ in $followerItems(\gamma)$} {
-	 			$i_s \gets \rho \cup i_k$\;
- 				\uIf{$TWU(i_s) < \delta \times TU$}{
- 					$insertToPruningTable(i_s)$\;}
- 				}
- 				$constructSubTree(\rho, \rho{D}, nextnodes(\rho), followerItems(\rho), \delta, TU)$\;
- 			}
- 		}
- 		\caption{Build Sub-tree to determine Itemsets}
- 		\label{alg:build-sub-tree}
- 	\end{algorithm}
+\begin{algorithm}[Data Collection and Payload Storage]
+ \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
+ \KwResult{ Collect and Encrypt Payload, Store in Swarm or IPFS }
+  secretKeyAES = decrypt($tpmPrivKey$,$cipherText$)\;
+  //Run indefinitely \newline
+ \While{True}{
+  temperature, humidity =  dataCollectionFromSensor()\;
+  timestamp = getCurrentTime()\;
+  payload = buildPayload(temperature,humidity,timestamp)\;
+  signature = generateSHA256(payload)\;
+  payloadCipher = encrypt(secretKeyAES,payload,signature)\;
+  filehash = setSwarmOrIPFSData(payloadCipher)\;
+  callSetFileHashSensorContract(filehash)\;
  }
-
-\subsection{Pruning Strategies}
-In our proposed algorithm, the concept of a pruning hash table is implemented. The detail of the proposed pruning hash table is explained in detail in Transaction Pruning Strategy section below. We also use different utility bounds such as sub-tree utility, local utility and transaction weighted utility to prune the branches.
-
-
-\subsubsection{Transaction Pruning Strategy}
-The proposed algorithm uses a transaction pruning rule to avoid the transactions which contain the itemsets in the pruning hash table to generate the projected transaction ${\rho}D$.
-
-A hash table is implemented to insert itemsets that are to be pruned. The hash table stores the itemsets with low-utility value. While traversing the different nodes, the itemset is inserted into the pruning hash table if the current itemset has transaction weighted utility lower than the threshold value. For example, if an itemset $\{A,B,C\}$ is to be inserted into the pruning table, our proposed algorithm first checks whether there is already a superset of that itemset in the hash table. If pruning hash table does not contain any superset, it then stores an $Item A$ in the map with key as $A$ and $null$ as value. Then, another map with $Item B$ will be inserted as the value in $A$ and so on until all the items are stored in the pruning hash table.
-The algorithm to check whether the superset of an itemset is present or not is shown in Algorithm \ref{alg:transaction_pruning} and to insert an itemset in the pruning hash table is shown in Algorithm \ref{alg:insertPtable}.
-
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\Input{Pruning Hash Table $pTable$, transaction $T_j$}
-		\Fn {checkPruningTable($T_j$)} {
-			$pr \gets pTable$\;
-			\uIf{$pTable.size() > 0$} {
-				\For{each item $i_k \in T_j$}{
-					//check item in pruning table\newline
-					\uIf{$i_k$ not in pr}{return false\;}
-					$pr \gets pr(i_k)$\;
-					\uIf{pr is null}{return true\;}
-				}
-			}
-			return false\;
-		}
-		\caption{Checking in Pruning Hash Table for Transaction Pruning}
-		\label{alg:transaction_pruning}
-	\end{algorithm}
-}
-
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\Input{Itemset $itemset$, Maximum limit of pruning table $\phi$}
-		\Fn {insertIntoPruningTable($itemset$)} {
-			\uIf{$checkPruningTable(itemset)\;is\;null$} {
-				\uIf{$pTable.size() < \phi$} {
-						Insert into pruning table recursively;
-						
-						pTablesize++;
-					
-					return true;
-					
-				}
-			}
-			return false;
-		}
-		\caption{Insertion in Pruning Hash Table}
-		\label{alg:insertPtable}
-	\end{algorithm}
-}
+ \caption{Data Collection and Payload Storage}
+ \label{alg:data_collection}
+\end{algorithm}
 
 
-\subsubsection{Utility Based Pruning}
-Our proposed algorithm uses utility based pruning to prune the branches with itemsets that are not feasible. Utility based pruning includes sub-tree utility, local utility and transaction weighted utility. The transaction weighted utility of an itemset prunes the itemset that is less than the minimum threshold by inserting into the pruning hash table which is used for reducing the search space. During the generation of projected transaction, while traversing on each node, calculation of sub-tree utility and local utility are done for each of the possible follower items of that node. If any of the possible follower items have sub-tree utility less than the minimum threshold, then that item cannot be the next possible node but still has a chance to be the follower item for the next nodes of the current itemset. If those possible follower items of a node have local utility less than the minimum threshold, it cannot be the next node as well as a follower item for that node. For example, let us consider a node as $Item A$ and suppose, there are 3 possible follower items $Item B, Item C$ and $Item D$. The sub-tree utility is calculated for all its follower items $B, C$ and $D$ and if B has sub-tree utility  greater than threshold value and $C$ and $D$ have sub-tree utility value less than threshold then, $Item B$ is the next node as well as the follower item for $Item A$ but the local utility is calculated for $Item C$ and $Item D$ and suppose if $Item C$ has local utility greater than threshold value and $Item D$ has local utility less than threshold, then $Item C$ can be the follower item of node $Item A$. Therefore, next node of $Item A$ is $\{B\}$ and follower items is $\{B,C\}$.
+\subsection{Sensor Data Retrieval and Use}
+\begin{algorithm}[Data Retrieval and Use]
+ \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
+ \KwResult{ Retrieve Encrypted Payload from Swarm or IPFS }
+  secretKeyAES = decrypt($tpmPrivKey$,$cipherText$)\;
+  //Run indefinitely \newline
+ \While{True}{
+    filehash = callGetLatestFileHash()\;
+    payloadCipherText = getSwarmOrIPFSData(filehash)\;
+    payloadPlainText, signature = decrypt(secretKeyAES, payloadCipherText)\;
+    \eIf{generateSHA256(payloadPlainText) == signature}{
+        Send to other sources\;
+    }{
+        Throw Error\;
+    }
+ }
+ \caption{Data Retrieval and Use}
+ \label{alg:data_retrieval}
+\end{algorithm}
 
-\subsection{Detailed Algorithm (HUI-PR)}
-Our detailed algorithm is shown in Algorithm \ref{alg:find_huis}. Our algorithm starts with reading the transactional database ($TD$) and threshold ratio ($\delta$). The total utility ($TU$), transaction weighted utility ($TWU$) of items and local utility ($locU$) of all the items of a database is computed by scanning the whole transactional database. Total utility of an database, transaction weighted utility of items and local utility of items are calculated as defined in Equation \ref{eq:totalUtil}, \ref{eq:tranUtil} and \ref{eq:local_utility}. 1-HTWUIs are calculated based on the transaction weighted utility obtained as described in Section \ref{ss:construct_1htuwis}. The follower items are 1-HTWUIs for the initial node and these items are sorted in increasing order in total ordering ($\rightarrow$) as described in Definition \ref{def:total_ordering}. From the list of 1-HTWUIs, those itemsets with transaction weighted utility values less than the threshold are known as unpromising items. Moreover, those unpromising items are removed from the transactions of the whole transactional database. After removing the unpromising items from the database, if there are empty transactions created, then those transactions are removed. The items of each transaction in the transactional database are sorted based on the total ordering. Calculation of sub-tree utility for each followerItems is done by scanning the whole database and based on the sub-tree utility values, next nodes of the initial root node are defined where the items must have sub-tree utility greater than the threshold. Sub-tree is constructed recursively with taking the parameters as the transactional database, nextNodes, followerItems, thresholdRatio and total utility. The algorithm to find the sub-tree of itemsets is defined in detail in Section \ref{ss:sub-tree-itemsets}.
+\subsection{Smart Contract Functions}
+123
 
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\SetKwInOut{Output}{Output}
-		
-		\Input{Transactional Database $TD$, ThresholdRatio $\delta$}
-		\Output{High Utility Itemsets $HUIs$}
-		Initial itemset, $\gamma$ = $\phi$\;
-		Calculate Total Utility $TU$, $TWU(\gamma, i_j)$ and local utility $locU(\gamma, i_j)$ for all $i_j \in I$ by scanning whole database $TD$\;
-		Compute 1-HTWUIs itemsets, \newline $followerItems(\gamma) = \{i_j | i_j \in I \cap TWU(\gamma, i_j) \ge \delta \times TU\}$ \newline
-		Sort the items in $followerItems(\gamma)$ in total ordering ($\rightarrow$)\;
-		Remove the unpromising items $j$ from the transactions $T_j$\;
-		Remove the empty transaction after removing unpromising items\;
-		Sort the items in each transaction in total ordering ($\rightarrow$)\;
-		Calculate sub-tree utility $subU(\gamma, i_j)$ for all $i_j \in followerItems(\gamma)$ by scanning database $TD$\;
-		Compute next nodes to visit in reverse order, \newline $nextNodes(\gamma) = \{i_j|i_j \in reverse(followerItems(\gamma)) \cap subU(\gamma, i_j) \ge \delta \times TU \}$\;
-		$constructSubTree(\gamma, TD, nextNodes(\gamma), followerItems(\gamma), \delta, TU)$\;
-		\caption{Algorithm to find HUIs}       	
-		\label{alg:find_huis}
-	\end{algorithm}
-}
 
-\section{Method II - Distributed EFIM}
-This section describes our proposed algorithm EFIM Parallel (EFIM-Par) to find high utility itemsets with parallel computing using Apache Spark. This algorithm is the parallel (distributed) implementation of the algorithm EFIM \cite{Zida2015}. This section comprises of generating 1-HTWUIs, generating revised transactions, finding the sub-tree utility and the local utility, assigning the sub-tree to worker nodes, node data generation, mining high utility itemsets by individual worker nodes and explanation of the overall flow of EFIM Parallel algorithm.
+\subsection{IPFS or Swarm Functions}
+123
 
-\subsection{Generating 1-HTWUIs with their corresponding TWU} \label{ss:generate_1htwuis}
-The Transactional Database $(TD)$ is scanned to find out the 1-HTWUIs of items along with their transaction weighted utility. First of all, the transactional database is divided into different blocks which are computed by different worker nodes using $flatMap$ operation. The result obtained from worker nodes are reduced using $reduceByKey$ operation to get the itemTWU of items which contain items with their corresponding TWU.
 
-\subsection{Generating Revised Transactional Database} \label{ss:generate-revised-transactions}
-In this process, the Transactional Database $(TD)$ is mapped to generate the revised transactional database using map operation. Firstly, $TD$ is split into different blocks to distribute among worker nodes in which pruning of unpromising items are done, and then the transaction is sorted in the ascending order of the transaction weighted values of items. Besides pruning of unpromising items and sorting, there is a removal of empty transactions by using filter operation. The generated revised transactions use the functionality provided by Spark to persist the RDD so that it can be used again later. It is used later to find out the sub-tree utility of items and assignment of items to worker nodes which will be described in the later sections.
+\section{Data Collection For testing performance}
+\subsection{Real-time data}
 
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\SetKwInOut{Output}{Output}
-		
-		\Input{Transactional Database $TD$, ThresholdRatio $\delta$, Total Utility $TU$}
-		\Output{Revised Transactional Database}
-		
-		\Fn{map()}{
-			\For{k = 0 to len(TD)-1}{
-				// Removing unpromising items from the transaction
-				$TD_k = \sum_{j = 0}^{len(TD_k)-1}\{i_j | i_j \in TD_k \cap TWU(i_j) \geq \delta \times TU \}$;
-				
-				// Sort items in transaction in total ordering
-				
-				$SortItems(TD_k)$;
-				
-				\If{$len(TD_k)$ == 0}{Remove $TD_k$;}
-			}
-		}
-		\caption{Revised Transactional Database Generation}           
-		\label{alg:revised_transaction_generation}
-	\end{algorithm}
-}
+\subsection{Simulated data}
 
-\subsection{Finding Local Utility and Sub-tree Utility of 1-HTWUIs}
-There are two utilities in this proposed algorithm which prunes the unnecessary visitation of the nodes. It reduces the search space significantly. It needs to be calculated in the first level of the tree in order to compute the next nodes of each item and the follower nodes of those items. The local utility is calculated as shown in Equation \ref{eq:local_utility}. For the initial case, it is same as transaction weighted utility, therefore, it uses TWU of 1-HTWUIs as described in Section \ref{ss:generate_1htwuis}. Another utility is the sub-tree utility which is calculated as shown in the Equation \ref{eq:sub_utility}. It scans the revised transaction to generate the sub-tree utility for each item of 1-HTWUIs. It uses flatMap and Reduce operations to get the sub-tree utility values for each item.
 
-\subsection{Sub-tree Assignment to Worker Nodes} \label{ss:sub-tree-to-workernodes}
-The proposed algorithm uses grouping strategy to assign the $itemsToExplore$ and their respective sub-trees to the worker nodes. The $itemsToExplore$ is computed by using the Equation \ref{eq:itemsToExplore}. Grouping of 1-HTWUIs is as shown in the Algorithm \ref{alg:workernode_assignment}. This grouping approach helps to divide our tasks among the worker nodes to be executed in distributed environment properly. The grouping is done based on the number of items to explore. Items to explore is defined in Equation \ref{eq:itemsToKeep}.
 
-Referring to the example in Table \ref{table:quantitative_db} and \ref{table:profit_table}, we have 7 items in which there are 6 1-HTWUI items. From the definition of \ref{def:itemsToExplore}, we have $D, F, C, A, E, B$ as items to explore. Let us suppose we have 3 worker nodes as $Node\ 1$, $Node\ 2$ and $Node\ 3$. According to the Algorithm \ref{alg:workernode_assignment}, the worker nodes are assigned as $D \rightarrow Node\ 1$, $F \rightarrow Node\ 2$, $C \rightarrow Node\ 3$, $A \rightarrow Node\ 3$, $E \rightarrow Node\ 2$ and $B \rightarrow Node\ 1$. The worker nodes are assigned to the sub-tree nodes along with their respective node data which is described in Section \ref{ss:generate_nodedata}.
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\SetKwInOut{Output}{Output}
-		
-		\Input{Number of worker nodes $N$, Follower nodes $itemsToExplore$}
-		\Output{Hashmap($nodeId$, $itemsToExplore$) $workerNodeMap$}
-		
-		\Fn{grouping()}{
-			$workerNodeMap \gets map()$;
-			
-			$nodeId \gets 1$;
-			
-			$incr \gets 1$;
-			
-			$flag \gets false$;
-			
-			\For{i in itemsToExplore}{
-				$workerNodeMap[i] \gets nodeId$;
-				
-				$nodeId \gets nodeId + 1$;
-				
-				\If{$(nodeId == 0\ ||\ nodeId == N-1)$}{
-					\eIf{$(flag == false)$}{
-						$incr \gets 0$;
-						
-						$flag \gets true$;
-					} {
-						\eIf{$(nodeId == 0)$}{$incr \gets 1$;}{$incr \gets -1$;}
-						$flag \gets false$;
-					}
-				}
-			}
-			return $workerNodeMap$;
-		}
-		\caption{Assignment of Sub-tree to Worker Nodes}           
-		\label{alg:workernode_assignment}
-	\end{algorithm}
-}
-
-\newpage
-\subsection{Node Data Generation} \label{ss:generate_nodedata}
-Each worker node is assigned with a sub-tree which needs to be traversed. Each node traversal indicates the candidate generation which is needed to generate projected transaction at each node. Therefore, each worker node gets the refined transactions including the items it needs to visit which is computed using flatMap operation. Algorithm \ref{alg:nodedata_generation} shows the steps to generate the node data for the specific items assigned to the worker nodes. Each transaction is checked by the binary search to find the item assigned to worker node is present or not. If items assigned are not in the transaction, then that transaction is not added to the nodeMap. After scanning all the nodes, nodeMap is grouped by a key which is then used to mine high utility itemsets which are explained in Section \ref{ss:minehuis} later.
-
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\SetKwInOut{Output}{Output}
-		
-		\Input{Revised Transactions $T$, $workerNodeMap$}
-		\Output{Hashmap($nodeId$, $T_r$) $nodeMap$}
-		
-		\Fn{flatMap}{
-			$nodeMap = map();$
-			
-			\For{$i \gets 0\ to\ len(T)-1$ }{
-				
-				\For{$(nodeId, item) \gets workerNodeMap$}{
-					
-					$check = binarySearchIterative(T.itemset, item)$;
-					
-					\If{$check$ == true}{
-						$nodeMap \gets (nodeId, T_i)$;
-					}
-				}
-			}
-			return $nodeMap$;
-		}
-		\Fn{binarySearchIterative(list, target)}{
-			$left \gets 0$;
-			$right \gets len(list) - 1$;
-			
-			\While{$(left \leq right)$} {
-				$mid = left + (right - left)\ /\ 2$;
-				
-				\uIf {(list(mid) == target)}
-				{
-					return $true$;
-				} \uElseIf{$list(mid) \ge target$} {
-					$right = mid - 1$;
-				} \Else {
-					$left = mid + 1$;
-				}
-			}
-			return $false$;
-		}
-		\caption{Node Data Generation}           
-		\label{alg:nodedata_generation}
-	\end{algorithm}
-}
-
-\newpage
-\subsection{Mining High Utility Itemsets} \label{ss:minehuis}
-This section describes the mining of high utility itemsets that are computed by worker nodes using generated Node data. The detailed algorithm is shown in Algorithm \ref{alg:mine_huis_distributed}. Each worker processes to compute the high utility itemsets (HUIs) for the assigned sub-tree of items. It uses a recursive algorithm to find HUIs which generates the possible candidate sets assigned to them. Let us consider the example from the Figure \ref{fig:htwui_tree_structure} in which each item of 1st level is assigned to one worker node. Let us assume that there are 3 worker nodes, then we know from the previous Section \ref{ss:sub-tree-to-workernodes}, $ItemD$ is assigned to $Node 1$. All the possible candidate sets for $ItemD$ are processed by $Node1$. Similarly, for the $ItemF$, possible candidate sets are processed by $Node2$ and so on.
-
-{\SetAlgoNoLine
-	\begin{algorithm}
-		\SetKwInOut{Input}{Input}
-		\SetKwInOut{Output}{Output}
-		\Input{Database $d$, ThresholdRatio $\delta$, Total Utility $TU$, $nodeMap$, $nodeId$}
-		\Output{High Utility Itemsets $HUIs$}
-		\Fn {mineHUIs($\gamma$, d, itemsToExplore($\gamma$), itemsToKeep($\gamma$), $\delta$, TU, $flagFirst = true$)}{
-			\For{each item $i_j$ in $itemsToExplore(\gamma)$}{
-				\If{$(flag \ne true\ ||\ nodeId == nodeMap(i))$}{
-					$\rho \gets \gamma \cup \{i_j\}$\;
-					\While{scan each $T_j$ in ${\gamma}D$}{
-						Compute ${\rho}D$\;
-						Calculate $u(\rho)$\;
-					}
-					\uIf{$u(\rho) \ge \delta \times TU$} {$HUIs \gets \rho$\;}
-					Calculate $subU(\rho, x)$ and $locU(\rho, x)$ for all the items $i_j$ in $itemsToKeep(\gamma)$ by scanning ${\gamma}D$\;
-					$itemsToExplore(\rho) = \{x \in itemsToKeep(\gamma)|subU(\rho, x)\ge \delta \times TU\}$\;
-					$itemsToKeep(\rho) = \{x \in itemsToKeep(\gamma)|locU(\rho, x) \ge \delta \times TU \}$\;
-					$mineHUIs(\rho, d, itemsToExplore(\rho),$$itemsToKeep(\rho), \delta, TU, false)$\;
-				}
-			}
-		}
-		\caption{Mining HUIs in Parallel}
-		\label{alg:mine_huis_distributed}
-	\end{algorithm}
-}
-
-\newpage
-\subsection{Overall Flow of EFIM Parallel Algorithm}
-The overall flow diagram of EFIM Parallel Algorithm is shown in Figure \ref{fig:flowdiagram_efimpar}. It starts with reading of dataset from the file which is split into different blocks to be distributed among the worker nodes. The worker nodes work on the block of the file using $flatMap$ operation to generate the key-value pairs of items and its corresponding TWU which is then combined using $ReduceByKey$ operation to get the final $itemTWU$. The generation of 1-HTWUIs was explained in detail in the previous Section \ref{ss:generate_1htwuis}. The split dataset is also used to find the total utility of the transactional database to find the threshold value. This threshold value is used to find the $itemsToKeep$ by filtering out the items in 1-HTWUIs having TWU values less than the threshold value. Only those items remaining in the $itemsToKeep$ are kept in the transactions of the database. Therefore, other items not in $itemsToKeep$ known as unpromising items, are removed from the transactions, sort the items in a transaction in the total ordering and removal of empty transactions are done to get the sorted revised transactions which were described in detail in Section \ref{ss:generate-revised-transactions}. In the next step, the sorted revised transactions are used to find the $utilityBinSU$ for each items by using $flatMap$ and $ReduceByKey$ operations. The $utilityBinSU$ contains sub-tree utility for all the items of $itemsToKeep$. The $utilityBinLU$ contains local utility for all the items which is same as the $itemTWU$. Using the $utilityBinSU$, the list containing all the items for $itemsToExplore$ is created. A sub-tree is created from the items in $itemsToExplore$.
-
-Assignment of items of $itemsToExplore$ is done using the grouping mechanism as described in detail in Section \ref{ss:sub-tree-to-workernodes}. In this process, the worker node identifies the sub-tree it needs to generate. Each worker node processes to filter the transactions to produce the Node Data. Using these node data, each worker node mines the high utility itemsets forming sub-trees to generate the candidate sets. In the mining process, the nodes are pruned based on the sub-tree utility and the local utility as given in Equation \ref{eq:sub_utility} and Equation \ref{eq:local_utility} respectively. Finally, the results obtained from the worker nodes are combined to give the aggregated high utility itemsets.
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.7]{Flowdiagram-distributed}
-	\caption{Overall Flow Diagram of EFIM Parallel Algorithm}
-	\label{fig:flowdiagram_efimpar}
-\end{figure}
 
 %To main things in \LaTeX should be labelled: Figures and Tables.
 %
@@ -758,270 +531,31 @@ Assignment of items of $itemsToExplore$ is done using the grouping mechanism as 
 
 \chapter{Experimental Results}
 \label{chapter:experiment_results}
-The experiments were performed for our Method I with our proposed algorithm (HUI-PR) and EFIM algorithm \cite{Zida2015} to find high utility itemsets on 16GB main memory in Intel Xeon(R) CPU E5-1607 0 @ 3.00 GHz x 4 on an Ubuntu 16.04 Linux Operating system. The language used to write these algorithms was Oracle Java 1.8. 
-
-For the Method II, the experiments were performed on Spark clusters with Master and all Slave nodes with 16GB main memory and Intel Xeon(R) CPU E5-2695 v4 @ 2.10 GHz x 4 with an Ubuntu 16.04 Linux Operating system. The language used to write the spark application was Scala version 2.12.1 with Spark framework version 2.0.2 to run an experiment for our proposed algorithm EFIM-Par and PHUI-Miner \cite{Chen2016}.
+We will test both cost incurred by the account calling the transactions and time taken with and without encruption.
 
 \section{Datasets}
-The experiments were performed on multiple real-world datasets \cite{miningdataset2012, SPMFDatasets}. For the method I, our experiments were conducted on smaller datasets such as Chess, Connect and Retail. For the method II, our experiments were conducted on relatively large datasets such as Connect20x, Chess30x, BMS4x, Mushroom20x. For large datasets, the small datasets such as Connect, Chess, BMS and Mushroom were multiplied to get the larger dataset. The characteristics of the datasets are shown in the Table \ref{dataset_table} where $\#|D|$, $\#|I|$, $AvgLen$, $MaxLen$, $Type$ and $Scale$ represent the total number of transactions, the number of distinct items, the average size of a transaction, maximum size of a transaction, type of dataset and size of dataset respectively. For each threshold ratio of a dataset, the experimental results were executed 10 times and the average was taken.
+4 datasets
+collected
+simulated for 1000, 10k and 100k records
 
-\begin{table}[!htbp]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Datasets Characteristics}
-	\label{dataset_table}
-	\centering
-	\begin{tabular}{|c||c|c|c|c|c|c|}
-		\hline
-		\bfseries Dataset & \bfseries $\#|D|$ & \bfseries $\#|I|$ & \bfseries AvgLen & \bfseries MaxLen & \bfseries Type & \bfseries Scale\\
-		\hline\hline
-		$chess$ & 3196 & 76 & 37 & 37 & dense & Small\\ \hline
-		$connect$ & 67557 & 129 & 43 & 43 & dense & Small\\ \hline
-		$retail$ & 88162 & 16470 & 10 & 76 & sparse & Medium \\ \hline
-		$connect2x$ & 135114 & 129 & 43 & 43 & dense & Large\\ \hline
-		$chess30x$ & 95880 & 76 & 37 & 37 & dense & Large\\ \hline
-		$BMS4x$ & 238408 & 497 & 3 & 267 & sparse & Large \\ \hline
-		$Mushroom20x$ & 162400 & 119 & 23 & 23 & dense & Large\\ \hline
-	\end{tabular}
-\end{table}
+
 
 \section{HUI-PR vs EFIM}
-Our proposed HUI-PR was compared with EFIM \cite{Zida2015} with comparisons on the computational time, the number of high utility itemsets (HUIs) found and the number of Candidate Sets generated. These algorithms were performed on the smaller datasets.
+
 
 \subsection{Comparison of Computational Time}
-In this section, we compared our algorithm (HUI-PR) with the EFIM algorithm \cite{Zida2015} with the real datasets (Connect, Chess, Retail). Experiments were conducted to show the effectiveness of our algorithm with the real datasets and the approach that was taken to improve the performance of an experiment. The pruning rule proposed in our algorithm HUI-PR helps to improve computational time significantly for the datasets with a large number of transactions. The proposed algorithm generates the projected transaction which reduces the number of transactions in each level. It not only reduces the number of transactions based on utility calculations but it also uses the pruning hash table to eliminate the transactions in which the itemsets in the pruning table might be a subset of items in a transaction. Therefore, it helps to check whether the items in a transaction are a superset or not in very quick time.
 
-From the Figure \ref{fig:graph-comparison}, we see that HUI-PR can perform better than the EFIM algorithm. From the Figure \ref{fig:graph-connect}, for the ``Connect" dataset, the threshold ratio was set from 28.90\% to 29.70\% as shown. When the threshold ratio was 28.90\%, our algorithm HUI-PR took 1830.87 seconds while the EFIM algorithm took 1927.95 seconds. The proposed algorithms showed significant improvement in Figure \ref{fig:graph-retail} on threshold ratio 0.03\%, the running time for HUI-PR was 5718.36 seconds while for EFIM algorithm, the running time was 7370.33 seconds.
 
-We also conducted our experiment against the other state-of-the-art algorithms: HUI-Miner \cite{Liu2012}, HUP-Miner \cite{Krishnamoorthy2015}, FHM \cite{Fournier-Viger2014}, FHM+ \cite{Fournier-Viger2016}, d\textsuperscript{2}HUP \cite{Krishnamoorthy2015, Liu2012}. Our algorithm HUI-PR performs better than these state-of-the-art algorithms as shown in Figure \ref{fig:graph-multiple-comparison}. For the ``Connect" dataset, our algorithm performed better by more than 100 times than HUI-Miner, HUP-Miner and FHM algorithms while it performed better by almost 50 times than d\textsuperscript{2}HUP. Similarly, for the ``Chess" dataset, HUI-PR performed better by 20 times than HUI-Miner, HUP-Miner and FHM algorithms while it performed better than 7 times than d\textsuperscript{2}HUP. Since the time performed by FHM+ was significantly higher when it was executed with parameter $MaxLength=15$ for the ``Chess" dataset and $MaxLength=21$ for the ``Connect" dataset. Therefore, it is not shown in the graph.
-
-\begin{figure}
-	\begin{subfigure}{\textwidth}
-		\centering 
-		\includegraphics[scale=0.5]{RuntimeConnect-HUIPRvEFIM}
-		\subcaption{Connect Dataset}
-		\label{fig:graph-connect}
-	\end{subfigure}    
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{RuntimeChess-HUIPRvEFIM}
-		\subcaption{Chess Dataset}
-		\label{fig:graph-chess}
-	\end{subfigure}
-	\begin{subfigure}{\textwidth}
-		\centering 
-		\includegraphics[scale=0.5]{RuntimeRetail-HUIPRvEFIM}
-		\subcaption{Retail Dataset}
-		\label{fig:graph-retail}
-	\end{subfigure}
-	\caption{Comparison of computational time between HUI-PR and EFIM w.r.t. variants of minimum threshold for different datasets}
-	\label{fig:graph-comparison}
-\end{figure}
-\begin{figure}
-	\centering 
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		 \includegraphics[scale=0.7]{RuntimeConnect-HUIPRvAll}
-		\subcaption{Connect Dataset}
-		\label{fig:graph-connect-comparison}
-		\bigskip
-	\end{subfigure}
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\includegraphics[scale=0.7]{RuntimeChess-HUIPRvAll}
-		\subcaption{Chess Dataset}
-		\label{fig:graph-chess-comparison}
-	\end{subfigure}
-	\caption{Comparison of computational time with state-of-the-art algorithms w.r.t. variants of minimum threshold}
-	\label{fig:graph-multiple-comparison}
-\end{figure}
 
 
 \subsection{Comparison of HUIs}
-From the experiments conducted on the real-world datasets (Connect, Chess and Retail), the number of HUIs found by both the experiments are same. We recorded the number of HUIs found for the range of threshold ratio for different datasets which are shown in Table \ref{table:result_huis}. For the ``Connect" database, we got 81 HUIs for 28.90\% and 4 HUIs for 29.70\%. Similarly, for the ``Chess" dataset, we got 342 HUIs for 24.00\% and 16 HUIs for 26.00\% threshold ratio. From the results obtained, we can verify that all the high utility itemsets have been found from our proposed algorithm HUI-PR.
 
 
-\begin{table}
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Total Number of HUIs found in HUI-PR and EFIM}
-	\label{table:result_huis}
-	\centering
-	\begin{tabular}{|c||c|c|}
-		\hline
-		\bfseries Dataset & \bfseries ThresholdRatio $\delta$ & \bfseries \# of HUIs\\
-		\hline\hline
-		$Connect$ & 28.90\% & 81\\ \hline
-		$Connect$ & 29.10\% & 40\\ \hline
-		$Connect$ & 29.30\% & 20\\ \hline
-		$Connect$ & 29.50\% & 8\\ \hline
-		$Connect$ & 29.70\% & 4\\ \hline \hline
-		
-		$Chess$ & 24.00\% & 342\\ \hline
-		$Chess$ & 24.50\% & 177\\ \hline
-		$Chess$ & 25.00\% & 98\\ \hline
-		$Chess$ & 25.50\% & 41\\ \hline
-		$Chess$ & 26.00\% & 16\\ \hline \hline
-		
-		$Retail$ & 0.30\% & 92\\ \hline
-		$Retail$ & 0.40\% & 58\\ \hline
-		$Retail$ & 0.50\% & 41\\ \hline
-		$Retail$ & 0.60\% & 30\\ \hline
-		
-	\end{tabular}
-\end{table}
-
-\begin{table}
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Total Number of Transactions Pruned in HUI-PR}
-	\label{result_transactions_pruned}
-	\centering
-	\begin{tabular}{|c||c|c|}
-		\hline
-		\bfseries Dataset & \bfseries ThresholdRatio $\delta$ & \bfseries \# Transactions Pruned\\        \hline\hline
-		
-		$Connect$ & 28.90\% & 556831\\ \hline
-		$Connect$ & 29.10\% & 550630\\ \hline
-		$Connect$ & 29.30\% & 550630\\ \hline
-		$Connect$ & 29.50\% & 550630\\ \hline
-		$Connect$ & 29.70\% & 550630\\ \hline \hline
-		
-		$Chess$ & 24.00\% & 24878\\ \hline
-		$Chess$ & 24.50\% & 30779\\ \hline
-		$Chess$ & 25.00\% & 27829\\ \hline
-		$Chess$ & 25.50\% & 26265\\ \hline
-		$Chess$ & 26.00\% & 26304\\ \hline \hline
-		
-		$Retail$ & 0.30\% & 670018\\ \hline
-		$Retail$ & 0.40\% & 245342\\ \hline
-		$Retail$ & 0.50\% & 117453\\ \hline
-		$Retail$ & 0.60\% & 61939\\ \hline
-		
-	\end{tabular}
-\end{table}
 
 
 \subsection{Comparison of Candidate Sets}
-From the Figure \ref{fig:comparison-candidatesets-efim}, we compared the candidate sets obtained from HUI-PR and EFIM algorithms. The candidate sets generated in HUI-PR are lower in number than that in EFIM algorithm. The candidate sets are minimized in the HUI-PR using transaction pruning strategies with pruning hash table and utility based pruning. For the ``Connect" dataset for threshold ratio 28.90\%, HUI-PR generated 3007 candidate sets while the EFIM algorithm generates 3132 candidate sets. HUI-PR could generate fewer candidate sets in the ``Chess" dataset. For 24.00\% threshold ratio, HUI-PR generated 2933 candidate itemsets while EFIM generated 2965 number of candidate itemsets. We also compared the candidate sets obtained from state-of-the-art algorithms: HUIMiner, FHM and FHM+ as shown in Figure \ref{fig:graph-candidatesets-comparison}. The number of candidate sets generated by our algorithm HUI-PR is 8 times less than HUIMiner and FHM for the ``Chess" dataset while HUI-PR generates 10 times less than HUIMiner and FHM for the ``Connect" dataset.
 
-\begin{figure}
-	\centering
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{CandidateSetsConnect-EFIM}
-		\subcaption{Connect Dataset}\label{fig:connect-candidatesets}
-	\end{subfigure}
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{CandidateSetsChess-EFIM}
-		\subcaption{Chess Dataset}\label{fig:chess-candidatesets}
-	\end{subfigure}
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{CandidateSetsRetail-EFIM}
-		\subcaption{Retail Dataset}\label{fig:retail-candidatesets}
-	\end{subfigure}
-	\caption{Comparison of candidate sets between HUI-PR and EFIM w.r.t. variants of minimum threshold}
-	\label{fig:comparison-candidatesets-efim}
-\end{figure}
 
-\begin{figure}
-	\centering
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\includegraphics[scale=0.7]{CandidateSetsConnect-HUIPRvsAll}
-		\subcaption{Connect Dataset}
-		\label{fig:graph-connect-candidatesets}
-		\bigskip
-	\end{subfigure}
-	\begin{subfigure}[b]{\textwidth}
-		\centering
-		\includegraphics[scale=0.7]{CandidateSetsChess-HUIPRvsAll}
-		\subcaption{Chess Dataset}\label{fig:graph-chess-candidatesets}
-	\end{subfigure}
-	\caption{Comparison of candidate sets with state-of-the-art algorithms w.r.t. variants of minimum threshold}
-	\label{fig:graph-candidatesets-comparison}
-\end{figure}
-
-\section{EFIM-Par vs EFIM}
-We compared our proposed distributed algorithm Parallel EFIM (EFIM-Par) with Approximate parallel high utility itemset mining (PHUI-Miner) \cite{Chen2016}. The computational time were recorded for the different datasets as shown in the Figure \ref{fig:graph-comparison-distributed}. These algorithms were performed on the larger datasets. Our algorithm were conducted on one master node and ten slave nodes in the Spark Framework.
-
-\subsection{Comparison of Computational Time}
-In this section, we ran our experiments on the real-world datasets (Connect, Chess, BMS and Mushroom). However, in order to make the datasets sufficiently large, we multiplied the ``Connect" dataset by a factor of 2, ``Chess" dataset by a factor of 30, ``BMS" dataset by a factor of 4 and ``Mushroom" dataset by a factor of 20. The experiments were conducted on our proposed algorithm EFIM-Par and PHUI-Miner.
-
-From the Figure \ref{fig:graph-connect2x-distributed}, our algorithm EFIM-Par took 76.36 seconds while PHUI-Miner took 161.76 seconds for the threshold ratio 28.90\% for the ``Connect" dataset. Similarly, for the threshold ratio 29.70\%, our EFIM-Par took 64.42 seconds while PHUI-Miner took 113.27 seconds. Our algorithm EFIM-Par was able to perform around 2 times better than PHUI-Miner for the ``Connect" dataset for different threshold ratio taken. From the Figure \ref{fig:graph-chess30x-distributed}, for the ``Chess30x" dataset, our algorithm took 60.77 seconds for the threshold ratio 24.00\% while PHUI-Miner took 79.19 seconds. Similarly, for the threshold ratio 26.00\%, EFIM-Par took 51.97 seconds while PHUI-Miner took 71.03 seconds. Our algorithm performed almost 1.5 times better than PHUI-Miner for the ``Chess30x" dataset. Similarly for the ``BMS4x" dataset, our algorithm performed better for the lower threshold and almost similar for the higher threshold values. Our algorithm performed better than 1.2 times the PHUI-Miner algorithm for ``Mushroom20x" dataset.
-
-\subsection{Comparison of HUIs}
-From the Table \ref{table:result-huis-distributed}, we found that our algorithm EFIM-Par found the same number of HUIs as found by PHUI-Miner. Therefore, we can conclude our algorithm is as accurate as PHUI-Miner.
-
-\begin{figure}
-	%    \centering
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[scale=0.6]{RuntimeConnect2x-Distributed}
-		\subcaption{Connect2x Dataset}
-		\label{fig:graph-connect2x-distributed} 
-		\bigskip
-	\end{subfigure}    
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[scale=0.6]{RuntimeChess30x-Distributed}
-		\subcaption{Chess30x Dataset}
-		\label{fig:graph-chess30x-distributed}
-	\end{subfigure}
-	\caption{Comparison of computational time between EFIM-Par and PHUI-Miner w.r.t. variants of minimum threshold for different datasets}
-\end{figure}
-\begin{figure} \ContinuedFloat
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[scale=0.6]{RuntimeBMS4x-Distributed}
-		\subcaption{BMS4x Dataset}
-		\label{fig:graph-bms-distributed} 
-		\bigskip
-	\end{subfigure}
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[scale=0.6]{RuntimeMushroom20x-Distributed}
-		\subcaption{Mushroom20x Dataset}
-		\label{fig:graph-mushroom20x-distributed} 
-	\end{subfigure}
-	\caption{Comparison of computational time between EFIM-Par and PHUI-Miner w.r.t. variants of minimum threshold for different datasets}
-	\label{fig:graph-comparison-distributed}
-\end{figure}
-
-\begin{table}
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Total Number of HUIs found in EFIM-Par and PHUI-Miner}
-	\label{table:result-huis-distributed}
-	\centering
-	\begin{tabular}{|c||c|c|}
-		\hline
-		\bfseries Dataset & \bfseries ThresholdRatio $\delta$ & \bfseries \# of HUIs\\
-		\hline\hline
-		$Connect2x$ & 28.90\% & 81\\ \hline
-		$Connect2x$ & 29.10\% & 40\\ \hline
-		$Connect2x$ & 29.30\% & 20\\ \hline
-		$Connect2x$ & 29.50\% & 8\\ \hline
-		$Connect2x$ & 29.70\% & 4\\ \hline \hline
-		
-		$Chess30x$ & 24.00\% & 342\\ \hline
-		$Chess30x$ & 24.50\% & 177\\ \hline
-		$Chess30x$ & 25.00\% & 98\\ \hline
-		$Chess30x$ & 25.50\% & 41\\ \hline
-		$Chess30x$ & 26.00\% & 16\\ \hline \hline
-		
-		$BMS$ & 2.08\% & 7\\ \hline
-		$BMS$ & 2.10\% & 7\\ \hline
-		$BMS$ & 2.40\% & 5\\ \hline
-		$BMS$ & 2.80\% & 3\\ \hline
-		$BMS$ & 3.00\% & 2\\ \hline
-		
-		$Mushroom20x$ & 14.00\% & 67\\ \hline
-		$Mushroom20x$ & 14.25\% & 38\\ \hline
-		$Mushroom20x$ & 14.50\% & 19\\ \hline
-		$Mushroom20x$ & 14.75\% & 10\\ \hline
-		$Mushroom20x$ & 15.00\% & 2\\ \hline
-		
-	\end{tabular}
-\end{table}
 
 
 \chapter{Conclusion and Future Work} \label{chapter:conclusion}
