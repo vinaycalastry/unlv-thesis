@@ -233,8 +233,6 @@ An LCD with a 16x2 display matrix and a I2C backpack attached is used to display
 Tiny Edge devices like the Raspberry Pi 3 provide little to no security.
 The primary storage mechanism is an micro SD card which can be easily imaged and data including encryption keys can be stolen easily as the data is stored as plain text. There is also no storage for sensitive data such as secret keys for cloud based APIs or encryption keys used for authentication.
 
-Hardware Security Mechanisms such as a Trusted Privacy Module (TPM) are used to help enhance the relatively weak security on a base Raspberry Pi. TPM is used to store important keys in the hardware as well as encrypt the file system and decrypt only while using the device. TPM used in this thesis is called Zymbit 4i, which is an add-on board for the Raspberry Pi and communicates with it via the I2C interface.
-
 \section{Blockchain}
 Blockchain, or more accurately Distributed Ledger Technology was built to power the storage and transfer of a new form of currency called Crypto-currency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto. Due to the runaway success of Bitcoin, it has become synonymous with blockchain. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a variety of use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing and real estate.
 
@@ -257,6 +255,9 @@ Ethereum introduces a number of concepts to enable sending and receiving ether, 
 
 \subsection{Genesis block}
 A genesis block is the first block of chain. This has to be created manually and will contain a hash of all zeros.
+
+\subsection{Crypto-Currency in Ethereum}
+
 
 \subsection{Networking Modes}
 \subsubsection{Public Network}
@@ -286,6 +287,29 @@ Private networks can be setup in both closed and open modes. All nodes in this n
 \subsection{Geth}
 An Ethereum node is a client called Geth which is implemented in Golang and is used to connect to the Ethereum network. Other implementations in C++ and Python are also available. Once installed, it can be initiated with a genesis block (the first block in the blockchain), started and connected to different networks available in Ethereum. These networks are identified by their network ID. Since this is a peer to peer protocol, different nodes with the same genesis block and network ID can synchronize with each other and mine transactions. Network ID: 1 is for the main network, 2 and 3 are reserved for Test networks. We can use a different network ID for setting up a private network. Different versions for Windows, Linux, MacOS and Android are available and can be downloaded from the below website.
 https://geth.ethereum.org/install/
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Example eth and web3 commands}
+	\label{geth_commands}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\bfseries API & \bfseries Command & \bfseries Function \\
+		\hline\hline
+		geth & geth attach & Opens access to blockchain \\ \hline
+		eth & eth.coinbase & Address of the primary account \\ \hline
+		eth & eth.getBalance() & Returns balance in wei \\ \hline
+        eth & eth.sendTransaction() & Sends ether in wei between accounts \\ \hline
+        eth & eth.pendingTransactions & Returns list of pending transactions sent from connected node \\ \hline
+        eth & eth.coinbase & Address of the primary account \\ \hline
+        web3 & web3.fromWei() & Converts wei to Ether \\ \hline
+        web3 & eth.toWei() & Converts Ether to wei \\ \hline
+        miner & miner.start() & Starts mining on the node \\ \hline
+        miner & miner.stop() & Stops mining on the node \\ \hline
+        admin & admin.nodeInfo.enode & Gets the ENODE value of the geth node \\ \hline
+	\end{tabular}
+\end{table}
 
 \subsection{Geth Synchronization modes}
 Geth can be run in 3 different modes: Full, Fast or light. Each have their own uses and we can setup any node to work in a different mode. 
@@ -327,6 +351,38 @@ https://github.com/ethereum/web3.js/
 \subsection{Truffle}
 Truffle is a framework which makes developing and deploying Smart Contracts in Ethereum easier. It can be setup to compile our smart contract and deploy it to our network. Additional functions such as retrieving the smart contract's address and ABI definition can also be done using truffle.
 
+Tables \ref{truffle_commands} and \ref{truffle_console} provide example functionalities provided by Truffle.
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Example truffle commands}
+	\label{truffle_commands}
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\bfseries Command & \bfseries Function \\
+		\hline\hline
+		truffle compile & Compiles a smart contract to EVM bytecode \\ \hline
+		truffle migrate & Deploys the smart contract to a network mentioned in its configuration \\ \hline
+		truffle console & Accesses the meta-data for the smart contract \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{truffle console commands}
+	\label{truffle_console}
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\bfseries Command & \bfseries Function \\
+		\hline\hline
+		ContractName.address & Returns the address of the Smart Contract \\ \hline
+		ContractName.abi & Returns the abi metadata of Smart Contract \\ \hline
+
+	\end{tabular}
+\end{table}
+
 \subsection{Ganache}
 Ganache is framework which can be useful for testing our smart contract during development. It provides a bootstrapped private blockchain with test accounts with pre-loaded ether.
 
@@ -365,9 +421,16 @@ MariaDB is a fork of the popular MySQL database and is completely maintained by 
 \end{table}
 
 \section{IOT Security}
-IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. We also use a Hardware Security Mechanism (TPM) to lock the keys transferred to the edge devices thereby ensuring that the keys are never transferred or stored in plain text format on these devices. Once transfer is complete, the keys generated on the edge devices may be deleted.
+IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. 
 
-Finally, the storage medium (SD card is this case) is encrypted fully using LUKS (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt the file system contents shared by several users/ services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible. LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them to services and revoking them when required. However, all these keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, the master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using its private key stored within the hardware.
+\subsection{Hardware Security Modules}
+Hardware Security Modules such as a Trusted Privacy Module (TPM) are used to help enhance the relatively weak security on a base Raspberry Pi. TPM is used to store important keys in the hardware as well as encrypt the file system and decrypt only while using the device. TPM used in this thesis is called Zymbit 4i, which is an add-on board for the Raspberry Pi and communicates with it via the I2C interface.
+
+\subsubsection{Data Locker keys}
+The TPM used, Zymbit 4i, provides a public-private ECDSA key pair for signature generation and verification as well as two keys, one-way and shared. \textbf{One-way} key is used to lock down sensitive files such as secret keys to the machine while the \textbf{shared} key is used to encrypt data saves to Amazon Web Services (AWS) cloud. 
+
+\subsubsection{Linux Unified Key Setup}
+The storage medium (SD card is this case) is encrypted fully using LUKS (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt the file system contents shared by several users/ services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible. LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them to services and revoking them when required. However, all these keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, the master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using its private key stored within the hardware.
 
 \subsection{Cryptography Algorithms used}
 \subsubsection{Public Key Cryptography}
@@ -380,9 +443,9 @@ Symmetric Encryption uses a single secret key to encrypt and decrypt data. Symme
 
 Advanced Encryption Standard (AES) utilizes a strong secret key to encrypt actual data. We use this algorithm to encrypt and store data in Swarm or IPFS. Since the system we are proposing requires many devices sharing the same key, using public key cryptography was considered for this thesis.  
 \subsubsection{Hashing}
-Hashing is the process of generating a unique 
+Hashing is the process of generating a set of characters that can uniquely identify a particular input. In Cryptography, they are used mainly to generate a signature for a larger input and encrypt it with a sender's private key, and can be decrypted only using the sender's public key. This authenticates the data received as only the sender's public key can decrypt data encrypted using its private key pair. Secure Hashing Algorithms (SHA series), Message Digest (MD series) and Hash Message Authentication Code (HMAC) are some of the hashing algorithms in popular use.
 
-A hash algorithm (HMAC) is used to sign the un-encrypted payload and is used to verify the authenticity of the data.
+A hash algorithm (HMAC) is used in this thesis to sign the un-encrypted payload and is used to verify the authenticity and data integrity of the message. 
 
 \subsection{Evaluation Methods}
 Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, update time in blockchain and swarm/IPFS with and without encryption, read time in blockchain with and without decryption, sign/verification times of the data with HMAC, CPU and memory usage
@@ -408,7 +471,7 @@ The test machine validating the mining operations is a laptop with Core i7-7700H
 
 \subsection{IoT Edge Nodes}
 We will setup two identical Raspberry Pis, each serving different purposes. One of the raspberry pi's will be used to read telemetry data from sensors while the other will be used to output this data to a display device or the console.
-The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHZ quad-core ARM Cortex A53 processor with 1 GB DDR2 RAM. A 32GB class 10 SD card encrypted by LUKS and dm-crypt serves as the storage medium. Raspbian Stretch Lite is flashed onto both the nodes and 
+The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHZ quad-core ARM Cortex A53 processor with 1 GB DDR2 RAM. A 32GB class 10 SD card encrypted by LUKS and dm-crypt serves as the storage medium. Raspbian Stretch Lite is flashed onto both the nodes and booted up.
 
 \subsubsection{IoT Producer}
 The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It can connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
@@ -416,17 +479,59 @@ The IoT Producer is used to read data from all the sensors, encrypt and store da
 \subsubsection{IoT Consumer}
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
-
 \section{Software Setup}
 \subsection{IoT Software packages}
 \subsection{Ethereum Software}
 \subsection{Storage Software}
-\subsection{Security}
 
+\section{IoT Security Considerations}
+\subsection{Hardware Security}
+A Trusted Privacy Module device, Zymbit 4i is used as a Hardware Security mechanism for the raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104 and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
 
+Boot Sequence of normal LUKS:
+\begin{enumerate}
+	\item Kernel initializes initramfs - A single cpio archive loaded into main memory during startup
+	\item initramfs presents decryption key to LUKS
+	\item LUKS decrypts the root file system
+\end{enumerate}
+
+There are a couple of issues with the above procedure when Raspberry Pi is involved. First is that there is no dedicated key-ring for storing cryptographic keys available in other Operating Systems. Secondly, the decryption key should not be stored in plain text on the removable SD card. To fix these issues, a TPM is used with LUKS for a more secure boot sequence.
+
+Boot Sequence of LUKS with TPM:
+\begin{enumerate}
+	\item Kernel initializes initramfs
+	\item initramfs present locked LUKS key to TPM
+	\item TPM verifies the key signature and decrypts the LUKS key
+	\item Unlocked LUKS key is used to decrypt the root file system
+\end{enumerate}
+
+\subsection{Software Security}
+\subsubsection{Change default password}
+The default password on the raspberry pi is \textbf{raspberry}. According to a research \cite{8364059}, IoT devices are easily hacked due to improper setup, often times leaving the default credentials in place. The first priority after setting up the raspberry pi must be to change the password to something more secure.
+
+\subsubsection{Replace default user}
+To further increase security, a new user is added and the default \textbf{pi} is deleted. Another feature to consider is to request the password when a terminal runs a \textbf{sudo} command which is turned off in raspbian by default.
+
+\subsubsection{Installing Firewall}
+There is no firewall installed by default on the raspberry pi. Uncomplicated Firewall (ufw) can be setup very easily in any linux based OS and the raspbian OS is no different. All ports except for those we need such those for making remote procedure calls, networking between geth, swarm or ipfs nodes are selectively enabled.
+
+\subsubsection{Transferring Symmetric keys}
+Symmetric keys must never be transferred in plain-text format over network or stored in the file system in plain text. The below sequence of steps are used to transfer AES keys over a network and lock them to the raspberry pi.
+\newpage
+\begin{enumerate}
+	\item Generate RSA public - private key pair on Raspberry Pi
+	\item Transfer public key over to host machine generating symmetric key using a secure channel such as Secure Copy (scp) or Secure File Transfer Protocol (sftp)
+	\item Generate a signature hash for the key
+	\item Encrypt the symmetric key with the raspberry pi's public key
+	\item Transfer the encrypted symmetric key back to the raspberry pi
+	\item Decrypt the symmetric key using the raspberry pi's private key
+	\item Verify the signature from the decrypted text
+	\item Once signature is verified, use the one-way key from TPM to encrypt and store the symmetric key, which is only decrypted, used and discarded when data collection script starts
+\end{enumerate}
 
 \section{Payload Format} \label{ss:payload format}
-The payload stored in the storage systems from the sensors can be modified at will, and is independent of the data format enforced by the blockchain. It also allows data to be encrypted before storage. Payload is generated and stored in JSON format as referenced in \ref{payload_format}. All values are stored as strings and then formatted into either int, float or timestamp when needed.
+The payload stored in the storage systems from the sensors can be modified at will, and is independent of the data format enforced by the blockchain. It also allows data to be encrypted before storage. Payload is generated and stored in JSON format as referenced in \ref{payload_format}. All values are stored as strings and then formatted into either integer, floating-point numbers or timestamp when needed.
+\newpage
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -451,6 +556,9 @@ The payload stored in the storage systems from the sensors can be modified at wi
 
 \section{Data Storage and Retrieval Steps}
 The steps to collect and retrieve the sensor data after applying encryption, verification or decryption.
+
+PUT FIGURE HERE
+
 \subsection{Sensor Data Collection}
 \ref{alg:data_collection}
 \subsection{Sensor Data Retrieval}
