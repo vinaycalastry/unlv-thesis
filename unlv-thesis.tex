@@ -253,8 +253,31 @@ Ethereum is another popular implementation of blockchain and provides a platform
 \section{Ethereum Concepts}
 Ethereum introduces a number of concepts to enable sending and receiving ether, executing smart contract transactions and reading data to and from the blockchain in general.
 
+\subsection{Ethereum block}
+
+
 \subsection{Genesis block}
-A genesis block is the first block of chain. This has to be created manually and will contain a hash of all zeros.
+A genesis block is the first block of the entire chain. This has to be created manually for private networks and contains a hash of all zeros. In Ethereum, genesis block is represented in the form of a JSON file. A sample genesis block is shown as follows.
+\begin{verbatim}
+    {
+        "nonce": "0x0000000000000042",
+        "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "difficulty": "0x400",
+        "alloc": {}, 
+        "coinbase": "0x0000000000000000000000000000000000000000",
+        "timestamp": "0x00",
+        "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "extraData": "0x436861696e536b696c6c732047656e6573697320426c6f636b",
+        "gasLimit": "0xffffffff",
+        "config": {
+            "chainId": 63723,
+            "homesteadBlock": 0,
+            "eip155Block": 0,
+            "eip158Block": 0
+        }
+    }
+\end{verbatim}
+
 
 \subsection{Crypto-Currency in Ethereum}
 
@@ -311,14 +334,18 @@ https://geth.ethereum.org/install/
 	\end{tabular}
 \end{table}
 
+\newpage
 \subsection{Geth Synchronization modes}
 Geth can be run in 3 different modes: Full, Fast or light. Each have their own uses and we can setup any node to work in a different mode. 
 
-Full: This is the default mode of geth when run without any synchronization options. It requests the entire state database, gets all the headers, bodies and validates every element from genesis block.
+\subsubsection{Full} 
+This is the default mode of geth when run without any synchronization options. It requests the entire state database, gets all the headers, bodies and validates every element from genesis block.
 
-Fast: This mode gets the block headers, bodies and doesn't process any transaction until it reaches the current block. Thereafter, it works exactly like a full synchronization.
+\subsubsection{Fast}
+This mode gets the block headers, bodies and doesn't process any transaction until it reaches the current block. Thereafter, it works exactly like a full synchronization.
 
-Light: This mode only gets the current state from the blockchain. To verify elements, it needs to request full nodes for the previous states. This is perfect for edge devices like the raspberry pi where we do not want to store much data. However, it requires a full node dedicating some of its resources to serve requests from a light node.
+\subsubsection{Light}
+This mode only gets the current state from the blockchain. To verify elements, it needs to request full nodes for the previous states. This is perfect for edge devices like the raspberry pi where we do not want to store much data. However, it requires a full node dedicating some of its resources to serve requests from a light node.
 
 \subsection{Ethereum Virtual Machine}
 Ethereum Virtual Machine (EVM) is a virtual environment that runs on all geth nodes and execute the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL etc are available for writing code which can be compiled and run in the EVM.
@@ -480,6 +507,7 @@ The IoT Producer is used to read data from all the sensors, encrypt and store da
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
 \section{Software Setup}
+
 \subsection{IoT Software packages}
 \subsection{Ethereum Software}
 \subsection{Storage Software}
@@ -488,7 +516,7 @@ The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT
 \subsection{Hardware Security}
 A Trusted Privacy Module device, Zymbit 4i is used as a Hardware Security mechanism for the raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104 and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
 
-Boot Sequence of normal LUKS:
+\subsubsection{Boot Sequence of normal LUKS}
 \begin{enumerate}
 	\item Kernel initializes initramfs - A single cpio archive loaded into main memory during startup
 	\item initramfs presents decryption key to LUKS
@@ -497,7 +525,7 @@ Boot Sequence of normal LUKS:
 
 There are a couple of issues with the above procedure when Raspberry Pi is involved. First is that there is no dedicated key-ring for storing cryptographic keys available in other Operating Systems. Secondly, the decryption key should not be stored in plain text on the removable SD card. To fix these issues, a TPM is used with LUKS for a more secure boot sequence.
 
-Boot Sequence of LUKS with TPM:
+\subsubsection{Boot Sequence of LUKS with TPM}
 \begin{enumerate}
 	\item Kernel initializes initramfs
 	\item initramfs present locked LUKS key to TPM
@@ -542,14 +570,14 @@ The payload stored in the storage systems from the sensors can be modified at wi
 		\hline
 		\bfseries S.No & \bfseries Payload Item & \bfseries Brief Explanation & \bfseries Example Data \\
 		\hline\hline
-		$1$ & Temperature & Temperature collected from the sensor in Celsius & 23 \\ \hline
-		$2$ & Humidity & Humidity collection from the sensor in percentage points & 44 \\ \hline
+		$1$ & Temperature & Temperature collected from sensor in C & 23 \\ \hline
+		$2$ & Humidity & Humidity collection from the sensor in \% & 44 \\ \hline
 		$3$ & Temperature Units & Units used for temperature (C or F) & F \\ \hline
 		$4$ & Humidity Units & Units used for humidity & \% \\ \hline
-		$6$ & Timestamp & Time at which data was collected & 2019-03-13 22:06:09 \\ \hline
-		$6$ & Device ID & ID of the device which collected the data & IoTProducer1 \\ \hline
-		$7$ & Device Type & Device which collected the data & RaspberryPi3 B \\ \hline
-		$8$ & Device IP & IP of the device from which the information was collected & 192.168.0.16 \\ \hline
+		$6$ & Timestamp & Time stamp of data collection & 2019-03-13 22:06:09 \\ \hline
+		$6$ & Device ID & IoT device ID & IoTProducer1 \\ \hline
+		$7$ & Device Type & IoT device type & RaspberryPi3 B \\ \hline
+		$8$ & Device IP & IP of IoT device& 192.168.0.16 \\ \hline
 		$9$ & Sensor Type & Type of the Sensor Used & DHT11 \\ \hline
 	\end{tabular}
 \end{table}
@@ -560,10 +588,21 @@ The steps to collect and retrieve the sensor data after applying encryption, ver
 PUT FIGURE HERE
 
 \subsection{Sensor Data Collection}
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDERPLACEHOLDER
+PLACEHOLDER
+vv
+v
+v
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
 \ref{alg:data_collection}
-\subsection{Sensor Data Retrieval}
-\ref{alg:data_retrieval}
-
+\newpage
 \begin{algorithm}[Data Collection and Payload Storage]
  \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
  \KwResult{ Collect and Encrypt Payload, Store in Swarm or IPFS }
@@ -582,8 +621,9 @@ PUT FIGURE HERE
  \label{alg:data_collection}
 \end{algorithm}
 
-
-\subsection{Sensor Data Retrieval and Use}
+\subsection{Sensor Data Retrieval}
+\ref{alg:data_retrieval}
+\newpage
 \begin{algorithm}[Data Retrieval and Use]
  \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
  \KwResult{ Retrieve Encrypted Payload from Swarm or IPFS }
@@ -596,20 +636,102 @@ PUT FIGURE HERE
     \eIf{generateSHA256(payloadPlainText) == signature}{
         Send to other sources\;
     }{
-        Throw Error\;
+        Throw Signature Not Verified Error\;
     }
  }
  \caption{Data Retrieval and Use}
  \label{alg:data_retrieval}
 \end{algorithm}
 
-\subsection{Smart Contract Functions}
+\section{Smart Contract Logic Functions}
+This section details the evolution of our logic to store data completely in V1 to storing only the file-hashes to the data stored in IPFS/ Swarm. Functions, mapping and structs are used to store and retrieve the file-hashes.
+
+\subsection{struct to store the collected data}
+A struct data structure (similar to C Language) is used to store the data collected from the sensors.  Although only filehash is part of the struct, it was left in place for future enhancements, if needed.
+\begin{verbatim}
+    //struct to store the file-hashes which store the actual sensor data
+    struct SensorData{
+        //filehash is the swarm handle containing the actual sensor readings
+        string filehash;
+    }
+\end{verbatim}
+
+A previous version of the struct in Smart contract when everything was stored on the blockchain, was written as shown.
+
+\begin{verbatim}
+    //struct to store the temperature, humidity and time when reading occurred
+    struct SensorData{
+        uint64 temperature;
+        uint64 humidity;
+        string dataStorageTime;
+    }
+\end{verbatim}
+
+\subsection{pointer to data}
+An integer value, ID is used as a pointer to refer to our current readings stored/ retrieved by the smart contract.
+\begin{verbatim}
+    uint public currentID;
+\end{verbatim}
+ 
+\subsection{Mapping from pointer to struct}
+The mapping \textbf{sensorDataStore} from ID to SensorData struct is stored.
+\begin{verbatim}
+    //map the struct to an id
+    mapping(uint => SensorData) sensorDataStore;
+\end{verbatim}
+
+\subsection{Constructor to initialize the ID}
+The ID must be initialized before access and so a constructor is used for this purpose. \textbf{1}  is chosen as the start index.
+\begin{verbatim}
+    //Constructor for the Smart Contract
+    constructor() public {
+        currentID = 1;
+    }
+\end{verbatim}
+
+\subsection{Function to get the current ID}
+\begin{verbatim}
+    //function to get the currentID
+    function getCurrentID() public view returns(uint){
+        return currentID;
+    }
+\end{verbatim}
+\subsection{Function to increment the current ID}
+\begin{verbatim}
+    //function to increment the ID used internally for managing file-hashes
+    function incrCurrentID() public{
+        currentID++;
+    }
+\end{verbatim}
+\subsection{Function to set the SensorData filehash}
+\begin{verbatim}
+    //Function to store the filehash from swarm
+    function setSensorData(string _filehash) public {
+        uint idToStore = getCurrentID();
+        SensorData storage sensorReadings = sensorDataStore[idToStore];
+        sensorReadings.filehash = _filehash;
+        incrCurrentID();
+    }
+\end{verbatim}
+\subsection{Function to get the latest SensorData filehash}
+\begin{verbatim}
+    //Function to get the latest stored data
+    function getSensorDataLatest() public view returns (string){
+        SensorData storage sensorReadings = sensorDataStore[getCurrentID()-1];
+        return sensorReadings.filehash;
+    }
+\end{verbatim}
+\subsection{Function to get the SensorData filehash from any ID}
+\begin{verbatim}
+    //Function to get the data stored under some ID
+    function getSensorDataByID(uint ID) public view returns (string){
+        SensorData storage sensorReadings = sensorDataStore[ID];
+        return sensorReadings.filehash;
+    }
+\end{verbatim}
+
+\section{IPFS or Swarm Logic}
 123
-
-
-\subsection{IPFS or Swarm Functions}
-123
-
 
 \section{Data Collection For testing performance}
 \subsection{Real-time data}
