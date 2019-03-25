@@ -367,7 +367,7 @@ Smart contracts can be written and tested using a browser-based IDE called Remix
 https://remix.ethereum.org
 
 \subsection{Smart Contract}
-A smart contract is a Class like code that lives in the Ethereum blockchain (EVM). The methods declared within the smart contract can be run as a transaction by any node which has enough ether to pay for running that transaction. This contract can be accessed by the outside world through distributed apps (also called dapps). Solidity compiler (solc) is used to compile these smart contracts into EVM bytecode (containing machine-code like instructions compiled from solidity) and ABI Definition containing meta-data like the variables and methods used in the smart contract. 
+A smart contract is a Class like code that lives in the Ethereum blockchain (EVM). The methods declared within the smart contract can be run as a transaction by any node which has enough ether to pay for running that transaction. This contract can be accessed by the outside world through distributed apps (also called dapps). Solidity compiler (solc) is used to compile these smart contracts into EVM bytecode (containing machine-code like instructions compiled from solidity) and ABI Definition containing meta-data like the variables and methods used in the smart contract.
 
 A typical Smart Contract consists of variables, setter and getter methods with access modifiers to regulate access exactly like Object-Oriented languages such as C++ and Java. Setter methods involve changing the state of the data contained within in blockchain and thus incur a transaction charge which must be paid in gas. Getter methods only retrieve the data stored within the full node or from a peer and does not incur any charge.
 
@@ -501,16 +501,73 @@ We will setup two identical Raspberry Pis, each serving different purposes. One 
 The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHZ quad-core ARM Cortex A53 processor with 1 GB DDR2 RAM. A 32GB class 10 SD card encrypted by LUKS and dm-crypt serves as the storage medium. Raspbian Stretch Lite is flashed onto both the nodes and booted up.
 
 \subsubsection{IoT Producer}
-The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It can connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
+The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It is setup to be able to connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
+
+For testing and demo purposes, a Digital Humidity and Temperature Sensor (DHT11) is attached to the raspberry pi to GPIO 22 pin for data, xx for voltage and yy ground pin.
 
 \subsubsection{IoT Consumer}
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
-\section{Software Setup}
+Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO xx,yy and zz pins of the consumer and a ground pin connected to pin ww. The second device is a I2C LCD which is connected to the SDA1(XX) and SCL1(yy) pins for I2C bus, 3.3V (zz) for power and ww ground pin.
 
-\subsection{IoT Software packages}
-\subsection{Ethereum Software}
-\subsection{Storage Software}
+
+\section{Software Setup}
+Python3 is used to write scripts that interface with IoT devices, Ethereum blockchain, IPFS and Swarm. Its package manager pip3 is installed in all the devices we use. The environment used in our test devices are tabulated in \ref{environment_setup}. Node.js with its package manager npm, is used to build, compile and deploy Solidity based Smart Contracts. 
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1}
+	\caption{Environment Setup}
+	\label{environment_setup}
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		\bfseries Device & \bfseries OS & \bfseries Architecture & \bfseries Python Version & \bfseries Node.js & \bfseries Solidity\\
+		\hline\hline
+		$Local Machine$ & Ubuntu 18.10 & amd64 & Python 3.5 &  Yes & Yes\\ \hline
+		$IoT Producer$ & Raspbian Stretch Lite & armv7 & Python 3.5 &  No & No\\ \hline
+		$IoT Consumer$ & Raspbian Stretch Lite & armv7 & Python 3.5 &  No & No\\ \hline
+	\end{tabular}
+\end{table}
+
+\subsection{Software binaries}
+Pre-built Geth binaries are downloaded for the local machine(amd64) as well as the IoT nodes(arm). Ethereum-Swarm packages are readily available for Ubuntu but not easily available for the Raspberry Pi 3.
+Raspberry pi 3B doesn't have the capabilities to build these binaries from source. 
+Fortunately, Geth and swarm were built using the Go programming language which provides excellent cross-compilation tools. The local machine was used to build the swarm binary and these binaries were installed on the raspberry pis. Table \ref{software_version} provides information on the different versions of geth, swarm and IPFS used in this thesis.
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1}
+	\caption{Software binary versions}
+	\label{software_version}
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\bfseries Device & \bfseries Geth & \bfseries Swarm  & \bfseries IPFS\\
+		\hline\hline
+		$Local Machine$ & 1.8.23-stable & 1.6.7-stable & "" \\ \hline
+		$IoT Producer$ & 1.8.23-stable & 1.6.7-stable & 0.4.19 \\ \hline
+		$IoT Consumer$ & 1.8.23-stable & 1.6.7-stable & 0.4.19 \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsection{Python modules}
+Since python3 is used extensively, a couple of third party python modules are used to help with accessing the blockchain, write data to ipfs or encrypt and decrypt data. Table \ref{python_modules} describes all the modules used in this thesis.
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1}
+	\caption{Third party Python modules}
+	\label{python_modules}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\bfseries Module Category & \bfseries Module Name & \bfseries Usage \\
+		\hline\hline
+		$Storage$ & web3 & To access smart contract functions or get balances \\ \hline
+		$Storage$ & ipfsapi & To store and retrieve data from IPFS \\ \hline
+		$IoT$ & AdafruitDHT & Get temperature, humidity from DHT \\ \hline
+		$Cryptography$ & pycryptodomex & Implementations of Cryptography algorithms \\ \hline
+	\end{tabular}
+\end{table}
+
+
 
 \section{IoT Security Considerations}
 \subsection{Hardware Security}
@@ -545,7 +602,7 @@ There is no firewall installed by default on the raspberry pi. Uncomplicated Fir
 
 \subsubsection{Transferring Symmetric keys}
 Symmetric keys must never be transferred in plain-text format over network or stored in the file system in plain text. The below sequence of steps are used to transfer AES keys over a network and lock them to the raspberry pi.
-\newpage
+
 \begin{enumerate}
 	\item Generate RSA public - private key pair on Raspberry Pi
 	\item Transfer public key over to host machine generating symmetric key using a secure channel such as Secure Copy (scp) or Secure File Transfer Protocol (sftp)
@@ -729,6 +786,8 @@ The ID must be initialized before access and so a constructor is used for this p
         return sensorReadings.filehash;
     }
 \end{verbatim}
+
+\section{Deploying Smart Contract to private network}
 
 \section{IPFS or Swarm Logic}
 123
