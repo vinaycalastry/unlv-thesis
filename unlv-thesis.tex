@@ -260,7 +260,8 @@ Table \ref{differences_bitcoin_ethereum} explains a few differences between Bitc
 	    Total Supply & 21 Million btc & Unlimited\\ \hline
 	    Block creation time & 10 minutes & 10 - 12 seconds\\ \hline
 	    Intended Use & Payment Network & Programming Platform(dapp)\\ \hline
-
+	    Mining Reward & 12.5 btc & 3 Eth \\ \hline
+        Mining Algorithm & SHA-256 & Ethash \\ \hline
 	\end{tabular}
 \end{table}
 
@@ -272,7 +273,7 @@ Peer to Peer discovery(P2P) is the cornerstone of any blockchain. This is how di
 The term Distributed Apps(dapps) is used to refer to any application (web or standalone) which is able interface with the functionality written in a smart contract. The dapps are only different from regular web-apps or mobile apps in the sense that their Dapps can be the webpage of a voting app, betting application or can be a simple script storing some information in the blockchain using a smart contract.
 
 \subsection{Crypto-currency Mining}
-In simple terms, mining is the process of performing computationally intensive mathematical (or) more accurately cryptographic calculations. These calculations are so complex that they require massive amounts of processing capacity and power to run. The computers that are successful in performing this operation are paid with a reward in newly minted currency that didn't exist previously. This is a direct analogy to the mining of gold from the ground. By performing this process, the miners are validating the authenticity of the payment and adding these validated transactions to the network. Mining is what makes the payment network secure and trusted without a third-part to validate the transaction which is the case in traditional methods.
+In simple terms, mining is the process of performing computationally intensive mathematical (or) more accurately cryptographic calculations. These calculations are so complex that they require massive amounts of processing capacity and power to run. The computers that are successful in performing this operation are paid with a reward in newly minted currency that didn't exist previously. This is a direct analogy to the mining of gold from the ground. By performing this process, the miners are validating the authenticity of the payment and adding these validated transactions to the network. Mining is what makes the payment network secure and trusted without a third-part to validate the transaction which is the case in traditional methods. The cryptographic calculations performed by these miners is called \textbf{Proof of Work} (PoW). Mining is hard but verification is relatively easy as is performed by all the nodes in the system in a process called \textbf{Consensus}.
 
 A new block is created roughly 10 minutes in Bitcoin whereas a new block is created every 10 - 12 seconds in Ethereum. Every block creates 12.5 new btc in Bitcoin while a new block in ethereum generates 3 ether.
 
@@ -280,10 +281,33 @@ A new block is created roughly 10 minutes in Bitcoin whereas a new block is crea
 Ethereum is a popular implementation of blockchain and provides a platform to run smart contracts. These smart contracts can be used to facilitate monetary transactions and store important data in a distributed ledger. Ethereum has two types of currencies, ‘gas’ and ‘ether’. Gas is the ether that must be paid by a node that runs a smart contract function. Ether is the crypto-currency in Ethereum which can be used to transfer money and to pay for gas to run smart contracts.
 
 \section{Ethereum Concepts}
-Ethereum introduces a number of concepts to enable sending and receiving ether, executing smart contract transactions and reading data to and from the blockchain in general.
+Ethereum introduces a number of concepts to enable sending and receiving ether, executing smart contract transactions and reading data to and from the blockchain in general.  
 
-\subsection{Ethereum block}
-WRITE ABOUT ETH BLOCK HERE
+\subsection{Ethereum Wallet Address}
+Ethereum uses ECC (Elliptic Curve Cryptography) to generate public, private keys and ECDSA (Elliptic Curve Digital Signatures to verify and sign transactions. The figure \ref{fig:elliptic_curve} shows the elliptic curve called secp256k1 used in Ethereum (As well as Bitcoin and other major blockchains).
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{images/ecc.png}
+	\caption{Elliptic Curve}
+	\label{fig:elliptic_curve}
+\end{figure}
+
+Two points are chosen and the public-private key pair is generated using them. The private key is used to sign transactions while the Keccak-256 (A variation of SHA-3) hash of the public key is taken and the rightmost 20 bytes is registered as the Ethereum address.
+
+Addresses in Ethereum are of two types.
+\begin{enumerate}
+    \item Externally Owned Accounts
+    \item Contract Accounts
+\end{enumerate}
+
+Externally Owned Accounts are used by nodes to send and receive ether. These are the most commonly used accounts and have an associated private key.
+
+Contract accounts hold the contract code and are used only to execute smart contracts. They do not have an associated private key
+\newpage
+
+\subsection{Mining Algorithm}
+Ethereum uses Eth-Hash algorithm for finding the cryptographic hash (the process of mining). Before mining starts, a large Directed Acyclic Graph (DAG) is created. The mining process attempts to solve a certain condition in it. This process is the Proof of Work (PoW) in ethereum and is designed to be verified by other nodes very fast in linear time on a CPU using very less resources.
 
 \subsection{Genesis block}
 A genesis block is the first block of the entire chain. It is named as block 0.This has to be created manually for private networks and contains a hash of all zeros. In Ethereum, genesis block is represented in the form of a JSON file and is downloaded first when a new node is created and added to an existing Ethereum Network. A sample genesis block is shown below.
@@ -341,7 +365,7 @@ Table \ref{eth_denominations} shows the different denominations in Ethereum and 
 	\end{tabular}
 \end{table}
 \newpage
-\subsection{Networking Modes}
+\subsection{Networking Modes in Ethereum}
 \subsubsection{Public Network}
 There are 2 kinds of public networks run and maintained by the Ethereum network. 
 First is the main network with a network id of 1. There are other test networks which can be used by developers to test features of their distributed apps built using ethereum. Table \ref{pub_eth_networks} provides a brief explanation of the different main and test networks. 
@@ -359,7 +383,6 @@ First is the main network with a network id of 1. There are other test networks 
 		$morden$ & Test & 2 & Retired \\ \hline
 		$ropsten$ & Test & 3 & Online \\ \hline
 		$rinkeby$ & Test & 4 & Online \\ \hline
-		$private$ & Private & Number not reserved & - \\ \hline
 
 	\end{tabular}
 \end{table}
@@ -373,7 +396,7 @@ https://geth.ethereum.org/install/
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Example eth and web3 commands}
+	\caption{Example eth and web3 commands in geth}
 	\label{geth_commands}
 	\centering
 	\begin{tabular}{|c|c|c|}
@@ -408,7 +431,7 @@ This mode gets the block headers, bodies and doesn't process any transaction unt
 This mode only gets the current state from the blockchain. To verify elements, it needs to request full nodes for the previous states. This is perfect for edge devices like the raspberry pi where we do not want to store much data. However, it requires a full node dedicating some of its resources to serve requests from a light node.
 
 \subsection{Ethereum Virtual Machine}
-Ethereum Virtual Machine (EVM) is a virtual environment that runs on all geth nodes and execute the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL etc are available for writing code which can be compiled and run in the EVM.
+Ethereum Virtual Machine (EVM) is a virtual environment that runs on all geth nodes and execute the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL etc are available for writing Contracts which can then be compiled to EVM byte code capable on running in the EVM.
 
 \subsection{Interfacing Methods}
 Depending on whether we want to access our node from the same machine or from a different machine on the same or different network, Inter Process Communication (IPC) or Remote Procedure Calls (RPC) may be used.
@@ -471,14 +494,14 @@ The below example shows a static array of size 7.
 \end{verbatim}
 
 \subsubsection{Mapping}
-Mapping is encouraged to be used within solidity in place of arrays. Mapping is defined as a key value pair of any data types, the key and value part included. They can be thought of as hashtables that are initialized when declared, contain every possible value and are mapped initially to a byte representation of all zeros. The key is not stored in the mapping, only is keccak-256 hash is stored and used to match its corresponding value.
+Mapping is encouraged to be used within solidity in place of arrays. Mapping is defined as a key value pair of any data types, the key and value part included. They can be thought of as hash tables that are initialized when declared, contain every possible value and are mapped initially to a byte representation of all zeros. The key is not stored in the mapping, only is keccak-256 hash is stored and used to match its corresponding value.
 
 The below example shows how mappings can be declared and used.
 \begin{verbatim}
-    \\declare the mapping
+    //declare the mapping
     mapping(address => uint) public balances;
     
-    \\store value in a mapping
+    //store value in a mapping
     balances[addressSender] = newBalance;
 \end{verbatim}
 
@@ -723,7 +746,7 @@ Fortunately, Geth and swarm were built using the Go programming language which p
 		\hline
 		\bfseries Device & \bfseries Geth & \bfseries Swarm  & \bfseries IPFS\\
 		\hline\hline
-		$Local Machine$ & 1.8.23-stable & 1.6.7-stable & "" \\ \hline
+		$Local Machine$ & 1.8.23-stable & 0.3.11-stable & 0.4.19 \\ \hline
 		$IoT Producer$ & 1.8.23-stable & 1.6.7-stable & 0.4.19 \\ \hline
 		$IoT Consumer$ & 1.8.23-stable & 1.6.7-stable & 0.4.19 \\ \hline
 	\end{tabular}
@@ -830,7 +853,7 @@ The steps to collect and retrieve the sensor data after applying encryption, ver
 \end{figure}
 
 \subsection{Sensor Data Collection}
-The Algorithm \ref{alg:data_collection} explains the overall steps followed to 
+The Algorithm \ref{alg:data_collection} explains the overall steps followed on the Producer side to collect data from the sensor, sign and encrypt it. The data is then saved to IPFS or Swarm and the resulting filehash is stored in Ethereum.
 \newpage
 \begin{algorithm}[Data Collection and Payload Storage]
  \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
@@ -851,7 +874,7 @@ The Algorithm \ref{alg:data_collection} explains the overall steps followed to
 \end{algorithm}
 
 \subsection{Sensor Data Retrieval}
-\ref{alg:data_retrieval}
+The Algorithm \ref{alg:data_retrieval} explains the steps followed on the Consumer side to retrieve file-hashes from Ethereum and using it to get the encrypted payload from Swarm or IPFS, decrypt and verify the signature of the payload.
 
 \begin{algorithm}[Data Retrieval and Use]
  \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
@@ -908,8 +931,6 @@ An integer value, ID is used as a pointer to refer to our current readings store
     uint public currentID;
 \end{verbatim}
 
-
- 
 \subsection{Mapping from pointer to struct and addresses registered}
 The mapping \textbf{sensorDataStore} from ID to SensorData struct is stored. Another mapping stores the registered addresses that are allowed to write or read data to the system.
 \begin{verbatim}
@@ -932,7 +953,8 @@ The ID must be initialized before access and so a constructor is used for this p
     }
 \end{verbatim}
 
-\subsection{Modifier to only allow owner to register and deregister ids}
+\subsection{Modifier to only allow owner to register and de-register ids}
+Access to certain Contract methods such as register or de-registering devices must be held only by the administrator. In this case, the contract creator is the admin and so only the address that created the contract is allowed to run methods which enforce the ownerOnly modifier.
 \begin{verbatim}
     //Modify some functions to be executed only by the Contract creator
     modifier ownerOnly {
@@ -942,6 +964,8 @@ The ID must be initialized before access and so a constructor is used for this p
 \end{verbatim}
 
 \subsection{Events to log Registration and Changing State}
+As explained earlier in Chapter \ref{chapter:background}, transactions aren't capable of returning an output value. So we use events that are emitted in response to certain conditions that occur while a transaction is being executed.
+
 \begin{verbatim}
     //event after registration/de-registration
     event deviceEvent(
@@ -957,6 +981,7 @@ The ID must be initialized before access and so a constructor is used for this p
 \end{verbatim}
 
 \subsection{Function to get the current ID}
+This method describes how to return the currentID being used to load data to the system.
 \begin{verbatim}
     //function to get the currentID
     function getCurrentID() public view returns(uint){
@@ -964,6 +989,7 @@ The ID must be initialized before access and so a constructor is used for this p
     }
 \end{verbatim}
 \subsection{Function to increment the current ID}
+This method describes how to increment the currentID being used to load data to the system.
 \begin{verbatim}
     //function to increment the ID used internally for managing file-hashes
     function incrCurrentID() public{
@@ -972,6 +998,8 @@ The ID must be initialized before access and so a constructor is used for this p
 \end{verbatim}
 
 \subsection{Function to set the SensorData filehash}
+This method is used to initiate a transaction to add a new filehash received from the storage system and save it to the mapping we have declared earlier. If the device is not registered, an event with the appropriate message is emitted. On success, another event is triggered which relays that the transaction was successful to all the listeners.
+
 \begin{verbatim}
     //Function to store the filehash from swarm
     function setSensorData(string _filehash) public {
@@ -989,7 +1017,10 @@ The ID must be initialized before access and so a constructor is used for this p
         }
     }
 \end{verbatim}
+
 \subsection{Function to get the latest SensorData filehash}
+This function returns the latest filehash stored in the blockchain. Using the currentID variable declared earlier, we retrieve the value of the key, currentID from the sensorDataStore mapping.
+
 \begin{verbatim}
     //Function to get the latest stored data
     function getSensorDataLatest() public view returns (string){
@@ -1001,7 +1032,10 @@ The ID must be initialized before access and so a constructor is used for this p
         return "DEVICE NOT REGISTERED";
     }
 \end{verbatim}
+
 \subsection{Function to get the SensorData filehash from any ID}
+This method works in a similar fashion to the above method, but retrieves the value associated with the given ID from the sensorDataStore mapping.
+
 \begin{verbatim}
     //Function to get the data stored under some ID
     function getSensorDataByID(uint ID) public view returns (string){
@@ -1015,7 +1049,9 @@ The ID must be initialized before access and so a constructor is used for this p
 \end{verbatim}
 
 \subsection{Methods to register and deregister IoT devices}
-The following methods explain how to check if the device is registered and call register or deregister methods for any device and can be only accessed by the contract owner.
+The following methods explain how to check if the device is registered and call register or deregister methods for any device and can be only accessed by the contract owner. 
+The method "devicePresent" returns if the device is registered with the system.
+The methods "registerDevice" and "deregisterDevice" are used to 
 \begin{verbatim}
     //function to check if device is registered
     function devicePresent(address addressToAdd) public view returns (bool) {
@@ -1050,7 +1086,7 @@ For IPFS or Swarm, we will be using the provided HTTP proxy to store and retriev
 \begin{algorithm}[setSwarmOrIPFSData]
  \KwData{Encrypted and Signed Payload $encryptedPayload$}
  \KwResult{ Return File hash $filehash$ from IPFS or Swarm }
-  result = HTTPPOST("HTTPProxyEndpoint", data=$encryptedPayload$, headers={'Content-Type': 'text/plain'})\;
+  result = sendHTTPPostRequest("HTTPProxyEndpoint", data=$encryptedPayload$, headers={'Content-Type': 'text/plain'})\;
   filehash = result.text\;
  \caption{Payload Storage in IPFS or Swarm}
  \label{alg:payload_storage}
@@ -1061,7 +1097,7 @@ A GET request retrieves the payload from the system using the filehash as input 
 \begin{algorithm}[getSwarmOrIPFSData]
  \KwData{File hash of Payload $filehash$}
  \KwResult{ Return Encrypted and Signed Payload $encryptedPayload$ }
-  result = HTTPGET("HTTPProxyEndpoint" + $filehash$)\;
+  result = sendHttpGETRequest("HTTPProxyEndpoint" + $filehash$)\;
   $encryptedPayload$ = result.text\;
  \caption{Payload Retrieval from IPFS or Swarm}
  \label{alg:payload_retrieval}
@@ -1070,7 +1106,31 @@ A GET request retrieves the payload from the system using the filehash as input 
 
 
 \section{Evaluation Methods}
-Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, CPU and memory usage
+Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, CPU and memory usage.
+
+\subsection{Ethereum}
+To test Ethereum, the primary parameters can be measured for both the filehash and full payload. The primary accounts in all the nodes of the system are transferred 100 Ethereum each to perform these experiments. 
+\begin{enumerate}
+    \item Cost incurred per transaction
+    \item Time taken to transact Set Data method
+    \item Time taken to retrieve per record
+    \item CPU and RAM usage
+    \item Difficulty
+    \item Gas Limit and Spending
+    \item Transactions per block
+    \item Average block creation time
+    \item Average Network Hashrate
+\end{enumerate}
+The network can be fine-tuned to include more transactions per block by adjusting gas limit per transaction.
+
+\subsection{IPFS and Swarm}
+Testing IPFS and Swarm can be done using similar means. The below parameters are considered during testing their individual performance on the proposed system.
+
+\begin{enumerate}
+    \item Time taken to insert one payload record
+    \item Time taken to retrieve one payload record
+    \item CPU and RAM usage
+\end{enumerate}
 
 \subsection{Data Collection For testing performance}
 \subsubsection{Real-time data}
@@ -1162,13 +1222,17 @@ simulated for 1000, 10k and 100k records
 
 
 \chapter{Conclusion and Future Work} \label{chapter:conclusion}
+\section{Conclusion}
+
+
+\section{Future Work}
 The next areas of focus would be to enhance the quality and types of Sensor data stored and retrieved, secure the IoT devices even further and develop a faster Proof of Work algorithm to validate transactions on the Ethereum blockchain. 
 
 A major area of improvement would be to allow multiple producers to send their sensor data to a single time-stamped Swarm link between time intervals. This would allow for much easier processing of data collected from differed sources.
 
 Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum instead of a open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
 
-IoT devices are usually under powered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
+IoT devices are usually under powered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum \cite{DBLP:journals/tosc/CrowleyB18} are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
 
 A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases.
 
