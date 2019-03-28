@@ -1154,6 +1154,9 @@ A GET request retrieves the payload from the system using the filehash as input 
 Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, CPU and memory usage.
 
 \subsection{Ethereum}
+\subsubsection{Setup}
+
+\subsubsection{Testing}
 To test Ethereum, the primary parameters can be measured for both the filehash and full payload. The primary accounts in all the nodes of the system are transferred 100 Ethereum each to perform these experiments. 
 \begin{enumerate}
     \item Cost incurred per transaction
@@ -1169,7 +1172,7 @@ To test Ethereum, the primary parameters can be measured for both the filehash a
 The network can be fine-tuned to include more transactions per block by adjusting gas limit per transaction.
 
 \subsection{IPFS and Swarm}
-Testing IPFS and Swarm can be done using similar means. The below parameters are considered during testing their individual performance on the proposed system.
+Testing IPFS and Swarm can be done using similar means. The below parameters are considered during testing their individual performance on the proposed system. 
 
 \begin{enumerate}
     \item Time taken to insert one payload record
@@ -1268,7 +1271,7 @@ simulated for 1000, 10k and 100k records
 
 \chapter{Conclusion and Future Work} \label{chapter:conclusion}
 \section{Conclusion}
-
+We have successfully setup a system where Ethereum is used to register devices and store references to data stored in IPFS or Swarm. Since Ethereum requires registration before data can be saved to it and Swarm/IPFS data is stored in encrypted format. We do not even need a private network to store data and can be stored on the main networks of Ethereum, IPFS or Swarm. Currently though, both IPFS and Swarm are not ready to be public yet and are still in the process of developing their respective incentivization layers like Ethereum. Additionally, IPFS and Swarm are exploring methods to implement Encryption for data stored in the respective systems and would further make the process of setting up and using Swarm or IPFS easy and secure. Swarm is yet to implement a monitoring method to view networking traffic, status of peers etc while Ethereum and IPFS have good monitoring services to keep track of the network performance.
 
 \section{Future Work}
 The next areas of focus would be to enhance the quality and types of Sensor data stored and retrieved, secure the IoT devices even further and develop a faster Proof of Work algorithm to validate transactions on the Ethereum blockchain. 
@@ -1277,9 +1280,11 @@ A major area of improvement would be to allow multiple producers to send their s
 
 Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum instead of a open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
 
+A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases. Aside from using Quorum, tests can be performed on Ethereum itself when the Proof of Stake protocol goes live with the Casper protocol.
+
 IoT devices are usually under powered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum \cite{DBLP:journals/tosc/CrowleyB18} are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
 
-A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases.
+
 
 
 %%%
