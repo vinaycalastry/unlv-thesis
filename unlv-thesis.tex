@@ -207,11 +207,20 @@ Information of Things (IOT) is attributed to any device which can be connected t
 \subsection{Raspberry Pi 3}
 A raspberry pi (Version used is 3B) is a cheap (costs ), credit card sized general purpose computer with a 1.2 GHz ARM Cortex A53 quad-core processor with 1GB of RAM. It can run a variety of OSes like Raspbian (the default Linux OS from Adafruit, manufacturer of Raspberry Pi) and third-part OSes like Ubuntu Snappy Core, Windows IOT Core and RISC OS. The device also provides a set of General-Purpose IO headers which can be used to connect several electronic devices to this machine which makes it a suitable candidate for use in our project. This device provides no BIOS (Basic Input/Output System) and can be booted from a USB flash drive or an externally connected hard disk. However, a micro SD card is the standard way to install an OS and boot up the system.  
 
-\subsection{Rasbpian}
-Raspbian Stretch Lite was used as the linux-kernel based OS for the Raspberry Pi. This allows us to run everything from general purpose programming languages like Python and C to binaries for running software for blockchain and other storage to user developed code. A full, desktop version is also available for Raspbian (Raspbian Stretch)
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.1]{images/rpi.jpg}
+	\caption{Raspberry Pi 3B}
+	\label{fig:rpi}
+\end{figure}
 
+
+\newpage
+\subsection{Rasbpian}
+Raspbian Stretch Lite was used as the linux-kernel based OS for the Raspberry Pi. This allows us to run everything from general purpose programming languages like Python and C to binaries for running software for blockchain and other storage to user developed code. A full, desktop version is also available for Raspbian (Raspbian Stretch). The Figure \ref{fig:rpi} describes a Raspberry Pi 3 (Model B) attached to a power supply.
+ 
 \subsection{General Purpose I/O}
-A raspberry pi 3B+ model has 40 General Purpose I/O (GPIO) headers used for different purposes like reading data, providing a voltage of 3.3V or 5V or allowing serial protocols such as I2C.
+A raspberry pi 3B+ model has 40 General Purpose I/O (GPIO) pins used for different purposes like reading data, providing a voltage of 3.3V or 5V or allowing serial protocols such as I2C.
 
 Sensors are usually transistors and must be connected to
 \begin{enumerate}
@@ -220,19 +229,53 @@ Sensors are usually transistors and must be connected to
 \item  3.3V or 5V pins for maintaining voltage
 \end{enumerate}
 
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.1]{images/gpiopins.jpg}
+	\caption{GPIO}
+	\label{fig:gpio_pins}
+\end{figure}
+
 \subsection{Digital Humidity and Temperature Sensor}
 Sensors like the Digital Humidity and Temperature Sensor (DHT11) are used to collect telemetry data, temperature and humidity readings in this case, and are read by python scripts running on the raspberry pi using the signals from GPIO header pins provided on it.
 
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.1]{images/dht11.jpg}
+	\caption{DHT11 Sensor}
+	\label{fig:dht11}
+\end{figure}
+
 \subsection{RGB LED}
-An RGB LED can light up individually in colors of RED, BLUE or GREEN or in groups providing different colors. It can be programmed GPIO modules in C/ Python and are available as part of the Raspbian OS. Supplying power to the GPIO header which is connected to the corresponding color’s pin in the LED results in that color being displayed. 
+An RGB LED can light up individually in colors of RED, BLUE or GREEN or in groups providing different colors. It can be programmed GPIO modules in C/ Python and are available as part of the Raspbian OS. Supplying power to the GPIO header which is connected to the corresponding color’s pin in the LED results in that color being displayed.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.1]{images/rgb_led.jpg}
+	\caption{RGB LED}
+	\label{fig:rgb_led}
+\end{figure}
 
 \subsection{I2C LCD}
 I2C is a serial protocol through which low-powered devices such as a LCD can communicate with the host device (raspberry pi) through the general purpose i/o pins. 
 An LCD with a 16x2 display matrix and a I2C backpack attached is used to display the latest data saved to the blockchain and is used for demonstration purposes. 
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.1]{images/i2c_lcd.jpg}
+	\caption{I2C LCD}
+	\label{fig:i2c_lcd}
+\end{figure}
 
 \subsection{Hardware Security Module}
 Tiny Edge devices like the Raspberry Pi 3 provide little to no security.
-The primary storage mechanism is an micro SD card which can be easily imaged and data including encryption keys can be stolen easily as the data is stored as plain text. There is also no storage for sensitive data such as secret keys for cloud based APIs or encryption keys used for authentication. Add-on Hardware Security Modules, also called Trusted Privacy Modules (TPM) can be used to overcome some of the security problems posed above.
+The primary storage mechanism is an micro SD card which can be easily imaged and data including encryption keys can be stolen easily as the data is stored as plain text. There is also no storage for sensitive data such as secret keys for cloud based APIs or encryption keys used for authentication. Add-on Hardware Security Modules, also called Trusted Privacy Modules (TPM) can be used to overcome some of the security problems posed above. In this thesis, Zymbit 4i was used which is an add-on module for the Raspberry Pi.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.1]{images/tpm.jpg}
+	\caption{Trusted Privacy Module}
+	\label{fig:tpm}
+\end{figure}
 
 \section{Blockchain}
 Blockchain, or more accurately Distributed Ledger Technology was built to power the storage and transfer of a new form of currency called Crypto-currency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto \cite{nakamoto2012bitcoin}. Due to the runaway success of Bitcoin, it has become synonymous with blockchain. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a variety of use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing and real estate.
@@ -687,7 +730,7 @@ The proposed system explained in \ref{fig:impldiagram_architechture} consists of
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.5]{images/Final_Implementation.png}
+	\includegraphics[scale=0.5]{images/Final_Implementationv2.png}
 	\caption{Implementation Diagram}
 	\label{fig:impldiagram_architechture}
 \end{figure}
@@ -733,8 +776,8 @@ Python3 is used to write scripts that interface with IoT devices, Ethereum block
 \end{table}
 
 \subsection{Software binaries}
-Pre-built Geth binaries are downloaded for the local machine(amd64) as well as the IoT nodes(arm). Ethereum-Swarm packages are readily available for Ubuntu but not easily available for the Raspberry Pi 3.
-Raspberry pi 3B doesn't have the capabilities to build these binaries from source. 
+Pre-built Geth binaries are downloaded for the local machine(amd64) as well as the IoT nodes(arm). To ensure uniformity, same versions were used across all devices. Ethereum-Swarm packages are readily available for Ubuntu but not easily available for the Raspberry Pi 3.
+Raspberry pi 3B doesn't have the capabilities to build these binaries from source.
 Fortunately, Geth and swarm were built using the Go programming language which provides excellent cross-compilation tools. The local machine was used to build the swarm binary and these binaries were installed on the raspberry pis. Table \ref{software_version} provides information on the different versions of geth, swarm and IPFS used in this thesis.
 
 \begin{table}[!htbp]
@@ -842,19 +885,20 @@ The payload stored in the storage systems from the sensors can be modified at wi
 	\end{tabular}
 \end{table}
 
-\section{Data Flow}
-The steps to collect and retrieve the sensor data after applying encryption, verification or decryption.
+\section{Sequence of Steps}
+The steps to collect and retrieve the sensor data after applying encryption, verification or decryption are explained in the sections below. The Figure \ref{fig:dataflow_diagram} describes these steps at a very basic level.
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.75]{images/DataFlow.png}
+	\includegraphics[scale=0.5]{images/SequenceDiagram.png}
 	\caption{Data Flow Diagram}
 	\label{fig:dataflow_diagram}
 \end{figure}
 
+\newpage
 \subsection{Sensor Data Collection}
 The Algorithm \ref{alg:data_collection} explains the overall steps followed on the Producer side to collect data from the sensor, sign and encrypt it. The data is then saved to IPFS or Swarm and the resulting filehash is stored in Ethereum.
-\newpage
+
 \begin{algorithm}[Data Collection and Payload Storage]
  \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
  \KwResult{ Collect and Encrypt Payload, Store in Swarm or IPFS }
@@ -873,6 +917,7 @@ The Algorithm \ref{alg:data_collection} explains the overall steps followed on t
  \label{alg:data_collection}
 \end{algorithm}
 
+\newpage
 \subsection{Sensor Data Retrieval}
 The Algorithm \ref{alg:data_retrieval} explains the steps followed on the Consumer side to retrieve file-hashes from Ethereum and using it to get the encrypted payload from Swarm or IPFS, decrypt and verify the signature of the payload.
 
@@ -1132,11 +1177,11 @@ Testing IPFS and Swarm can be done using similar means. The below parameters are
     \item CPU and RAM usage
 \end{enumerate}
 
-\subsection{Data Collection For testing performance}
+\section{Data Collection For testing performance}
 \subsubsection{Real-time data}
-
+ TO DO
 \subsubsection{Simulated data}
-
+ TO DO
 
 
 %To main things in \LaTeX should be labelled: Figures and Tables.
