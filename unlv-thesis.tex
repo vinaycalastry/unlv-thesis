@@ -172,15 +172,19 @@ IoT security is a major concern for edge devices like Raspberry Pi where data pr
 
 
 \section{Objective}\label{section:objective}
-
+This thesis will explore how to store IoT data on a combination of a on-chain (Ethereum Blockchain) and off-chain storage (IPFS and Ethereum Swarm) in an encrypted fashion and use it in a real-time publish subscribe model without use of any M2M protocols such as MQTT or CoAP. We will also estimate the performance of this system in terms of the number of transactions that can be executed per second and also try to optimize its performance.
 
 \section{Outline}\label{section:outline}
 
-In Chapter \ref{chapter:introduction}, we provide a brief introduction to Internet of Things, Blockchain technologies and how we might be able to utilize blockchain and decentralized storage technologies like Inter-Planetary File System and Ethereum-Swarm to provide a viable replacement for existing cloud-based storage.\newline
+In Chapter \ref{chapter:introduction}, we introduce the reader to how IoT devices are poised to play an important role in our lives and how we could integrate it with other technologies such as blockchain.\newline
 
-\noindent In Chapter \ref{chapter:background}, we look at the research currently being pursued in the field of IoT and Blockchain and what kind of efforts are needed to successfully integrate blockchain technologies into supply chain using IoT. We also look at major concepts in Blockchain and IoT to be able to better understand the proposed system.\newline
+\noindent In Chapter \ref{chapter:background}, we look the motivation that pushed us to consider research in Internet of Things and Blockchains ,existing research in this arena and propose a new system to overcome existing issues in these areas. \newline
 
-\noindent In Chapter \ref{chapter:proposed_system}, we describe the proposed system of Off-chain and on-chain storage to store data from sensors in a decentralized fashion. We also describe security challenges faced by edge devices used for IoT and means to deal with them.\newline
+\noindent In Chapter \ref{chapter:blockchain_tech}, we explain different blockchain technologies currently in use and how all these technologies come together to solve certain problems. \newline
+
+\noindent In Chapter \ref{chapter:iot_tech}, we describe IoT terminologies, protocols and devices considered for use in our thesis. We will also explore how to establish a root-of-trust for these devices and how to enforce security features using external hardware. \newline
+
+\noindent In Chapter \ref{chapter:proposed_system}, we describe the proposed system of On-chain ans Off-chain storage to store data from sensors in a decentralized fashion. We also describe the smart contract we have built to register IoT devices and store data.\newline
 
 \noindent In Chapter \ref{chapter:experiment_results}, we perform experiments regarding data storage using traditional databases as well as the proposed system using blockchain and IPFS/Swarm. To understand the cost of IoT security, we also perform experiments to find the transaction rate of the proposed system with and without encryption.\newline
 
@@ -291,6 +295,27 @@ The term Distributed Apps(dapps) is used to refer to any application (web or sta
 The dapps are only different from regular web-apps or mobile apps in the sense that the business logic of dapps are stored in the blockchain.
 
 \subsection{Private vs Public blockchains}
+Bitcoin and Ethereum were primarily intended to be used as public blockchains. It means data stored in the chain is visible for everyone to view. However, these networks can be setup to run as private blockchains to process payments and run code. This basically means that a Access Control Layer is built over a regular blockchain to exercise control over who is allowed to read or write data to the blockchain. These private blockchains can also be called "permissioned" blockchains.
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Public vs Private Blockchain}
+	\label{pub_priv_blockchains}
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\bfseries Public Blockchain & \bfseries Private Blockchain \\
+		\hline\hline
+		Anyone can join (permissionless) & Requires permission to join (permissioned) \\ \hline
+	    No one has control & Controlled by a person/organization \\ \hline
+        Typically used in Currencies & Used to store private data such as land records \\ \hline
+        Large number of Nodes  & Lesser number of nodes \\ \hline
+        Slower Transactions  & Faster Transactions \\ \hline
+        Scalability limited by design  & Design can be tweaked to allow more transactions \\ \hline
+        Good for Anonymity of users  & Users must be known \\ \hline
+	\end{tabular}
+\end{table}
+
 
 
 
