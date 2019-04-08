@@ -900,6 +900,24 @@ The Equation \ref{verify_sig} describes the verification process by comparing th
     signature == {HMAC(K_{secret}, {decrypted_cipher} + {decrypted_iv}, sha256)}
 \end{equation}
 
+\subsection{Private PKI}
+Public Key Infrastructure (PKI) is used to authenticate users of a service and prevent man in the middle attacks in networks. A PKI involves using an external Third party which is universally trusted to sign Digital Certificates in X.509 format. SSL/ TLS use this format for digital certificates which in turn, is the basis for the HTTPS standard.
+
+Private PKI are generally used to secure communications between local devices. We have such a usecase in our thesis where we must connect to the IoT Consumer node which runs the geth and swarm endpoints. Outside APIs or other devices such as another Raspberry Pi which has a LCD device attached to it (called LCD node) and is used to display the current temperature and humidity readings. To prevent unauthorized access and to encrypt data between the IoT Consumer node and the Display node, we setup a private PKI to sign these digital certificates and routed all communications through a reverse proxy.
+
+\begin{enumerate}
+	\item Generate a key for the private Root CA and store it very securely.
+	\item Generate a digital certificate for our Root CA and self-sign it with its own key.
+	\item On the IoT Consumer node, generate a key for the device.
+	\item Generate a Certificate Signing Request (CSR) for the device.
+	\item Send the CSR to the Root CA for signing purpose.
+	\item The Root CA signs and returns the digital certificate with its own private key.
+	\item The device key and device certificate can be used to configure a Nginx reverse proxy server to handle requests from the LCD node.
+\end{enumerate}
+
+
+\subsubsection{Reverse Proxy}
+A reverse proxy is an intermediate server that intercepts all or most requests depending on their usage. These intercepted requests are then routed to the correct backend server. In our case, we run a reverse proxy on the IoT Consumer which uses certificates signed by our private PKI and allows HTTPS communication between our LCD node and the IoT Consumer. In this way, the LCD node is allowed to connect to the geth, swarm and ipfs endpoints and receive data securely. Nginx is a popular server option and can be configured to be used as a reverse proxy.
 
 \subsection{Hardware Security}
 A Trusted Privacy Module device, Zymbit 4i is used as a Hardware Security mechanism for the raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104 and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
@@ -948,6 +966,9 @@ Symmetric (Secret) keys must never be transferred in plain-text format over netw
 	\item Verify the signature from the decrypted text
 	\item Once signature is verified, use the one-way key from TPM to encrypt and store the symmetric key, which is only decrypted, used and discarded when data collection script starts
 \end{enumerate}
+
+\subsubsection{Disable RPC on geth and swarm if not required}
+Remote Procedure Calls are used by remote clients to connect to geth/swarm nodes and receive or send information to them. However, our storage application runs on the same node as IoT Producer and we do not need any external client access to connect to the IoT Producer. Geth and Swarm must instead use IPC endpoint, which enforces only calls from the localhost for security purposes.
 
 
 \section{Software Design} \label{ss:software_design}
@@ -1432,15 +1453,33 @@ These steps describe how to setup a private IPFS network.
 %\end{center}
 %\end{table}
 
-\chapter{Performance}
+\chapter{Performance and Cost Analysis}
 \label{chapter:experiment_results}
-We will test both cost incurred by the account calling the transactions and time taken with and without encryption.
+We will test both cost incurred by the account calling the transactions and time taken to load and read these records with and without encryption.
 
-\section{Cost Comparison}
-\subsection{Data stored in Ethereum}
-\subsection{Data stored in Ethereum and Swarm}
-\subsection{Data stored in Ethereum and IPFS}
-\subsection{Comparisons between different methods}
+\section{Cost Incurred by Smart Contract Deployment}
+Cost incurred by the Smart contracts depend on a number of factors. There's a flat fee involved and fees for computation as well as storage must be paid. The fee we pay for the deployment depends on the optimization done to a certain degree. 
+
+Truffle requires deployment of two contracts, a migration contract and the actual SensorContract. Migration contract identifies the owner of the contract to be deployed and the time stamp of last successful deployment. SensorContract contains all of codes related to registration, writing and reading data from the blockchain. 20 gwei per gas is the set price for private blockchains. This is only being considered in case we want to deploy the same contract to the main Ethereum network.
+
+The total cost to deploy the smart contracts was 0.0232 Eth. At the time of writing, Eth to dollar conversion rate was 182.37 which is an approximate dollar cost of \textbf{ 4.2}
+
+\begin{verbatim}
+    Gas Spent for MigrationsContract =  277462
+    Gas Price = 20 gwei
+    Total Cost for MigrationsContract = 277462 * 20
+                                      = 5549240 gwei
+                                      = 0.0055 Eth
+    
+    Gas Spent for SensorContract =  884293
+    Gas Price = 20 gwei
+    Total Cost for MigrationsContract = 884293 * 20
+                                      = 17685860 gwei
+                                      = 0.0176 Eth                           
+    
+    Total Cost for deployment = 0.0055 + 0.0176
+                              = 0.0232 Eth
+\end{verbatim}
 
 \section{Performance Comparison}
 \subsection{Data stored in Ethereum}
