@@ -1482,9 +1482,33 @@ The total cost to deploy the smart contracts was 0.0232 Eth. At the time of writ
 \end{verbatim}
 
 \section{Performance Comparison}
-\subsection{Data stored in Ethereum}
+Transactions Per Second is usually a bad performance metric for blockchains and decentralized applications. However, we have implemented a storage solution based on blockchain and it makes sense to measure the load on CPU, memory as well as time taken to process a given set of transactions.
+
+\subsection{Data set for Tests}
+A data set consisting of 10,000 records was used to test the performance of the system and see how many devices could theoretically read or write data to the system at a time.
+
+\subsubsection{Sample set}
+\begin{verbatim}
+   [{"Temperature": 30, "Humidity": 66, "TemperatureUnits": "Celsius", "HumidityUnits": "%",
+   "Timestamp": "2019-03-27 23:32:52.193888", "DeviceType": "Raspberry Pi 3B+", "DeviceID":
+   "IoTProducer1", "DeviceIP": "192.168.0.16", "SensorType": "DHT11"}, 
+   {"Temperature": 23, "Humidity": 76, "TemperatureUnits": "Celsius", "HumidityUnits": "%",
+   "Timestamp": "2019-03-27 23:32:52.193888", "DeviceType": "Raspberry Pi 3B+", "DeviceID":
+   "IoTProducer1", "DeviceIP": "192.168.0.16", "SensorType": "DHT11"}]
+\end{verbatim}
+
+\subsection{Data stored in Swarm}
+When compared with geth and ipfs, swarm utilized the least amount of CPU power and equivalent amount of RAM in each case. The performance of Swarm was really fast as it only depends on a HTTP POST request to receive and host the data. Since the loading and storing we done from a Test Machine, there was a little network latency.
+
+Below is a graph comparing the Read and Write times for Swarm:
+
+
 \subsection{Data stored in Ethereum and Swarm}
+\subsubsection{Without Encryption}
+\subsubsection{With Encryption}
+
 \subsection{Data stored in Ethereum and IPFS}
+
 \subsection{Comparisons between different methods}
 
 
