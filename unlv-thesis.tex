@@ -1587,6 +1587,16 @@ Figure \ref{fig:graph_eth_ipfs_readvwrite} shows the performance difference betw
 \end{figure}
 \newpage
 
+Figure \ref{fig:graph_eth_ipfs_readvwrite_wencr} shows the performance difference between read and write using a combination of Ethereum and IPFS.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/Eth_IPFS_read_vs_write_wencr.png}
+	\caption{Ethereum with IPFS Read vs Write Performance with Encryption for 5k records}
+	\label{fig:graph_eth_ipfs_readvwrite_wencr}
+\end{figure}
+\newpage
+
 \subsection{Comparisons between different methods}
 Reading or Writing data to the system scales linearly over time due to the fact that both Swarm and IPFS use Distributed Hash Tables to store and read data. Overall, reading and writing to Swarm or IPFS took roughly the same time. Generally write speeds are slower compared to read speeds. These tests were conducted over a network and latencies from network read and writes overshadowed any difference between actual read and writes to these storage systems.
 
@@ -1606,10 +1616,14 @@ Table \ref{Results for Write tests} shows different metrics captured during the 
 		\hline
 		\bfseries Test & \bfseries Time Taken & \bfseries TPS  & \bfseries Cost in Eth & \bfseries Cost per txn & \bfseries CPU Usage & \bfseries RAM Usage\\
 		\hline\hline
-		$Swarm$ & 295 & 33.898 & -- & -- & -- & -- \\ \hline
-		$Swarm + Encr$ & 311 & 32.154 & -- & -- & -- & -- \\ \hline
-		$Eth + Swarm$ & 1842 & 5.42 & -- & --  & -- & --\\ \hline
-		$Eth + Swarm + Encr$ & 1821 & 5.49 & -- & -- & -- & --\\ \hline
+		$Swarm$ & 149 & 33.557 & -- & -- & -- & -- \\ \hline
+		$Swarm + Encr$ & 150 & 33.333 & -- & -- & -- & -- \\ \hline
+		$IPFS$ & 2755 & 1.813 & -- & -- & -- & -- \\ \hline
+		$IPFS + Encr$ & 3777 & 1.323 & -- & -- & -- & -- \\ \hline
+		$Eth + Swarm$ & 920 & 5.434 & 0.469 & 0.000093975  & -- & --\\ \hline
+		$Eth + IPFS$ & 4039 & 1.237 & 0.469 & 0.000093975  & -- & --\\ \hline
+		$Eth + Swarm + Encr$ & 895 & 5.586 & 0.469 & 0.000093975 & -- & --\\ \hline
+		$Eth + IPFS + Encr$ & 5695 & 0.877 & 0.469 & 0.000093975 & -- & --\\ \hline
 	\end{tabular}}
 \end{table}
 
@@ -1625,10 +1639,14 @@ Table \ref{Results for Read tests} shows different metrics captured during the c
 		\hline
 		\bfseries Test & \bfseries Time Taken & \bfseries TPS  & \bfseries CPU Usage & \bfseries RAM Usage\\
 		\hline\hline
-		$Swarm$ & 295 & 33.898 & -- & --  \\ \hline
-		$Swarm + Encr$ & 311 & 32.154 & -- & --\\ \hline
-		$Eth + Swarm$ & 1842 & 5.42 & -- & -- \\ \hline
-		$Eth + Swarm + Encr$ & 1821 & 5.49 & -- & -- \\ \hline
+		$Swarm$ & 151 & 33.112 & -- & --  \\ \hline
+		$Swarm + Decr$ & 156 & 32.051 & -- & -- \\ \hline
+		$IPFS$ & 379 & 13.192 & -- & --  \\ \hline
+		$IPFS + Decr$ & 426 & 11.737 & -- & --  \\ \hline
+		$Eth + Swarm$ & 556 & 8.992 & -- & --  \\ \hline
+		$Eth + IPFS$ & 456 & 10.964 & -- & --  \\ \hline
+		$Eth + Swarm + Decr$ & 622 & 8.038 & -- & --\\ \hline
+		$Eth + IPFS + Decr$ & 783 & 6.385 & -- & -- \\ \hline
 	\end{tabular}}
 \end{table}
 
@@ -1642,7 +1660,7 @@ Storing only Swarm data was very fast compared to using both the Ethereum Blockc
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=1]{results/EthSwandEncrW.png}
+	\includegraphics[scale=1]{results/Eth_IPFS_Swarm_Write.png}
 	\caption{Performance Cost for Writes with different methods}
 	\label{fig:graph_perf_cost_write}
 \end{figure}
@@ -1653,7 +1671,7 @@ Reading only Swarm data was very extremely fast compared to using the combinatio
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=1]{results/Eth+Sw+EncrRvR.png}
+	\includegraphics[scale=1]{results/Eth_IPFS_Swarm_Read.png}
 	\caption{Performance Cost for Read with different methods}
 	\label{fig:graph_perf_cost_read}
 \end{figure}
