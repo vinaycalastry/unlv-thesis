@@ -9,6 +9,7 @@
 \usepackage{subcaption}
 \usepackage{fancyhdr}
 \usepackage{unlv-thesis}
+\usepackage{adjustbox}
 
 \graphicspath{{./images/}, {./results/}}
 \usepackage{hyperref}
@@ -680,9 +681,6 @@ The Inter Planetary File System (IPFS) \cite{ipfs2014} is a storage solution, ve
 
 Like Swarm, it returns a filehash for a file stored in the IPFS network. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes.
 
-\subsection{MariaDB}
-MariaDB is a fork of the popular MySQL database and is completely maintained by the open source community. It is a relational Database and is used in this thesis to compare performance metrics between a locally stored Database system and the proposed fully distributed storage system.
-
 \subsection{Comparison between Storage Solutions}
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -825,12 +823,12 @@ The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHZ quad-core
 \subsubsection{IoT Producer}
 The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It is setup to be able to connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
 
-For testing and demo purposes, a Digital Humidity and Temperature Sensor (DHT11) is attached to the raspberry pi to GPIO 22 pin for data, xx for voltage and yy ground pin.
+For testing and demo purposes, a Digital Humidity and Temperature Sensor (DHT11) is attached to the raspberry pi to GPIO22 pin for data, 3.3V for voltage and ground pin.
 
 \subsubsection{IoT Consumer}
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
-Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO xx,yy and zz pins of the consumer and a ground pin connected to pin ww. The second device is a I2C LCD which is connected to the SDA1(XX) and SCL1(yy) pins for I2C bus, 3.3V (zz) for power and ww ground pin.
+Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO4 ,GPIO3 and GPIO2 pins of the consumer and a ground pin. The second device is a I2C LCD which is connected to the SDA1 and SCL1 pins for I2C bus, 3.3V for power and ground pin.
 
 \section{Security Algorithm}
 We use a couple of cryptography techniques to transfer secret keys, encrypt data using these keys as well as use hashing to sign messages and verify them.
@@ -900,7 +898,7 @@ The Equation \ref{verify_sig} describes the verification process by comparing th
     signature == {HMAC(K_{secret}, {decrypted_cipher} + {decrypted_iv}, sha256)}
 \end{equation}
 
-\subsection{Private PKI}
+\subsection{Private PKI} \label{priv_pki}
 Public Key Infrastructure (PKI) is used to authenticate users of a service and prevent man in the middle attacks in networks. A PKI involves using an external Third party which is universally trusted to sign Digital Certificates in X.509 format. SSL/ TLS use this format for digital certificates which in turn, is the basis for the HTTPS standard.
 
 Private PKI are generally used to secure communications between local devices. We have such a usecase in our thesis where we must connect to the IoT Consumer node which runs the geth and swarm endpoints. Outside APIs or other devices such as another Raspberry Pi which has a LCD device attached to it (called LCD node) and is used to display the current temperature and humidity readings. To prevent unauthorized access and to encrypt data between the IoT Consumer node and the Display node, we setup a private PKI to sign these digital certificates and routed all communications through a reverse proxy.
@@ -1237,7 +1235,7 @@ A GET request retrieves the payload from the system using the filehash as input 
  \label{alg:payload_retrieval}
 \end{algorithm}
 
-\subsection{Payload Format}
+\subsection{Payload Format} \label{ss:payload_format}
 The payload stored in the storage systems from the sensors can be modified at will, and is independent of the data format enforced by the blockchain. It also allows data to be encrypted before storage. Payload is generated and stored in JSON format as referenced in Table \ref{payload_format}. All values are stored as strings and then formatted into either integer, floating-point numbers or timestamp when needed.
 \newpage
 
@@ -1323,6 +1321,15 @@ Since python3 is used extensively, a couple of third party python modules are us
 
 \subsection{Evaluation Methods}
 Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, CPU and memory usage.
+
+To test TPS, a data set of 10,000 records formatted in the Payload data format described in \ref{ss:payload_format} is generated.
+
+Three categories of tests are performed with both Ethereum and Swarm/ IPFS.
+\begin{enumerate}
+    \item Data is stored to Swarm/ IPFS and write timings are measured. File hashes are stored in a test file and used while testing read performance.
+    \item Data is stored to Swarm/ IPFS and the received file hash is stored to Ethereum via the Smart contract function. Read and Write times are measured.
+    \item Data is stored to Swarm/IPFS in encrypted format. The retrieved filehash is then stored and retrieved when needed. Encryption Algorithm used for all tests is AES-CBC with PKCS padding. The key used is of 256 bit size.
+\end{enumerate}
 
 \subsubsection{Setup}
 A private network consisting of atleast 3 nodes needs to be setup - a "full" miner node with IoT producer and IoT consumer "light" nodes.
@@ -1500,25 +1507,169 @@ A data set consisting of 10,000 records was used to test the performance of the 
 \subsection{Data stored in Swarm}
 When compared with geth and ipfs, swarm utilized the least amount of CPU power and equivalent amount of RAM in each case. The performance of Swarm was really fast as it only depends on a HTTP POST request to receive and host the data. Since the loading and storing we done from a Test Machine, there was a little network latency.
 
-Below is a graph comparing the Read and Write times for Swarm:
+Figure \ref{fig:graph_swarm_readvwrite} shows the read vs write timings for 10,000 records. Barring a few anomalies, read and write times stayed approximately same throughout the tests.
+Using data with encryption caused the performance to degrade by a very small amount as shown in Figure \ref{fig:graph_swarm_readvwrite_encr}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/SwarmRvW.png}
+	\caption{Swarm Read vs Write Performance for 10k records}
+	\label{fig:graph_swarm_readvwrite}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/SwarmRvWEncr.png}
+	\caption{Swarm Read vs Write Performance with Encryption for 10k records}
+	\label{fig:graph_swarm_readvwrite_encr}
+\end{figure}
+
 
 
 \subsection{Data stored in Ethereum and Swarm}
+The geth node for storing information from the IoTProducer (Raspberry Pi) is a light node and depends on a full node for getting its information. However, this node is responsible for submitting the transactions generated by calling the Smart Contract function to store filehashes.
+
+Surprisingly, storing Encrypted data faired a little better in write tests due to the fact that a smaller payload is stored to Swarm.
+
 \subsubsection{Without Encryption}
+We generate a data payload and send it to swarm. The returned filehash is then stored in Ethereum via the smart contract. Figure \ref{fig:graph_eth_swarm_readvwrite} shows the performance difference between read and write without any encryption.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/Eth+SwRvW.png}
+	\caption{Ethereum with Swarm Read vs Write Performance for 10k records}
+	\label{fig:graph_eth_swarm_readvwrite}
+\end{figure}
+
 \subsubsection{With Encryption}
+Using Encryption, a smaller payload was generated and this helped with slight faster read and write times. The process of encrypting the payload did not affect the performance adversely as expected. Figure \ref{fig:graph_eth_swarm_encr_readvwrite} shows the performance difference between read and write with encryption.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/Eth+Sw+EncrRvW.png}
+	\caption{Ethereum with Swarm Read vs Write Performance for 10k records}
+	\label{fig:graph_eth_swarm_encr_readvwrite}
+\end{figure}
+\newpage
+
+\subsection{Data stored in IPFS}
+From the very beginning, IPFS performance in write was significantly worse than Swarm. The data set was reduced to 5000 records and then tested with encrypted data as well as without encryption. However, read performance in IPFS was excellent though it was nowhere near the performance observed with Swarm.
+
+Figure \ref{fig:graph_ipfs_readvwrite} shows the performance difference between read and write in IPFS.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/IPFS_read_vs_write.png}
+	\caption{IPFS Read vs Write Performance for 5k records}
+	\label{fig:graph_ipfs_readvwrite}
+\end{figure}
+\newpage
+
+Figure \ref{fig:graph_ipfs_readvwrite_wencr} shows the performance difference between read and write in IPFS with encryption.
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/IPFS_read_vs_write_wencr.png}
+	\caption{IPFS Read vs Write Performance with Encryption for 5k records}
+	\label{fig:graph_ipfs_readvwrite_wencr}
+\end{figure}
 
 \subsection{Data stored in Ethereum and IPFS}
+Read vs Write faired similarly when compared to just IPFS, confirming that IPFS is indeed being bottle-necked by the CPU on the raspberry pi.
+
+Figure \ref{fig:graph_eth_ipfs_readvwrite} shows the performance difference between read and write using a combination of Ethereum and IPFS.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/Eth_IPFS_read_vs_write.png}
+	\caption{Ethereum with IPFS Read vs Write Performance for 5k records}
+	\label{fig:graph_eth_ipfs_readvwrite}
+\end{figure}
+\newpage
 
 \subsection{Comparisons between different methods}
+Reading or Writing data to the system scales linearly over time due to the fact that both Swarm and IPFS use Distributed Hash Tables to store and read data. Overall, reading and writing to Swarm or IPFS took roughly the same time. Generally write speeds are slower compared to read speeds. These tests were conducted over a network and latencies from network read and writes overshadowed any difference between actual read and writes to these storage systems.
 
+In this section, we compare the read and write times for different types of storage systems we have used including those with and without encryption, decryption and signature verification.
+
+However, real time IoT devices and network send larger data packets with more frequency and for better performance, a faster machine with better CPU and RAM must be used.
+
+Table \ref{Results for Write tests} shows different metrics captured during the course of Write tests.
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{2}
+	\caption{Results for Write tests for 5000 txns}
+	\label{Results for Write tests}
+	\centering
+	\scalebox{0.9}{
+	\begin{tabular}{|c||c|c|c|c|c|c|}
+		\hline
+		\bfseries Test & \bfseries Time Taken & \bfseries TPS  & \bfseries Cost in Eth & \bfseries Cost per txn & \bfseries CPU Usage & \bfseries RAM Usage\\
+		\hline\hline
+		$Swarm$ & 295 & 33.898 & -- & -- & -- & -- \\ \hline
+		$Swarm + Encr$ & 311 & 32.154 & -- & -- & -- & -- \\ \hline
+		$Eth + Swarm$ & 1842 & 5.42 & -- & --  & -- & --\\ \hline
+		$Eth + Swarm + Encr$ & 1821 & 5.49 & -- & -- & -- & --\\ \hline
+	\end{tabular}}
+\end{table}
+
+\newpage
+Table \ref{Results for Read tests} shows different metrics captured during the course of Read tests.
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{2}
+	\caption{Results for Read tests for 5000 txns}
+	\label{Results for Read tests}
+	\centering
+	\scalebox{0.9}{
+	\begin{tabular}{|c||c|c|c|c|}
+		\hline
+		\bfseries Test & \bfseries Time Taken & \bfseries TPS  & \bfseries CPU Usage & \bfseries RAM Usage\\
+		\hline\hline
+		$Swarm$ & 295 & 33.898 & -- & --  \\ \hline
+		$Swarm + Encr$ & 311 & 32.154 & -- & --\\ \hline
+		$Eth + Swarm$ & 1842 & 5.42 & -- & -- \\ \hline
+		$Eth + Swarm + Encr$ & 1821 & 5.49 & -- & -- \\ \hline
+	\end{tabular}}
+\end{table}
+
+\subsubsection{Performance difference between Swarm and IPFS}
+Using the full version of our proposed system (Ethereum Smart Contract + Swarm) , we have achieved approximately 5 transactions per second for write and 9 for read. This is well within reach of our intended use of 1 transaction per minute per device. We will be able to use this system comfortably for systems where transactions are sent in low to medium frequency.
+
+Using IPFS instead of Swarm lead to significantly lower performance due to the fact that IPFS CPU usage on the raspberry pi during write test was incredibly high compared to Swarm.
+
+\subsubsection{Performance Cost for Write}
+Storing only Swarm data was very fast compared to using both the Ethereum Blockchain and Swarm. Adding Encryption did not affect the performance very much. The Figure \ref{fig:graph_perf_cost_write} shows the performance cost of using just Swarm, IPFS, both Ethereum and Swarm and both Ethereum and IPFS to store the test data set.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/EthSwandEncrW.png}
+	\caption{Performance Cost for Writes with different methods}
+	\label{fig:graph_perf_cost_write}
+\end{figure}
+
+
+\subsubsection{Performance Cost for Read}
+Reading only Swarm data was very extremely fast compared to using the combination of the Ethereum Blockchain and Swarm method. Adding Encryption did drop the performance by a little amount as the signature must be generated and verified on the receiving end. However, there's much more performance degradation when Ethereum Blockchain and IPFS is used. The Figure \ref{fig:graph_perf_cost_read} shows the performance cost of using just Swarm, IPFS, both Ethereum and Swarm and both Ethereum and IPFS to read the test data set.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{results/Eth+Sw+EncrRvR.png}
+	\caption{Performance Cost for Read with different methods}
+	\label{fig:graph_perf_cost_read}
+\end{figure}
 
 \chapter{Conclusion and Future Work} \label{chapter:conclusion}
-\section{Conclusion}
-We have successfully setup a system where Ethereum is used to register devices and store references to data stored in IPFS or Swarm. Since Ethereum requires registration before data can be saved to it and Swarm/IPFS data is stored in encrypted format, we do not even need a private network to store data and can be stored on the main networks of Ethereum, IPFS or Swarm. 
 
-The same method of data storage can be extended to many use-cases such as storing records in Government, Education, Health care and other fields securely and also increase storage capacity as needed without having to stop the services momentarily for maintenance.
+\section{Conclusion}
+We have successfully setup a system where Ethereum is used to register devices and store references to data stored in IPFS or Swarm. Since Ethereum requires registration before data can be saved to it and Swarm/IPFS data is stored in encrypted format, we do not even need a private network to store data and can instead use the main networks of Ethereum, IPFS or Swarm.
+
+Performance wise, a combination of Ethereum (to maintain sequence of records) and Swarm (for actual storage) has seen the best performance when compared to IPFS. In both cases, performance can be increased by using the Raspberry pis only to collect data and instead use a powerful machine to actually submit the transactions for writing data. The geth, swarm and ipfs endpoints can be secured using the private PKI we have setup earlier in \ref{priv_pki}.
+
+The same method of data storage can be extended to many use-cases such as storing records in fields such as Government, Education, Health care etc securely and also increase storage capacity as needed without having to stop the services even momentarily for maintenance.
 
 Currently though, both Swarm and IPFS are not ready for real-time use yet and are still in the process of developing their respective incentivization layers \cite{ethersphere2016sw3} like Ethereum. Additionally, they are exploring methods to implement Encryption for data stored in the respective systems and would further make the process of setting up and using them easy and secure. Swarm is yet to implement a monitoring method to view networking traffic, status of peers etc while Ethereum and IPFS have good monitoring services to keep track of the network performance.
+
+\section{Challenges Faced}
 
 \section{Future Work}
 The next areas of focus would be to enhance the quality and types of Sensor data stored and retrieved, secure the IoT devices even further and develop a faster Proof of Work algorithm to validate transactions on the Ethereum blockchain. 
@@ -1527,7 +1678,7 @@ A major area of improvement would be to allow multiple producers to send their s
 
 Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum\cite{quorum} instead of a open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
 
-A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases. Aside from using Quorum, tests can be performed on Ethereum itself when the Proof of Stake protocol goes live with the Casper protocol.
+A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases. Aside from using Quorum, tests can be repeated on Ethereum itself when the Proof of Stake protocol goes live with the Casper protocol.
 
 IoT devices are usually under powered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum \cite{DBLP:journals/tosc/CrowleyB18} are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
 
