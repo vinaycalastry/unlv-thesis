@@ -112,9 +112,9 @@ Jawaharlal Nehru Technological University, Hyderabad\\ \vspace*{-0.12in}
 
 \begin{thesisabstract}
 
-Internet of Things (IoT) is a set of technologies that enable network connected devices to perform an action or share data among themselves or to a central location. These actions can be anything from switching on an Air Conditioning device to turning on the ignition of a car through a command issued from a remote location using a web application or a smart phone or asking Alexa to search for weather conditions in a particular area. IoT has proved to be game changing for many industries such as Supply Chain, Shipping and Transportation providing updates on the status of shipments etc. in real time. This has resulted in a huge amount of data created by a lot of these devices all of which need to be processed in real time. 
+Internet of Things (IoT) is a set of technologies that enable network-connected devices to perform an action or share data among several connected devices or to a shared database. The actions can be anything from switching on an Air Conditioning device remotely to turning on the ignition of a car through a command issued from a remote location or asking Alexa or Google Assistant to search for weather conditions in an area. IoT has proved to be game-changing for many industries such as Supply Chain, Shipping and Transportation providing updates on the status of shipments in real time. This has resulted in a huge amount of data created by a lot of these devices all of which need to be processed in real time. 
 
-In this thesis, we propose a method to collect sensor data from IoT devices and use blockchain to store and retrieve the collected data in a decentralized fashion within a closed system, suitable for a single enterprises or a group of companies in industries like shipping where sharing data with each other required. Much like blockchain, we envision a future where IoT devices can connect and disconnect to distributed systems without causing a down-time for the data collection or storage or relying on a cloud-based storage system for synchronizing data between devices. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare to more traditional database systems.
+In this paper, we propose a method to collect sensor data from IoT devices and use blockchain to store and retrieve the collected data in a secure and decentralized fashion within a closed system, suitable for a single enterprise or a group of companies in industries like shipping where sharing data with each other is required. Much like blockchain, we envision a future where IoT devices can connect and disconnect to distributed systems without causing downtime for the data collection or storage or relying on a cloud-based storage system for synchronizing data between devices. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare on low-powered devices like the raspberry pi.
 
 \end{thesisabstract}
 
@@ -126,9 +126,9 @@ In this thesis, we propose a method to collect sensor data from IoT devices and 
 %%% Here goes the acknowledgements if you have any - if none then delete or
 %%% comment out completely
 \begin{thesisacknowledgments}
-I would like to thank my advisor, Dr. Yoohwan Kim, for helping me identify areas of research and picking a Thesis topic that I could identify with. His continuous support and mentorship helped me implement this thesis and write a report that accurately covered everything I have worked on throughout my Master's program. Over the course of this thesis, I have studied topics in IoT, Blockchains, Distributed Systems and cyber-security and I am grateful to have a mentor whose expertise encompasses all these domains and more.
+I would like to thank my advisor, Dr. Yoohwan Kim, for helping me identify areas of research and picking a Thesis topic that I could identify with. His continuous support and mentorship helped me implement this thesis and write a report that accurately covered everything I have worked on throughout my Master's program. Over the course of this thesis, I have studied topics in IoT, Blockchains, Distributed Systems, and cyber-security and I am grateful to have a mentor whose expertise encompasses all these domains and more.
 
-I would also like to acknowledge  Dr. Ju-Yeon Jo, Dr. Fatma Nasoz and Dr. SJ Kim for their warm support and for being part of my thesis committee. I am thankful to Dr. Ajoy Datta for helping me out whenever I required his assistance. I would also like to thank all my professors for imparting their knowledge through various courses in the fields of Machine Learning, Big Data, Databases, Blockchains and Algorithms.
+I would also like to acknowledge  Dr. Ju-Yeon Jo, Dr. Fatma Nasoz and Dr. SJ Kim for their warm support and for being part of my thesis committee. I am thankful to Dr. Ajoy Datta for helping me out whenever I required his assistance. I would also like to thank all my professors for imparting their knowledge through various courses in the fields of Machine Learning, Big Data, Databases, Blockchains, and Algorithms.
 
 I would also like to acknowledge my dad Ramesh Calastry, my mom Vijayalakshmi Calastry Ramesh and my sister Vandhana Calastry Ramesh for being my source of strength and confidence throughout my Master's program at UNLV.
 
@@ -165,77 +165,77 @@ Finally, I am thankful to all my friends, peers, and colleagues who have made my
 %%% This is the start of the first 
 \chapter{Introduction}\label{chapter:introduction} 
 
-Information of Things (IoT) is an exciting field in Computer Science with the potential to disrupt several industries such as Health, Energy and Utilities, Transportation, Shipping and Retail. Devices like the Apple Smartwatch has the capability to detect a heart attack and alert emergency services if needed using its EKG sensors. Recent research has suggested that a lot of these devices will be coming online in coming years and each of these devices will be generating small payloads of data in large quantities. This requires a secure and trusted storage model with means to protect that data from being stolen. 
+Information of Things (IoT) is an exciting field in Computer Science with the potential to disrupt several industries such as Health, Energy and Utilities, Transportation, Shipping and Retail. Devices like the Apple Smartwatch has the capability to detect a heart attack and alert emergency services if needed using its EKG sensors. Recent research has suggested that a lot of these devices will be coming online in coming years and each of them will be generating small payloads of data in large quantities. This requires a secure and trusted storage model with means to protect that data from being stolen. 
 
-In recent years, blockchain has been rapidly gaining momentum in areas other than its most famous use-case as a crypto-currency to be used as a drop-in replacement for regular currency. Blockchain/ Distributed Ledger implementations such as Ethereum and Hyperledger Fabric have introduced a concept called programmable blockchain which has opened up avenues in which blockchain can be effectively used to improve and optimize industries like Shipping, Supply chain and Internet of Things (IoT). Rather than just storing data such as balance amounts of a certain wallet for a crypto currency in the blockchain, programmable blockchain has allowed us to store and execute code which can be used to store and retrieve all kinds of data in a decentralized manner. This concept in Ethereum is called Smart Contracts which can be written and deployed to any Ethereum network.
+In recent years, blockchain has been rapidly gaining momentum in areas other than its most famous use-case as a crypto-currency to be used as a drop-in replacement for regular currency. Blockchain/ Distributed Ledger implementations such as Ethereum and Hyperledger Fabric have introduced a concept called programmable blockchain which has opened avenues in which blockchain can be effectively used to improve and optimize industries like Shipping, Supply chain, and Internet of Things (IoT). Rather than just storing data such as balance amounts of a certain wallet for a cryptocurrency in the blockchain, programmable blockchain has allowed us to store and execute code which can be used to store and retrieve all kinds of data in a decentralized manner. This concept in Ethereum is called Smart Contracts which can be written and deployed to any Ethereum network.
 
 IoT security is a major concern for edge devices like Raspberry Pi where data privacy concerns need to be addressed, data confidentiality and integrity must be guaranteed if we are to trust the data from an IoT device. 
 
 \section{Objective}\label{section:objective}
-This thesis will explore how to store IoT data on a combination of a on-chain (Ethereum Blockchain) and off-chain storage (IPFS and Ethereum Swarm) in an encrypted fashion and use it in a real-time publish subscribe model without use of any M2M protocols such as MQTT or CoAP. We will also estimate the performance of this system in terms of the number of transactions that can be executed per second and also try to optimize its performance.
+This thesis will explore how to store IoT data on a combination of an on-chain (Ethereum Blockchain) and off-chain storage (IPFS and Ethereum Swarm) in an encrypted fashion and use it in a real-time publish-subscribe model without the use of any M2M protocols such as MQTT or CoAP. We will also estimate the performance of this system in terms of the number of transactions that can be executed per second and also try to optimize its performance.
 
 \section{Outline}\label{section:outline}
 
 In Chapter \ref{chapter:introduction}, we introduce the reader to how IoT devices are poised to play an important role in our lives and how we could integrate it with other technologies such as blockchain.\newline
 
-\noindent In Chapter \ref{chapter:background}, we look the motivation that pushed us to consider research in Internet of Things and Blockchains ,existing research in this arena and propose a new system to overcome existing issues in these areas. \newline
+\noindent In Chapter \ref{chapter:background}, we look the motivation that pushed us to consider research in Internet of Things and Blockchains, existing research in this arena and proposes a new system to overcome existing issues in these areas. \newline
 
 \noindent In Chapter \ref{chapter:blockchain_tech}, we explain different blockchain technologies currently in use and how all these technologies come together to solve certain problems. \newline
 
-\noindent In Chapter \ref{chapter:iot_tech}, we describe IoT terminologies, protocols and devices considered for use in our thesis. We will also explore how to establish a root-of-trust for these devices and how to enforce security features using external hardware. \newline
+\noindent In Chapter \ref{chapter:iot_tech}, we describe IoT terminologies, protocols, and devices considered for use in our thesis. We will also explore how to establish a root-of-trust for these devices and how to enforce security features using external hardware. \newline
 
-\noindent In Chapter \ref{chapter:proposed_system}, we describe the proposed system of On-chain ans Off-chain storage to store data from sensors in a decentralized fashion. We also describe the smart contract we have built to register IoT devices and store data.\newline
+\noindent In Chapter \ref{chapter:proposed_system}, we describe the proposed system of On-chain and Off-chain storage to store data from sensors in a decentralized fashion. We also describe the smart contract we have built to register IoT devices and store data.\newline
 
 \noindent In Chapter \ref{chapter:experiment_results}, we perform experiments regarding data storage using traditional databases as well as the proposed system using blockchain and IPFS/Swarm. To understand the cost of IoT security, we also perform experiments to find the transaction rate of the proposed system with and without encryption.\newline
 
-\noindent In Chapter \ref{chapter:conclusion}, we will attempt to summarize findings from this thesis and end with a retrospection of the performance measurements of each of these storage systems with blockchain.\newline 
+\noindent In Chapter \ref{chapter:conclusion}, we will attempt to summarize findings from this thesis and end with retrospection of the performance measurements of each of these storage systems with blockchain.\newline 
 
 \chapter{Motivation and Background} \label{chapter:background}
 \section{Motivation}\label{section:motivation}
-IoT devices have been plagued with issues for as long as it has existed as a technology and until very recently, these devices have been limited in use for hobby projects and never saw mainstream success until the power of cloud computing was leveraged to power devices such as Alexa Echo, Google Home Minis. This has also allowed internet controlled sensors to be used in smart refrigerators, cars and ovens. There is a huge overhead to setup a comparable infrastructure in terms of storage and messaging protocols if we do not want to depend on these cloud solutions. Decentralized systems like blockchain, especially Ethereum \cite{7467408}  and all other derived blockchains do hold promise in the sense they provide a networking method to connect to other devices running the software and also provide storage solutions. IoT devices and the data generated by them, like any other data, can be stored and passed to other devices using a generic blockchain solution.
+IoT devices have been plagued with issues for as long as it has existed as technology and until very recently, these devices have been limited in use for hobby projects and never saw mainstream success until the power of cloud computing was leveraged to power devices such as Alexa Echo, Google Home Minis. This has also allowed internet controlled sensors to be used in smart refrigerators, cars, and ovens. There is a huge overhead to set up a comparable infrastructure in terms of storage and messaging protocols if we do not want to depend on these cloud solutions. Decentralized systems like blockchain, especially Ethereum \cite{7467408}  and all other derived blockchains do hold promise in the sense they provide a networking method to connect to other devices running the software and also provide storage solutions. IoT devices and the data generated by them, like any other data, can be stored and passed to other devices using a generic blockchain solution.
 
-Security concerns are a very important issue to be addressed in these devices with the primary concern being a "difficult to secure" storage mechanism for sensitive data such as private keys and secrets for APIs. Hardware Security Mechanisms or Trusted Privacy Modules (TPM) aim to establish a hardware root-of-trust to encrypt storage devices and store sensitive data.
+Security concerns are a very important issue to be addressed in these devices with the primary concern being a "difficult to secure" storage mechanism for sensitive data such as private keys and secrets for APIs. Hardware Security Mechanisms or Trusted Platform Modules (TPM) aim to establish a hardware root-of-trust to encrypt storage devices and store sensitive data.
 
 Blockchain is still a very nascent technology and has many issues of its own. Transaction rate per second is, by design, very low compared to traditional storage and processing systems and most blockchains are designed to be fully open and make no provisions for data privacy. Only the validity of the data is confirmed through Consensus mechanisms enforced by participants.
 
-Data Storage on the blockchain is expensive for large quantities of data. Coupled with the transaction rate issue, blockchain seems a bad way to store some data. However, Decentralized technologies like Inter Planetary File System (IPFS) or Ethereum Swarm may be used to store the actual payload while the Blockchain implementation such as Ethereum can be used to store links to the actual data stored in these systems. The edge devices need not store either the links to the data or the actual payload itself. Any number of high performance devices can be added or removed to take up the work of storing data on the storage system and blockchain. 
+Data Storage on the blockchain is expensive for large quantities of data. Coupled with the transaction rate issue, blockchain seems a bad way to store some data. However, Decentralized technologies like Inter Planetary File System (IPFS) or Ethereum Swarm may be used to store the actual payload while the Blockchain implementation such as Ethereum can be used to store links to the actual data stored in these systems. The edge devices need not store either the links to the data or the actual payload itself. Any number of high-performance devices can be added or removed to take up the work of storing data on the storage system and blockchain. 
 
 This solves both the transaction rate and storage cost issues. We do not need to wait for the transactions to be mined and instead proceed to the next transaction. The miners on the network will work at their own pace and process these transactions and we will not be required to pay for storage costs which need to be otherwise paid. We can introduce a little bit of centralization to the system by making all the IoT devices register on the network before they are allowed to send or receive data. This will help prevent unauthorized access to the network.
 
 \section{Previous work}\label{section:previouswork}
-Research in Internet of Things and Blockchain has seen a major resurgence after a sudden interest in crypto-currencies and mining. Companies like IBM \cite{Androulaki:2018:HFD:3190508.3190538}, Amazon and Microsoft have contributed to the recent uptick in using blockchains for commercial applications. 
+Research in the Internet of Things and Blockchain has seen a major resurgence after a sudden interest in crypto-currencies and mining. Companies like IBM \cite{Androulaki:2018:HFD:3190508.3190538}, Amazon, and Microsoft have contributed to the recent uptick in using blockchains for commercial applications. 
 
 Various research publications have presented novel solutions for telecommunications \cite{8441204}, voting \cite{8603050}, building decentralized social networking systems \cite{8645058}, smart homes\cite{8644880} and stock exchanges \cite{8516610} have been proposed. Using Public blockchains to store industrial data in encrypted format has also been studied extensively\cite{8622246}.
 
 IPFS can also be used as a powerful replacement for Swarm, as evidenced by the fact that IPFS aims to solve most of the same problems that Swarm is being developed to fix. Ethereum + Swarm and Ethereum + IPFS have been studied to store user data \cite{8448350}, Access Control of data \cite{8400511} stored on the system, encryption of sensitive data on public blockchain networks \cite{8400511} as well as storing IoT data \cite{8634961} and IoT Marketplaces \cite{8525388}.
 
-Research on benchmark of EVM bytecodes \cite{8612882} and Object oriented methods used for writing smart contracts \cite{8445056} have provided me with a significant understanding of writing efficient smart contracts following best practices. 
+Research on the benchmark of EVM bytecodes \cite{8612882} and Object-oriented methods used for writing smart contracts \cite{8445056} have provided me with a significant understanding of writing efficient smart contracts following best practices. 
 
-Performance analysis of decentralized solutions have also been considered in various research publications \cite{8342866} where a private network of ethereum was tested for its performance metrics. Curiously enough, performance metrics of Ethereum with IPFS or Swarm have not been thoroughly researched. 
+Performance analysis of decentralized solutions has also been considered in various research publications \cite{8342866} where a private network of ethereum was tested for its performance metrics. Curiously enough, performance metrics of Ethereum with IPFS or Swarm have not been thoroughly researched. 
 
-Current research in blockchain applications for IoT has mostly kept to ensuring privacy ,authentication and other security considerations \cite{8012302} for IoT devices and sensors. A prime area of research is to investigate whether the data collected and stored by IoT sensors can be securely retrieved and used by other sources, the various systems that can be used for such purposes and which ones provide the most ideal solution. Using insights gleaned from \cite{8094378} and from \cite{8634961}, methods to integrate IoT devices in a blockchain infrastructure are studied. From  \cite{8644498}, ways to protect the endpoint used by data consuming APIs are explored in this thesis.
+Current research in blockchain applications for IoT has mostly kept to ensuring privacy, authentication and other security considerations \cite{8012302} for IoT devices and sensors. A prime area of research is to investigate whether the data collected and stored by IoT sensors can be securely retrieved and used by other sources, the various systems that can be used for such purposes and which ones provide the most ideal solution. Using insights gleaned from \cite{8094378} and from \cite{8634961}, methods to integrate IoT devices in a blockchain infrastructure are studied. From  \cite{8644498}, ways to protect the endpoint used by data consuming APIs are explored in this thesis.
 
 \section{Proposed Solution}\label{section:proposed_solution}
-In this thesis, we will build an encrypted storage model for IoT data where data generated by sensors is stored securely in multiple distributed nodes of either Ethereum Swarm (or) IPFS while the order of data collected is preserved using the Ethereum Blockchain using Smart Contracts. Setup of IPFS, Ethereum Swarm and the Private Ethereum Blockchain is done and data is collected from Sensors such as the Digital Humidity and Temperature Sensor (DHT11). Edge Nodes (Non-mining light Ethereum and Swarm nodes) on tiny computers like Raspberry Pi 3B+ are used to collect and store these sensor readings to the network while miner nodes running on more powerful machines are used to process and validate these transactions in the network. The strength of this model lies in its design where there is no single point of failure and any node, miner or non-miner can be added, removed and replaced without affecting the functioning of the overall  network, provided another node is added before the previous one is removed. Control over the devices is maintained by using Smart Contracts to register a device \cite{zhang2018smart} before it can send or receive data from the system. However, the presence of distributed devices adds a significant overhead of securing the information shared between them. Public-Private key encryption such as RSA can be coupled with symmetric encryption like AES and authenticity may be verified using HMAC. We propose both hardware security mechanisms and software-based methods such as a Trusted Privacy Module (TPM) to fully encrypt File system of the storage medium on the edge devices using Linux Unified Key System (LUKS) and store secret keys used for symmetric encryption on the device storage securely by locking it to the system with the private key of TPM.
+In this thesis, we will build an encrypted storage model for IoT data where data generated by sensors is stored securely in multiple distributed nodes of either Ethereum Swarm (or) IPFS while the order of data collected is preserved using the Ethereum Blockchain using Smart Contracts. Setup of IPFS, Ethereum Swarm and the Private Ethereum Blockchain is done and data is collected from Sensors such as the Digital Humidity and Temperature Sensor (DHT11). Edge Nodes (Non-mining light Ethereum and Swarm nodes) on tiny computers like Raspberry Pi 3B+ are used to collect and store these sensor readings to the network while miner nodes running on more powerful machines are used to process and validate these transactions in the network. The strength of this model lies in its design where there is no single point of failure and any node, miner or non-miner can be added, removed and replaced without affecting the functioning of the overall network, provided another node is added before the previous one is removed. Control over the devices is maintained by using Smart Contracts to register a device \cite{zhang2018smart} before it can send or receive data from the system. However, the presence of distributed devices adds a significant overhead of securing the information shared between them. Public-Private key encryption such as RSA can be coupled with symmetric encryption like AES and authenticity may be verified using HMAC. We propose both hardware security mechanisms and software-based methods such as a Trusted Platform Module (TPM) to fully encrypt File system of the storage medium on the edge devices using Linux Unified Key System (LUKS) and store secret keys used for symmetric encryption on the device storage securely by locking it to the system with the private key of TPM.
 
 \chapter{Blockchain Technology}
 \label{chapter:blockchain_tech}
 \section{Blockchain}
 A Blockchain is, put simply, a series of blocks put together in a chain. Most blockchains are transactional state machines which take in transactions (input) and generate a new state (output).
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{images/statemachine.png}
-	\caption{Transaction State}
-	\label{fig:State Change}
+    \centering
+    \includegraphics[scale=0.5]{images/statemachine.png}
+    \caption{Transaction State}
+    \label{fig:State Change}
 \end{figure}
 
-Blockchain, or more accurately Distributed Ledger Technology was built to power the storage and transfer of a new form of currency called Crypto-currency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto \cite{nakamoto2012bitcoin}. Due to the runaway success of Bitcoin, it has become synonymous with blockchain today. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a number of different use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing and real estate.
+Blockchain or more accurately Distributed Ledger Technology was built to power the storage and transfer of a new form of currency called Crypto-currency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto \cite{nakamoto2012bitcoin}. Due to the runaway success of Bitcoin, it has become synonymous with blockchain today. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a number of different use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing, and real estate.
 
-Blockchain is decentralized by design\cite{gencer2018decentralization} and having the same information across all nodes that are shared with it results it in being a resource owned by everyone and doesn’t have a single point of failure. 
+Blockchain is decentralized by design\cite{gencer2018decentralization} and having the same information across all nodes that are shared with it results in it in being a resource owned by everyone and doesn’t have a single point of failure. 
 
 If we are using blockchain technology to process transactions, we need to run some cryptographic algorithms to validate these transactions. This can be done by anyone who runs the blockchain software and once they are successful in validating these transactions called consensus, a new block can be added to the chain. This process is called mining. A fee is paid to the successful miner in the form of BTC for bitcoin and ether for Ethereum.
 
-Table \ref{differences_bitcoin_ethereum} explains a few differences between Bitcoin and Ethereum, two of the the most popular blockchain implementations in existence.
+Table \ref{differences_bitcoin_ethereum} explains a few differences between Bitcoin and Ethereum, two of the most popular blockchain implementations in existence.
  
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -262,15 +262,15 @@ Table \ref{differences_bitcoin_ethereum} explains a few differences between Bitc
 
 \subsection{Blockchain Concepts}
 \subsubsection{Chaining of Blocks}
-Blocks are generated and are filled with transactions. When filled up, a new block are created. This process can be repeated infinite number of times to create a never ending chain of blocks. However, if we use a unique signature of the previous block (called a hash), and add it to the current block, we end up with a chain that is immutable. This process is shown in Figure \ref{fig:Chained Blocks}
+Blocks are generated and are filled with transactions. When filled up, a new block is created. This process can be repeated infinite number of times to create a never-ending chain of blocks. However, if we use a unique signature of the previous block (called a hash), and add it to the current block, we end up with a chain that is immutable. This process is shown in Figure \ref{fig:Chained Blocks}
 
-If someone changes the contents of a historical block, its hash value changes and will not match the stored hashes in any of the subsequent blocks. When this chain is replicated across a number of different users, the blockchain copy of the person who changes the contents will not match the contents with other users, this creating a permanent, immutable decentralized chain of blocks.
+If someone changes the contents of a historical block, its hash value changes and will not match the stored hashes in any of the subsequent blocks. When this chain is replicated across a number of different users, the blockchain copy of the person who changes the contents will not match the contents with other users, thus creating a permanent, immutable decentralized chain of blocks.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{images/Blockchain.png}
-	\caption{Block Chain}
-	\label{fig:Chained Blocks}
+    \centering
+    \includegraphics[scale=0.5]{images/Blockchain.png}
+    \caption{Block Chain}
+    \label{fig:Chained Blocks}
 \end{figure}
 
 \subsubsection{Peer to Peer Discovery}
@@ -280,24 +280,24 @@ Peer to Peer discovery\cite{inproceedings} is the cornerstone of any blockchain.
 Distributed Systems \cite{7925332} are still centralized and require a server to connect to each client and share data with them. Blockchains and other related systems are designed to be independent of a server and instead depend on P2P synchronization and group consensus mechanisms to communicate with each other and make decisions.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{images/Decentralized.png}
-	\caption{Distributed vs Decentralized Systems}
-	\label{fig:Decentralized_Systems}
+    \centering
+    \includegraphics[scale=0.5]{images/Decentralized.png}
+    \caption{Distributed vs Decentralized Systems}
+    \label{fig:Decentralized_Systems}
 \end{figure}
 
 \newpage
 \subsubsection{Crypto-currency Mining}\label{crypto-mining}
-In simple terms, mining is the process of performing computationally intensive mathematical (or) more accurately cryptographic calculations. These calculations are so complex that they require massive amounts of processing capacity and power to run. The computers that are successful in performing this operation are paid with a reward in newly minted currency that didn't exist previously. This is a direct analogy to the mining of gold from the ground. By performing this process, the miners are validating the authenticity of the payment and adding these validated transactions to the network. Mining is what makes the payment network secure and trusted without a trusted and centralized third-party to validate the transaction which is the case in traditional methods. The cryptographic calculations performed by these miners is called \textbf{Proof of Work} (PoW). Mining is hard but verification is relatively easy and is performed by all the nodes in the system in a process called \textbf{Consensus}.
+In simple terms, mining is the process of performing computationally intensive mathematical (or) more accurately cryptographic calculations. These calculations are so complex that they require massive amounts of processing capacity and power to run. The computers that are successful in performing this operation are paid with a reward in the newly minted currency that didn't exist previously. This is a direct analogy to the mining of gold from the ground. By performing this process, the miners are validating the authenticity of the payment and adding these validated transactions to the network. Mining is what makes the payment network secure and trusted without a trusted and centralized third-party to validate the transaction which is the case in traditional methods. The cryptographic calculations performed by these miners is called \textbf{Proof of Work} (PoW). Mining is hard but verification is relatively easy and is performed by all the nodes in the system in a process called \textbf{Consensus}.
 
-A new block is created roughly 10 minutes in Bitcoin whereas a new block is created every 10 - 12 seconds in Ethereum. Every block creates 12.5 new btc in Bitcoin while a new block in ethereum generates 3 ether.
+A new block is created roughly 10 minutes in Bitcoin whereas a new block is created every 10 - 12 seconds in Ethereum. Every block creates 12.5 new BTC in Bitcoin while a new block in ethereum generates 3 ether.
 
 \subsubsection{Distributed Apps}
-The term Distributed Apps(dapps) is used to refer to any application (web or standalone) which is able interface with the blockchain. 
+The term Distributed Apps(dapps) is used to refer to any application (web or standalone) which is able to interface with the blockchain. 
 The dapps differ from regular web or mobile apps because their back-end logic is written and run entirely in the blockchain.
 
 \subsection{Private vs Public blockchains}
-Bitcoin and Ethereum were primarily intended to be used as public blockchains \cite{privpubarticle}. It means data stored in the chain is visible for everyone to view. However, these networks can be setup to run as private blockchains to process payments and run code. This basically means that a Access Control Layer is built over a regular blockchain to exercise control over who is allowed to read or write data to the blockchain. These private blockchains can also be called "permissioned" blockchains.
+Bitcoin and Ethereum were primarily intended to be used as public blockchains \cite{privpubarticle}. It means data stored in the chain is visible for everyone to view. However, these networks can be set up to run as private blockchains to process payments and run the code. This basically means that an Access Control Layer is built over a regular blockchain to exercise control over who is allowed to read or write data to the blockchain. These private blockchains can also be called permissioned blockchains.
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -334,16 +334,16 @@ Transactions costs in gas must be borne by the Ethereum client that submits the 
     TxCost = gasLimit * gasPrice
 \end{equation}
 
-Average gas limit per block (at the time of writing) is around 8,000,000. This value is decided by miners and changes every block. With a avg block time of 12 seconds and a gas price per transactions ranging between 20,000 to 60,000 on average, we can expect a range of 10 to 20 transactions per second. 
+Average gas limit per block (at the time of writing) is around 8,000,000. This value is decided by miners and changes every block. With an avg block time of 12 seconds and a gas price per transactions ranging between 20,000 to 60,000 on average, we can expect a range of 10 to 20 transactions per second. 
 
 \subsection{Ethereum Wallet Address}
 Ethereum uses ECC (Elliptic Curve Cryptography) to generate public, private keys and ECDSA (Elliptic Curve Digital Signatures to verify and sign transactions. The figure \ref{fig:elliptic_curve} shows the elliptic curve called secp256k1 used in Ethereum (As well as Bitcoin and other major blockchains).
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{images/ecc.png}
-	\caption{Elliptic Curve}
-	\label{fig:elliptic_curve}
+    \centering
+    \includegraphics[scale=0.5]{images/ecc.png}
+    \caption{Elliptic Curve}
+    \label{fig:elliptic_curve}
 \end{figure}
 
 Two points are chosen and the public-private key pair is generated using them. The private key is used to sign transactions while the Keccak-256 (A variation of SHA-3) hash of the public key is taken and the rightmost 20 bytes is registered as the Ethereum address.
@@ -362,9 +362,9 @@ Contract accounts hold the contract code and are used only to execute smart cont
 \subsection{Crypto-Currency in Ethereum}
 Ethereum pays a crypto-currency called ether to successful miners. This can be subdivided into smaller units up to the smallest unit called wei. The name Wei is a tribute to one of the earliest visionaries of cryptocurrency, Wei Dai. He is the author of a protocol and cryptocurrency called b-money \cite{dai1998bmoney}.
 
-Like any other currency, ethereum is not immune from volatility and ranges widely. To prevent volatility in the amount (called gas) that must be paid for executing transactions on the Ethereum network, it is independent from the actual currency. 
+Like any other currency, ethereum is not immune from volatility and ranges widely. To prevent volatility in the amount (called gas) that must be paid for executing transactions on the Ethereum network, it is independent of the actual currency. 
 
-Gas can be defined as a special unit used in Ethereum to calculate costs incurred for executing that transaction. Gas limit must be mentioned in the transaction and must be reasonable. If the limit is too low, it is unlikely that any miners will process that transaction. Once the transaction is executed, the miner that processes that transaction will be paid in ether corresponding to the gas that was spent. The remaining gas is returned to the account that requested the transaction.
+Gas can be defined as a special unit used in Ethereum to calculate costs incurred for executing that transaction. The gas limit must be mentioned in the transaction and must be reasonable. If the limit is too low, it is unlikely that any miners will process that transaction. Once the transaction is executed, the miner that processes that transaction will be paid in ether corresponding to the gas that was spent. The remaining gas is returned to the account that requested the transaction.
 
 Table \ref{eth_denominations} shows the different denominations in Ethereum and their exchange rate with ether.
 
@@ -392,10 +392,10 @@ Table \ref{eth_denominations} shows the different denominations in Ethereum and 
 \end{table}
 
 \subsection{Mining Algorithm}
-Ethereum uses Eth-Hash algorithm \cite{wood2014yellow} for finding the cryptographic hash (the process of mining). Before mining starts, a large Directed Acyclic Graph (DAG) is created. The mining process attempts to solve a certain condition in it. This process is the Proof of Work (PoW) in ethereum and is designed to be verified by other nodes very fast in linear time on a CPU using very less resources.
+Ethereum uses Eth-Hash algorithm \cite{wood2014yellow} for finding the cryptographic hash (the process of mining). Before mining starts, a large Directed Acyclic Graph (DAG) is created. The mining process attempts to solve a certain condition in it. This process is the Proof of Work (PoW) in ethereum and is designed to be verified by other nodes very fast in linear time on a CPU using fewer resources.
 
 \subsection{Genesis block}
-A genesis block is the first block of the entire chain. It is named as block 0.This has to be created manually for private networks and contains a hash of all zeros. In Ethereum, genesis block is represented in the form of a JSON file and is downloaded first when a new node is created and added to an existing Ethereum Network. A sample genesis block is shown below.
+Genesis block is the first block of the entire chain and is named block 0 in Ethereum. This has to be created manually for private networks and contains a hash of all zeros. In Ethereum, genesis block is represented in the form of a JSON file and is downloaded first when a new node is created and added to an existing Ethereum Network. A sample genesis block is shown below.
 \begin{verbatim}
     {
         "nonce": "0x0000000000000042",
@@ -440,11 +440,10 @@ First is the main network with a network id of 1. There are other test networks 
 \end{table}
 
 \subsubsection{Private Ethereum Network}
-Private networks can be setup in both closed and open modes. All nodes in this network need to be started with an ID other than the ones used by public networks. Another requirement is that all the nodes in the private network need to be initialized with the same genesis block. A random number \textbf{63723} was chosen for this thesis. If we require that the private network should not be accessed by any one with the network id and genesis block, we can turn off the discovery mode for other peers and instead add them manually.
+Private networks can be set up in both closed and open modes. All nodes in this network need to be started with an ID other than the ones used by public networks. Another requirement is that all the nodes in the private network need to be initialized with the same genesis block. A random number of \textbf{63723} was chosen for this thesis. If we require that the private network should not be accessed by anyone with the network id and genesis block, we can turn off the discovery mode for other peers and instead add them manually.
 
 \subsection{Geth}
-Geth is a client for Ethereum which is implemented in Golang and is used to connect to the Ethereum network. Other implementations in C++ and Python are also available. Once installed, it can be initiated with a genesis block (the first block in the blockchain), started and connected to different networks available in Ethereum. These networks are identified by their network ID. Since this is a peer to peer protocol, different nodes with the same genesis block and network ID can synchronize with each other and mine transactions. Network ID: 1 is for the main network, 2 and 3 are reserved for Test networks. We can use a different network ID for setting up a private network. Different versions for Windows, Linux, MacOS and Android are available and can be downloaded from the below website.
-https://geth.ethereum.org/install/
+Geth is a client for Ethereum which is implemented in Golang and is used to connect to the Ethereum network. Other implementations in C++ and Python are also available. Once installed, it can be initiated with a genesis block (the first block in the blockchain), started and connected to different networks available in Ethereum. These networks are identified by their network ID. Since this is a peer to peer protocol, different nodes with the same genesis block and network ID can synchronize with each other and mine transactions. Network ID: 1 is for the main network, 2 and 3 are reserved for Test networks. We can use a different network ID for setting up a private network. Different versions for Windows, Linux, MacOS, and Android are available.
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -471,10 +470,10 @@ https://geth.ethereum.org/install/
 
 \newpage
 \subsection{Geth Synchronization modes}
-Geth can be run in 3 different modes: Full, Fast or light. Each have their own uses and we can setup any node to work in a different mode. 
+Geth can be run in 3 different modes: Full, Fast or light. Each has its own use and we can set up any node to work in a different mode. 
 
 \subsubsection{Full} 
-This is the default mode of geth when run without any synchronization options. It requests the entire state database, gets all the headers, bodies and validates every element from genesis block.
+This is the default mode of geth when running without any synchronization options. It requests the entire state database, gets all the headers, bodies and validates every element from the genesis block.
 
 \subsubsection{Fast}
 This mode gets the block headers, bodies and doesn't process any transaction until it reaches the current block. Thereafter, it works exactly like a full synchronization.
@@ -483,13 +482,13 @@ This mode gets the block headers, bodies and doesn't process any transaction unt
 This mode only gets the current state from the blockchain. To verify elements, it needs to request full nodes for the previous states. This is perfect for edge devices like the raspberry pi where we do not want to store much data. However, it requires a full node dedicating some of its resources to serve requests from a light node.
 
 \subsection{Ethereum Virtual Machine}
-Ethereum Virtual Machine (EVM) is a virtual environment that runs on all geth nodes and execute the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL etc are available for writing Contracts which can then be compiled to EVM byte code capable on running in the EVM.
+Ethereum Virtual Machine (EVM) is a virtual environment that runs on all geth nodes and executes the code provided by smart contracts. A variety of programming languages such as Solidity, Vyper, LLL, etc are available for writing Contracts which can then be compiled to EVM byte code capable on running in the EVM.
 
 \subsection{Interfacing Methods}
-Depending on whether we want to access our node from the same machine or from a different machine on the same or different network, Inter Process Communication (IPC) or Remote Procedure Calls (RPC) may be used.
+Depending on whether we want to access our node from the same machine or from a different machine on the same or different network, Inter-Process Communication (IPC) or Remote Procedure Calls (RPC) may be used.
 
 \subsubsection{Inter Process Communication}
-Inter Process Communication (IPC) is the preferred method of connecting to a ethereum node from processes running on the same system. If the node is started without any options, the only method available to connect to the node is through IPC. Geth creates a geth.ipc file in its home directory and must be referenced whenever we want to connect to the system. For security reasons, IPC is limited to localhost and cannot be run from another machine.
+Inter-Process Communication (IPC) is the preferred method of connecting to an ethereum node from processes running on the same system. If the node is started without any options, the only method available to connect to the node is through IPC. Geth creates a geth.ipc file in its home directory and must be referenced whenever we want to connect to the system. For security reasons, IPC is limited to localhost and cannot be run from another machine.
 
 \subsubsection{Remote Procedure Calls}
 Remote Procedure Calls are to be used if the ethereum node is running on an outside system. Geth provides HTTP as well as WebSocket proxies to connect to ethereum. Additionally, the format used to interface with ethereum is called JSON-RPC. It is the interface using which a front-end application written in any programming language can communicate with the business logic and data stored in the blockchain.
@@ -497,16 +496,16 @@ Remote Procedure Calls are to be used if the ethereum node is running on an outs
 \section{Smart Contract}
 A smart contract is a Class like code that lives in the Ethereum blockchain (EVM). The methods declared within the smart contract can be run as a transaction by any node which has enough ether to pay for running that transaction. This contract can be accessed by the outside world through distributed apps (also called dapps). Solidity compiler (solc) is used to compile these smart contracts into EVM bytecode (containing machine-code like instructions compiled from solidity) and ABI Definition containing meta-data like the variables and methods used in the smart contract.
 
-A typical Smart Contract consists of variables, setter and getter methods with access modifiers to regulate access exactly like Object-Oriented languages such as C++ and Java. Setter methods involve changing the state of the data contained within in blockchain and thus incur a transaction charge which must be paid in gas. Getter methods only retrieve the data stored within the full node or from a peer and does not incur any charge.
+A typical Smart Contract consists of variables, setter and getter methods with access modifiers to regulate access exactly like Object-Oriented languages such as C++ and Java. Setter methods involve changing the state of the data contained within in blockchain and thus incur a transaction charge which must be paid in gas. Getter methods only retrieve the data stored within the full node or from a peer and do not incur any charge.
 
 \subsection{Solidity}
-Solidity is a Turing complete Contract-oriented programming language available for Ethereum to write Smart contracts. It is a high-level language supporting all features of a modern programming language such as static-typing, inheritance and complex user-defined data types. This enables us to build smart contracts capable of building distributed apps like Maintaining Land ownership records, Voting, Auction and Betting apps among others.
+Solidity is a Turing complete Contract-oriented programming language available for Ethereum to write Smart contracts. It is a high-level language supporting all features of a modern programming language such as static-typing, inheritance, and complex user-defined data types. This enables us to build smart contracts capable of building distributed apps like Maintaining Land ownership records, Voting, Auction and Betting apps among others.
 
 \subsection{Remix}
 Smart contracts can be written and tested using a browser-based IDE called Remix.
 
 \subsection{Smart Contract Concepts}
-A typical Smart Contract looks like a Class definition written in languages like C++ or Java. In addition to commonly available object-oriented principles such as constructors, methods, variables, visibility modifiers, Inheritance, arrays and loops; solidity provides a few additional capabilities to bolster the usability of Smart Contracts for solving several different use-cases.
+A typical Smart Contract looks like a Class definition written in languages like C++ or Java. In addition to commonly available object-oriented principles such as constructors, methods, variables, visibility modifiers, Inheritance, arrays, and loops; solidity provides a few additional capabilities to bolster the usability of Smart Contracts for solving several different use-cases.
 
 \subsubsection{solc compiler}
 Smart Contracts need to be compiled to EVM byte-code and ABI definition before the Virtual Machine in an ethereum-node can access and execute transactions and methods mentioned in the blockchain. Ethereum tools like Remix and Truffle are bundled with this compiler. The version used to compile the smart contract is mentioned at the very top of the solidity code.
@@ -521,19 +520,19 @@ Smart Contracts need to be compiled to EVM byte-code and ABI definition before t
 Variables in Solidity are statically-typed and must be declared only once. The compiler throws an error if a variable is declared more than once throughout the source file. The table \ref{solidity_data_types} explains some of the commonly used data types available in solidity.
  
 \begin{table}[!htbp]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Data Types in Solidity}
-	\label{solidity_data_types}
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\bfseries Data Type & \bfseries Value Types & \bfseries Example \\
-		\hline\hline
-		boolean & True,False & True \\ \hline
-		integer & uint, int & 8, -20 \\ \hline
-		address & hexadecimal string & 0x123 \\ \hline
-		String & String literals & "foo" \\ \hline
-	\end{tabular}
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Data Types in Solidity}
+    \label{solidity_data_types}
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \bfseries Data Type & \bfseries Value Types & \bfseries Example \\
+        \hline\hline
+        boolean & True,False & True \\ \hline
+        integer & uint, int & 8, -20 \\ \hline
+        address & hexadecimal string & 0x123 \\ \hline
+        String & String literals & "foo" \\ \hline
+    \end{tabular}
 \end{table}
 
 \newpage
@@ -546,7 +545,7 @@ The below example shows a static array of size 7.
 \end{verbatim}
 
 \subsubsection{Mapping}
-Mapping is encouraged to be used within solidity in place of arrays. Mapping is defined as a key value pair of any data types, the key and value part included. They can be thought of as hash tables that are initialized when declared, contain every possible value and are mapped initially to a byte representation of all zeros. The key is not stored in the mapping, only is keccak-256 hash is stored and used to match its corresponding value.
+Mapping is encouraged to be used within solidity in place of arrays. Mapping is defined as a key-value pair of any data types, the key and value part included. They can be thought of as hash tables that are initialized when declared, contain every possible value and are mapped initially to a byte representation of all zeros. The key is not stored in the mapping, only is keccak-256 hash is stored and used to match its corresponding value.
 
 The below example shows how mappings can be declared and used.
 \begin{verbatim}
@@ -558,11 +557,11 @@ The below example shows how mappings can be declared and used.
 \end{verbatim}
 
 \subsubsection{Structs}
-Structs are similar to the C data type of the same name and are used to typically store the values of a number of related data-items. Structs can be part of the value of a mapping and are used extensively in solidity.
+Structs are similar to the C data type of the same name and are used to typically store the values of a number of related data items. Structs can be part of the value of mapping and are used extensively in solidity.
 
 An example struct is shown below
 \begin{verbatim}
-    //struct to store the temperature, humidity and timeStamp
+    //struct to store the temperature, humidity, and timeStamp
     struct SensorData{
         uint64 temperature;
         uint64 humidity;
@@ -572,7 +571,7 @@ An example struct is shown below
 \end{verbatim}
 
 \subsubsection{Constructor}
-Constructors in solidity provide the same functionality as the constructors in any other object oriented programming language. The below example is taken from the smart contract used in this thesis.
+Constructors in solidity provide the same functionality as the constructors in any other object-oriented programming language. The below example is taken from the smart contract used in this thesis.
 \begin{verbatim}
     //Constructor for the Smart Contract
     constructor() public {
@@ -596,7 +595,7 @@ Methods are functions defined within a smart contract and can be used to modify 
 
 
 \subsubsection{Events}
-Events are special methods that can be emitted from within a smart contract to indicate a successful transaction or indicate the occurrence of an error. These events can be listened to by another smart contract or from the outside world through web3. An example event is indicated below.
+Events are special methods that can be emitted from within a smart contract to indicate a successful transaction or indicate the occurrence of an error. These events can be listened to by another smart contract or from other sources through web3. An example event is indicated below.
 \begin{verbatim}
     //Transaction successful
     event setFileHashEvent(
@@ -621,65 +620,65 @@ Modifiers are used when we want to prevent certain kind of users from accessing 
 
 
 \subsection{Web3}
-Web3 is a framework developed by the Ethereum Foundation which enables a developer to build a client (web application or mobile apps) which can interact directly with the Ethereum Blockchain. Functionality provided by web3 includes getting the wallet address of the current node, sending ether to some other node etc. It can also be used to connect to a Smart Contract which is deployed in the blockchain and run the functions defined in them. These functions can be anything from transferring ownership of land from one person to another person, transferring ether or casting a vote for a candidate in an election. Web3 is available in javascript, python and other languages. Web3.js is by far the most popular framework available which enables us to connect a web page with some functionality to the back-end Smart contract. Most IOT devices have excellent support for C and Python. This is the reason why web3.py was chosen to be used as a interface between IOT devices and the Ethereum Blockchain for this thesis.
+Web3 is a framework developed by the Ethereum Foundation which enables a developer to build a client (web application or mobile apps) which can interact directly with the Ethereum Blockchain. The functionality provided by web3 includes getting the wallet address of the current node, sending ether to some other node, etc. It can also be used to connect to a Smart Contract which is deployed in the blockchain and run the functions defined in them. These functions can be anything from transferring ownership of land from one person to another person, transferring ether or casting a vote for a candidate in an election. Web3 is available in javascript, python and other languages. Web3.js is by far the most popular framework available which enables us to connect a web page with some functionality to the back-end Smart contract. Most IOT devices have excellent support for C and Python. This is the reason why web3.py was chosen to be used as an interface between IoT devices and the Ethereum Blockchain for this thesis.
 
 \subsection{Truffle}
-Truffle is a framework which makes developing and deploying Smart Contracts in Ethereum easier. It can be setup to compile our smart contract and deploy it to our network. Additional functions such as retrieving the smart contract's address and ABI definition can also be done using truffle.
+Truffle is a framework which makes developing and deploying Smart Contracts in Ethereum easier. It can be set up to compile our smart contract and deploy it to our network. Additional functions such as retrieving the smart contract's address and ABI definition can also be done using truffle.
 
-Table \ref{truffle_commands} describes a few commands that allows truffle to compile and deploy smart contracts and Table \ref{truffle_console} provides commands that can run in the truffle console.
+Table \ref{truffle_commands} describes a few commands that allow truffle to compile and deploy smart contracts and Table \ref{truffle_console} provides commands that can run in the truffle console.
 
 \begin{table}[!htbp]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Example truffle commands}
-	\label{truffle_commands}
-	\centering
-	\begin{tabular}{|c|c|}
-		\hline
-		\bfseries Command & \bfseries Function \\
-		\hline\hline
-		truffle compile & Compiles a smart contract to EVM bytecode \\ \hline
-		truffle migrate & Deploys the smart contract to a network mentioned in its configuration \\ \hline
-		truffle console & Accesses the meta-data for the smart contract \\ \hline
-	\end{tabular}
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Example truffle commands}
+    \label{truffle_commands}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \bfseries Command & \bfseries Function \\
+        \hline\hline
+        truffle compile & Compiles a smart contract to EVM bytecode \\ \hline
+        truffle migrate & Deploys the smart contract to a network mentioned in its configuration \\ \hline
+        truffle console & Accesses the meta-data for the smart contract \\ \hline
+    \end{tabular}
 \end{table}
 
 \begin{table}[!htbp]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{truffle console commands}
-	\label{truffle_console}
-	\centering
-	\begin{tabular}{|c|c|}
-		\hline
-		\bfseries Command & \bfseries Function \\
-		\hline\hline
-		ContractName.address & Returns the address of the Smart Contract \\ \hline
-		ContractName.abi & Returns the abi metadata of Smart Contract \\ \hline
+    \renewcommand{\arraystretch}{1.3}
+    \caption{truffle console commands}
+    \label{truffle_console}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \bfseries Command & \bfseries Function \\
+        \hline\hline
+        ContractName.address & Returns the address of the Smart Contract \\ \hline
+        ContractName.abi & Returns the abi metadata of Smart Contract \\ \hline
 
-	\end{tabular}
+    \end{tabular}
 \end{table}
 
 \subsection{Ganache}
-Ganache is framework which can be useful for testing our smart contract during development. It provides a bootstrapped private blockchain with test accounts with pre-loaded ether.
+Ganache is a framework which can be useful for testing our smart contract during development. It provides a bootstrapped private blockchain with test accounts with pre-loaded ether.
 
 \section{Alternate Decentralized Storage Solutions}
 Ethereum allows data storage via Smart contract variables. However, this will be demonstrated in \ref{chapter:experiment_results} that this storage comes with a steep cost and as the size of the data being stored increased so will the cost to load the transactions to the blockchain.
 
-Another major disadvantage with using Ethereum as the sole data storage mechanism is that the data stored would have to contend with severe limitations placed on the variables by Solidity. This is by design and storing huge volumes of data on blockchain is discouraged by Ethereum to prevent abuse by choking the network causing a Denial of Service for others.
+Another major disadvantage of using Ethereum as the sole data storage mechanism is that the data stored would have to contend with severe limitations placed on the variables by Solidity. This is by design and storing huge volumes of data on the blockchain is discouraged by Ethereum to prevent abuse by choking the network causing a Denial of Service for others.
 
-To overcome these limitations, data maybe stored in alternate decentralized storage solutions such as Ethereum Swarm or Inter Planetary File System. We will compare performance using both these solutions in this thesis. Additional storage schemes such as Siacoin \cite{vorick2014sia}, storj \cite{wilkinsonetal2014storj} etc. are in various stages of development.
+To overcome these limitations, data may be stored in alternate decentralized storage solutions such as Ethereum Swarm or Inter Planetary File System. We will compare performance using both these solutions in this thesis. Additional storage schemes such as Siacoin \cite{vorick2014sia}, storj \cite{wilkinsonetal2014storj} etc. are in various stages of development.
 
 \subsection{Ethereum Swarm}
-Ethereum Swarm \cite{swarm} is a storage solution that aims to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data  in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The current implementation is at version 0.3.x or Proof of Concept 3. 
+Ethereum Swarm \cite{swarm} is a storage solution that aims to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The current implementation is at version 0.3.x or Proof of Concept 3. 
 
-It provides a HTTP proxy to access data stored across nodes. A file stored in Swarm returns a filehash which uniquely identifies that resource.
+It provides an HTTP proxy to access data stored across nodes. A file stored in Swarm returns a file hash which uniquely identifies that resource.
 
 Its primary objective is to allow dapps to store data efficiently for applications such as messaging, data streaming and mutable resource updates. Since it is endorsed directly by the Ethereum Foundation, swarm makes a pretty good choice in this thesis.
 
 
 \subsection{Inter Planetary File System}
-The Inter Planetary File System (IPFS) \cite{ipfs2014} is a storage solution, very similar to Ethereum Swarm and solves a lot of the same issues faced by Swarm. However, it has been around for much longer than Ethereum and is much easier to setup and use.
+The Inter-Planetary File System (IPFS) \cite{ipfs2014} is a storage solution, very similar to Ethereum Swarm and solves a lot of the same issues faced by Swarm. However, it has been around for much longer than Ethereum and is much easier to set up and use.
 
-Like Swarm, it returns a filehash for a file stored in the IPFS network. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes.
+Like Swarm, it returns a file hash for a file stored in the IPFS network. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes.
 
 \subsection{Comparison between Storage Solutions}
 \begin{table}[!htbp]
@@ -702,7 +701,7 @@ Like Swarm, it returns a filehash for a file stored in the IPFS network. Unlike 
 \chapter{IoT Technology}
 \label{chapter:iot_tech}
 \section{IoT Systems and Protocols}
-Traditionally, Information of Things devices connect to each other over the network using a number of client-server messaging protocols (M2M). CoAP (Constrained Application Protocol) and MQTT are most used among the many available M2M protocols.
+Traditionally, Information of Things devices connect with each other over the network using a number of client-server messaging protocols (M2M). CoAP (Constrained Application Protocol) and MQTT are most used among the many available M2M protocols.
 
 \subsection{M2M protocols}
 IoT devices use M2M (Machine to Machine) protocols to communicate with other devices, often with other devices which connect to actual databases, Web APIs or output displays. They require a server running a message broker and a number of clients which connect and get data from the server from other clients through dedicated channels. These can be either request-response models(HTTP, CoAP) or publish-subscribe models(MQTT, AMQP).
@@ -710,22 +709,22 @@ IoT devices use M2M (Machine to Machine) protocols to communicate with other dev
 However, messages can also be transferred between devices using Smart Contracts sending messages using the Ethereum Blockchain. A centralized server is no longer required if we use Ethereum instead of relying on these M2M protocols.
 
 \section{IoT devices}
-Low powered Single Board Computers are used for Edge computing operations such as displaying data to LCD devices and collecting data from sensors. Popular devices include Raspberry Pi, Arduino and well as many other devices from well known manufacturers such as Intel and Nvidia.
+Low powered Single Board Computers are used for Edge computing operations such as displaying data to LCD devices and collecting data from sensors. Popular devices include Raspberry Pi, Arduino and well as many other devices from well-known manufacturers such as Intel and Nvidia.
 
 \subsection{Raspberry Pi 3}
-A raspberry pi (Version used is 3B) is a cheap (costs ), credit card sized general purpose computer with a 1.2 GHz ARM Cortex A53 quad-core processor with 1GB of RAM. It can run a variety of OSes like Raspbian (the default Linux OS from Adafruit, manufacturer of Raspberry Pi) and third-part OSes like Ubuntu Snappy Core, Windows IOT Core and RISC OS. The device also provides a set of General-Purpose IO headers which can be used to connect several electronic devices to this machine which makes it a suitable candidate for use in our project. This device provides no BIOS (Basic Input/Output System) and can be booted from a USB flash drive or an externally connected hard disk. However, a micro SD card is the standard way to install an OS and boot up the system.  
+A raspberry pi (Version used is 3B) is a cheap (costs ), credit card sized general purpose computer with a 1.2 GHz ARM Cortex A53 quad-core processor with 1GB of RAM. It can run a variety of OSes like Raspbian (the default Linux OS from Adafruit, manufacturer of Raspberry Pi) and third-party OSes like Ubuntu Snappy Core, Windows IOT Core, and RISC OS. The device also provides a set of General-Purpose IO headers which can be used to connect several electronic devices to this machine which makes it a suitable candidate for use in our project. This device provides no BIOS (Basic Input/Output System) and can be booted from a USB flash drive or an externally connected hard disk. However, a micro SD card is the standard way to install an OS and boot up the system.  
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.1]{images/rpi.jpg}
-	\caption{Raspberry Pi 3B}
-	\label{fig:rpi}
+    \centering
+    \includegraphics[scale=0.1]{images/rpi.jpg}
+    \caption{Raspberry Pi 3B}
+    \label{fig:rpi}
 \end{figure}
 
 
 \newpage
 \subsection{Rasbpian}
-Raspbian Stretch Lite was used as the linux-kernel based OS for the Raspberry Pi. This allows us to run everything from general purpose programming languages like Python and C to binaries for running software for blockchain and other storage to user developed code. A full, desktop version is also available for Raspbian (Raspbian Stretch). The Figure \ref{fig:rpi} describes a Raspberry Pi 3 (Model B) attached to a power supply.
+Raspbian Stretch Lite was used as the Linux-kernel based OS for the Raspberry Pi. This allows us to run everything from general-purpose programming languages like Python and C to binaries for running software for blockchain and other storage to user-developed code. A full, desktop version is also available for Raspbian (Raspbian Stretch). Figure \ref{fig:rpi} describes a Raspberry Pi 3 (Model B) attached to a power supply.
  
 \subsection{General Purpose I/O}
 A raspberry pi 3B+ model has 40 General Purpose I/O (GPIO) pins used for different purposes like reading data, providing a voltage of 3.3V or 5V or allowing serial protocols such as I2C.
@@ -738,69 +737,69 @@ Sensors are usually transistors and must be connected to
 \end{enumerate}
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.1]{images/gpiopins.jpg}
-	\caption{GPIO}
-	\label{fig:gpio_pins}
+    \centering
+    \includegraphics[scale=0.1]{images/gpiopins.jpg}
+    \caption{GPIO}
+    \label{fig:gpio_pins}
 \end{figure}
 
 \subsection{Digital Humidity and Temperature Sensor}
 Sensors like the Digital Humidity and Temperature Sensor (DHT11) are used to collect telemetry data, temperature and humidity readings in this case, and are read by python scripts running on the raspberry pi using the signals from GPIO header pins provided on it.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.1]{images/dht11.jpg}
-	\caption{DHT11 Sensor}
-	\label{fig:dht11}
+    \centering
+    \includegraphics[scale=0.1]{images/dht11.jpg}
+    \caption{DHT11 Sensor}
+    \label{fig:dht11}
 \end{figure}
 
 \subsection{RGB LED}
 An RGB LED can light up individually in colors of RED, BLUE or GREEN or in groups providing different colors. It can be programmed GPIO modules in C/ Python and are available as part of the Raspbian OS. Supplying power to the GPIO header which is connected to the corresponding color’s pin in the LED results in that color being displayed.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.1]{images/rgb_led.jpg}
-	\caption{RGB LED}
-	\label{fig:rgb_led}
+    \centering
+    \includegraphics[scale=0.1]{images/rgb_led.jpg}
+    \caption{RGB LED}
+    \label{fig:rgb_led}
 \end{figure}
 
 \subsection{I2C LCD}
-I2C is a serial protocol through which low-powered devices such as a LCD can communicate with the host device (raspberry pi) through the general purpose i/o pins. 
-An LCD with a 16x2 display matrix and a I2C backpack attached is used to display the latest data saved to the blockchain and is used for demonstration purposes. 
+I2C is a serial protocol through which low-powered devices such as an LCD can communicate with the host device (raspberry pi) through the general purpose i/o pins. 
+An LCD with a 16x2 display matrix and an I2C backpack attached is used to display the latest data saved to the blockchain and is used for demonstration purposes. 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.1]{images/i2c_lcd.jpg}
-	\caption{I2C LCD}
-	\label{fig:i2c_lcd}
+    \centering
+    \includegraphics[scale=0.1]{images/i2c_lcd.jpg}
+    \caption{I2C LCD}
+    \label{fig:i2c_lcd}
 \end{figure}
 
 \subsection{Hardware Security Module}
 Tiny Edge devices like the Raspberry Pi 3 provide little to no security.
-The primary storage mechanism is an micro SD card which can be easily imaged and data including encryption keys can be stolen easily as the data is stored as plain text. There is also no storage for sensitive data such as secret keys for cloud based APIs or encryption keys used for authentication. Add-on Hardware Security Modules, also called Trusted Privacy Modules (TPM) can be used to overcome some of the security problems posed above. In this thesis, Zymbit 4i was used which is an add-on module for the Raspberry Pi.
+The primary storage mechanism is a micro SD card which can be easily imaged and data including encryption keys can be stolen easily as the data is stored as plain text. There is also no storage for sensitive data such as secret keys for cloud-based APIs or encryption keys used for authentication. Add-on Hardware Security Modules, also called Trusted Platform Modules (TPM) can be used to overcome some of the security problems posed above. In this thesis, Zymbit 4i was used which is an add-on module for the Raspberry Pi.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.1]{images/tpm.jpg}
-	\caption{Trusted Privacy Module}
-	\label{fig:tpm}
+    \centering
+    \includegraphics[scale=0.1]{images/tpm.jpg}
+    \caption{Trusted Platform Module}
+    \label{fig:tpm}
 \end{figure}
 
 
 \section{IOT Security}
-IoT devices are expected to have a huge economic impact in the coming years and is expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. 
+IoT devices are expected to have a huge economic impact in the coming years and are expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption, and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. 
 
 \subsection{TPM}
-Hardware Security Modules, also called Trusted Privacy Modules \cite{article} (TPM) are used to help enhance the relatively weak security on a base Raspberry Pi. A TPM is used to provide a hardware level root-of-trust in a system by using a unique element of the system which cannot be replicated by anyone trying to do so. It is generally used to store secret keys in the hardware as well as fully encrypt the file system and decrypt only when the device is attached to the system. TPM used in this thesis is called Zymbit 4i, which is an add-on hardware board developed for the Raspberry Pi and communicates with it via the I2C interface. The Zymbit provides this root-of-trust by using attributes on the host raspberry pi and combines with its own Unique ID and generates a unique binding. Zymbit 4i used in this thesis is pictured in Fig \ref{fig:tpm} 
+Hardware Security Modules, also called Trusted Platform Modules \cite{article} (TPM) are used to help enhance the relatively weak security on a base Raspberry Pi. A TPM is used to provide a hardware level root-of-trust in a system by using a unique element of the system which cannot be replicated by anyone trying to do so. It is generally used to store secret keys in the hardware as well as fully encrypt the file system and decrypt only when the device is attached to the system. TPM used in this thesis is called Zymbit 4i, which is an add-on hardware board developed for the Raspberry Pi and communicates with it via the I2C interface. The Zymbit provides this root-of-trust by using attributes on the host raspberry pi and combines with its own Unique ID and generates a unique binding. Zymbit 4i used in this thesis is pictured in Fig \ref{fig:tpm} 
 
 \subsubsection{Data Locker keys}
 The TPM used, Zymbit 4i, provides a public-private ECDSA key pair for signature generation and verification as well as two keys, one-way and shared. \textbf{One-way} key is used to lock down sensitive files such as secret keys to the machine while the \textbf{shared} key is used to encrypt data saves to Amazon Web Services (AWS) cloud. 
 
 \subsubsection{Linux Unified Key Setup}
-The storage medium (SD card is this case) is encrypted fully using LUKS \cite{cryptoeprint:2016:274} (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt the file system contents shared by several users/ services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible. LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them to services and revoking them when required. However, all these keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, the master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using its private key stored within the hardware.
+The storage medium (SD card in this case) is encrypted fully using LUKS \cite{cryptoeprint:2016:274} (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt the file system contents shared by several users/ services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible. LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them to services and revoking them when required. However, all these keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, the master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using its private key stored within the hardware.
 
 \chapter{Proposed System} \label{chapter:proposed_system}
 \section{System Architecture} \label{ss:construct_architecture}
-The proposed system explained in \ref{fig:impldiagram_architechture} consists of number of applications running on a Local machine (miner nodes) whose sole purpose is to validate the transactions called by the set methods in the smart contract. One of the raspberry pis, called IoT Producer will be used to gather readings. The IoT producer will be running geth in light mode, swarm and ipfs applications to send data to rest of the network. The other raspberry pi, called IoT consumer will be used to get the readings from the network and use them to send out the data to other end-points such as APIs or LCD displays. The connections between the Producer and Consumer isn't rigid and each connect to the Ethereum, Swarm or IPFS network.
+The proposed system explained in \ref{fig:impldiagram_architechture} consists of a number of applications running on a Local machine (miner nodes) whose sole purpose is to validate the transactions called by the set methods in the smart contract. One of the raspberry pis called IoT Producer will be used to gather readings. The IoT producer will be running geth in light mode, swarm, and ipfs applications to send data to the rest of the network. The other raspberry pi called IoT consumer will be used to get the readings from the network and use them to send out the data to other end-points such as APIs or LCD displays. The connections between the Producer and Consumer isn't rigid and each connects to the Ethereum, Swarm or IPFS network in a P2P manner.
 
 \begin{figure}
 	\centering
@@ -816,18 +815,18 @@ This section explains in detail, the different systems working together to achie
 The test machine validating the mining operations is a laptop with Core i7-7700HQ processor rated at 2.8GHz with 4 physical cores and 16 GB RAM. This machine runs two geth miner nodes (for redundancy). One of the miner nodes dedicates a few of its resources to serve requests from light geth nodes.
 
 \subsection{IoT Edge Nodes}
-We will setup two identical Raspberry Pis, each serving different purposes. One of the raspberry pi's will be used to read telemetry data from sensors while the other will be used to output this data to a display device or the console.
-The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHZ quad-core ARM Cortex A53 processor with 1 GB DDR2 RAM. A 32GB class 10 SD card encrypted by LUKS and dm-crypt serves as the storage medium. Raspbian Stretch Lite is flashed onto both the nodes and booted up.
+We will set up two identical Raspberry Pis, each serving different purposes. One of the raspberry pi's will be used to read telemetry data from sensors while the other will be used to output this data to a display device or the console.
+The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHz quad-core ARM Cortex A53 processor with 1 GB DDR2 RAM. A 32GB class 10 SD card encrypted by LUKS and dm-crypt serves as the storage medium. Raspbian Stretch Lite is flashed onto both the nodes and booted up.
 
 \subsubsection{IoT Producer}
-The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It is setup to be able to connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
+The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It is set up to be able to connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
 
 For testing and demo purposes, a Digital Humidity and Temperature Sensor (DHT11) is attached to the raspberry pi to GPIO22 pin for data, 3.3V for voltage and ground pin.
 
 \subsubsection{IoT Consumer}
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
-Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO4 ,GPIO3 and GPIO2 pins of the consumer and a ground pin. The second device is a I2C LCD which is connected to the SDA1 and SCL1 pins for I2C bus, 3.3V for power and ground pin.
+Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO4, GPIO3 and GPIO2 pins of the consumer and a ground pin. The second device is an I2C LCD which is connected to the SDA1 and SCL1 pins for I2C bus, 3.3V for power and ground pin.
 
 \section{Security Algorithm}
 We use a couple of cryptography techniques to transfer secret keys, encrypt data using these keys as well as use hashing to sign messages and verify them.
@@ -835,11 +834,11 @@ We use a couple of cryptography techniques to transfer secret keys, encrypt data
 \subsection{Cryptography Algorithms used}
 \subsubsection{Public Key Cryptography}
 
-Public Key Cryptography uses a key pair of public and private keys to encrypt data as well as provide verification the authenticity of a message.
+Public Key Cryptography uses a key pair of public and private keys to encrypt data as well as provide verification of the authenticity of a message.
 
-Ron Rivest, Adi Shamir and Leonard Adleman developed the RSA algorithm which utilizes a public-private key pair to encrypt and decrypt data. It can also be used for verifying signatures. The public key of a recipient is used to encrypt data which can then be used by the recipient to decrypt the data using their private key. Due to payload size constraints, it is typically used to transfer symmetric encryption keys.
+Ron Rivest, Adi Shamir, and Leonard Adleman developed the RSA algorithm which utilizes a public-private key pair to encrypt and decrypt data. It can also be used for verifying signatures. The public key of a recipient is used to encrypt data which can then be used by the recipient to decrypt the data using their private key. Due to payload size constraints, it is typically used to transfer symmetric encryption keys.
 
-2048 bit Public Private key pairs are generated by all the Raspberry Pi's on the network and the public keys are sent to the host machine.
+2048 bit Public-Private key pairs are generated by all the Raspberry Pis on the network and the public keys are sent to the host machine.
 
 The Equation \ref{cipher_encr} describes the encryption of the Symmetric Key encrypted using the Public Key of the Raspberry Pi.
 \begin{equation} \label{cipher_encr}
@@ -866,11 +865,11 @@ In this thesis, we will be storing the received Symmetric Key using the TPM's AE
 \subsubsection{Symmetric Encryption}
 Symmetric Encryption uses a single secret key to encrypt and decrypt data. Symmetric key encryption is used to encrypt or decrypt huge volumes of data and is generally faster than Public Key Cryptography. The downside is that the secret key must be stored safely and must be changed frequently.
 
-Advanced Encryption Standard (AES) utilizes a strong secret key to encrypt actual data. We use this algorithm to encrypt and store data in Swarm or IPFS. Since the system we are proposing requires many devices sharing the same key, using public key cryptography was considered for this thesis.
+Advanced Encryption Standard (AES) utilizes a strong secret key to encrypt actual data. We use this algorithm to encrypt and store data in Swarm or IPFS. Since the system, we are proposing requires many devices sharing the same key, using public key cryptography was considered for this thesis.
 
 The Host machine generates a 256 bit AES key and sends it to all the raspberry pi machines connected to the network.
 
-The raspberry pis then encrypt and store these secret keys on their file systems and use them to send their Payload in encrypted format to the Storage systems.
+The raspberry pis encrypt and store these secret keys on their file systems and use them to send their Payload in an encrypted format to the Storage systems.
 
 The IoTProducers encrypt and send the data as shown in \ref{encrypt_payload_eq}
 \begin{equation}\label{encrypt_payload_eq}
@@ -883,9 +882,9 @@ The IoTConsumers decrypt and use the data as shown in \ref{decrypt_payload_eq}
 \end{equation}
 
 \subsubsection{Hashing}
-Hashing is the process of generating a set of characters that can uniquely identify a particular input. In Cryptography, they are used mainly to generate a signature for a larger input and encrypt it with a sender's private key, and can be decrypted only using the sender's public key. This authenticates the data received as only the sender's public key can decrypt data encrypted using its private key pair. Secure Hashing Algorithms (SHA series), Message Digest (MD series) and Hash Message Authentication Code (HMAC) are some of the hashing algorithms in popular use.
+Hashing is the process of generating a set of characters that can uniquely identify a particular input. In Cryptography, they are used mainly to generate a signature for a larger input and encrypt it with a sender's private key and can be decrypted only using the sender's public key. This authenticates the data received as only the sender's public key can decrypt data encrypted using its private key pair. Secure Hashing Algorithms (SHA series), Message Digest (MD series) and Hash Message Authentication Code (HMAC) are some of the hashing algorithms in popular use.
 
-A hash algorithm (HMAC) is used in this thesis to sign the un-encrypted payload and is used to sign the data on the producer side and verify its authenticity on the receiving end. It uses a secret shared key for authentication and signature verification which can be done using the same method we used for transferring the AES key. 
+A hash algorithm (HMAC) is used in this thesis to sign the data on the producer side and verify its authenticity on the receiving end. It uses a secret shared key for authentication and signature verification which can be done using the same method we used for transferring the AES key. 
 
 The Equation \ref{gen_sig} describes the signature generation process using the shared secret key, cipher and Initialization vector generated from the AES encryption process and SHA256 algorithm.
 \begin{equation}\label{gen_sig}
@@ -900,7 +899,7 @@ The Equation \ref{verify_sig} describes the verification process by comparing th
 \subsection{Private PKI} \label{priv_pki}
 Public Key Infrastructure (PKI) is used to authenticate users of a service and prevent man in the middle attacks in networks. A PKI involves using an external Third party which is universally trusted to sign Digital Certificates in X.509 format. SSL/ TLS use this format for digital certificates which in turn, is the basis for the HTTPS standard.
 
-Private PKI are generally used to secure communications between local devices. We have such a usecase in our thesis where we must connect to the IoT Consumer node which runs the geth and swarm endpoints. Outside APIs or other devices such as another Raspberry Pi which has a LCD device attached to it (called LCD node) and is used to display the current temperature and humidity readings. To prevent unauthorized access and to encrypt data between the IoT Consumer node and the Display node, we setup a private PKI to sign these digital certificates and routed all communications through a reverse proxy.
+Private PKI is generally used to secure communications between local devices. We have such a use case in our thesis where we must connect to the IoT Consumer node which runs the geth and swarm endpoints. Outside APIs or other devices such as another Raspberry Pi which has an LCD device attached to it (called LCD node) and is used to display the current temperature and humidity readings. To prevent unauthorized access and to encrypt data between the IoT Consumer node and the Display node, we set up a private PKI to sign these digital certificates and routed all communications through a reverse proxy.
 
 \begin{enumerate}
 	\item Generate a key for the private Root CA and store it very securely.
@@ -914,52 +913,52 @@ Private PKI are generally used to secure communications between local devices. W
 
 
 \subsubsection{Reverse Proxy}
-A reverse proxy is an intermediate server that intercepts all or most requests depending on their usage. These intercepted requests are then routed to the correct backend server. In our case, we run a reverse proxy on the IoT Consumer which uses certificates signed by our private PKI and allows HTTPS communication between our LCD node and the IoT Consumer. In this way, the LCD node is allowed to connect to the geth, swarm and ipfs endpoints and receive data securely. Nginx is a popular server option and can be configured to be used as a reverse proxy.
+A reverse proxy is an intermediate server that intercepts all or most requests depending on their usage. These intercepted requests are then routed to the correct backend server. In our case, we run a reverse proxy on the IoT Consumer which uses certificates signed by our private PKI and allows HTTPS communication between our LCD node and the IoT Consumer. In this way, the LCD node is allowed to connect to the geth, swarm, and ipfs endpoints and receive data securely. Nginx is a popular server option and can be configured to be used as a reverse proxy.
 
 \subsection{Hardware Security with TPM}
-A Trusted Privacy Module device, Zymbit 4i is used as a Hardware Security mechanism for the raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104 and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
+Zymbit 4i is used as the TPM for raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104, and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
 
-The first step in setting up the TPM is to pair \cite{TPMSetup} it with the Raspberry Pi. This pairing process uses a couple of unique features from both the host raspberry pi and the TPM and generates a unique Device ID that binds the TPM to the host. A linux systemd service \textbf{zkifc} runs on the host raspberry pi when properly paired. It is used to provide access to the keys stored on the TPM via I2C interface and all communications between the TPM and I2C are encrypted.
+The first step in setting up the TPM is to pair \cite{TPMSetup} it with the Raspberry Pi. This pairing process uses a couple of unique features from both the host raspberry pi and the TPM and generates a unique Device ID that binds the TPM to the host. A Linux systemd service \textbf{zkifc} runs on the host raspberry pi when properly paired. It is used to provide access to the keys stored on the TPM via I2C interface and all communications between the TPM and I2C are encrypted.
 
-Among other features, TPMs generally provide two important features that were extremely useful for this thesis.
+Among other features, TPMs generally provides two important features that were extremely useful for this thesis.
 \subsection{Root File encryption with LUKS}
 The Root File System is not very secure in a Raspberry Pi system. The SD card can be easily imaged and sensitive data like shared keys can be stolen very easily. A viable solution is to encrypt the entire Root File System using Linux Unified Key Setup and dm-crypt.
 
-Figure \ref{fig:normal_fs} shows how easily the SD card can be read and senstive data can be stolen.
+Figure \ref{fig:normal_fs} shows how easily the SD card can be read and sensitive data can be stolen.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{images/3_NormalFS.png}
-	\caption{Unencrypted File System}
-	\label{fig:normal_fs}
+    \centering
+    \includegraphics[scale=1]{images/3_NormalFS.png}
+    \caption{Unencrypted File System}
+    \label{fig:normal_fs}
 \end{figure}
 
 \subsubsection{Boot Sequence of normal LUKS}
 \begin{enumerate}
-	\item Kernel initializes initramfs - A single archive loaded into main memory during startup
-	\item initramfs presents decryption key to LUKS
-	\item LUKS decrypts the root file system
+    \item Kernel initializes initramfs - A single archive loaded into main memory during startup
+    \item initramfs presents decryption key to LUKS
+    \item LUKS decrypts the root file system
 \end{enumerate}
 
 There are a couple of issues with the above procedure when Raspberry Pi is involved. First, there is no dedicated key-ring for storing cryptographic keys available in other Operating Systems. Secondly, the decryption key should not be stored in plain text on the removable SD card. To fix these issues, a TPM is used with LUKS \cite{TPMLUKS} for a more secure boot sequence. The Figure \ref{fig:encrypted_fs} shows how an encrypted file system works.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{images/2_LUKSEncryptedFormat.png}
-	\caption{Encrypted File System with LUKS}
-	\label{fig:encrypted_fs}
+    \centering
+    \includegraphics[scale=0.5]{images/2_LUKSEncryptedFormat.png}
+    \caption{Encrypted File System with LUKS}
+    \label{fig:encrypted_fs}
 \end{figure}
 
 \subsubsection{Boot Sequence of LUKS with TPM}
 \begin{enumerate}
-	\item Kernel initializes initramfs
-	\item initramfs present locked LUKS key to TPM
-	\item TPM verifies the key signature and decrypts the LUKS key
-	\item Unlocked LUKS key is used to decrypt the root file system
+    \item Kernel initializes initramfs
+    \item initramfs present locked LUKS key to TPM
+    \item TPM verifies the key signature and decrypts the LUKS key
+    \item Unlocked LUKS key is used to decrypt the root file system
 \end{enumerate}
 
 \subsubsection{Data Locker for keys}
-This feature allowed us to store all shared secret keys in encrypted format. The secret keys transferred over to the raspberry pis (process is explained in \ref{transfer_symm_keys}) are encrypted using the AES key hard coded to the TPM hardware. Zymbit 4i provides a python module called zymkey which accesses the TPM's AES key and encrypts/ decrypts the stored secret key and locks it to the raspberry pi. The locked key is then used for transferring encrypted data over the network.
+This feature allowed us to store all shared secret keys in an encrypted format. The secret keys transferred over to the raspberry pis (the process is explained in \ref{transfer_symm_keys}) are encrypted using the AES key hardcoded to the TPM hardware. Zymbit 4i provides a python module called zymkey which accesses the TPM's AES key and encrypts/ decrypts the stored secret key and locks it to the raspberry pi. The locked key is then used for transferring encrypted data over the network.
 
 The TPM's AES key is used to encrypt the actual AES secret key and is explained in \ref{eq:encryptionofKeyZymbit}
 
@@ -979,20 +978,20 @@ The default password on the raspberry pi is \textbf{raspberry}. According to a r
 To further increase security, a new user is added and the default \textbf{pi} is deleted. Another feature to consider is to request the password when a terminal runs a \textbf{sudo} command which is turned off in raspbian by default.
 
 \subsubsection{Installing Firewall}
-There is no firewall installed by default on the raspberry pi. Uncomplicated Firewall (ufw) can be setup very easily in any linux based OS and the raspbian OS is no different. All ports except for those we need such those for making remote procedure calls, networking between geth, swarm or ipfs nodes are selectively enabled.
+There is no firewall installed by default on the raspberry pi. Uncomplicated Firewall (ufw) can be set up very easily in any Linux based OS and the raspbian OS is no different. All ports except for those we need such those for making remote procedure calls, networking between geth, swarm or ipfs nodes are selectively enabled.
 
 \subsubsection{Transferring Symmetric keys} \label{transfer_symm_keys}
-Symmetric (Secret) keys must never be transferred in plain-text format over network or stored in the file system in plain text. The below sequence of steps are used to transfer AES keys over a network and lock them to the raspberry pi.
+Symmetric (Secret) keys must never be transferred in plain-text format over the network or stored in the file system in plain text. The below sequence of steps is used to transfer AES keys over a network and lock them to the raspberry pi.
 
 \begin{enumerate}
-	\item Generate RSA public - private key pair on Raspberry Pi
-	\item Transfer public key over to host machine generating symmetric key using a secure channel such as Secure Copy (scp) or Secure File Transfer Protocol (sftp)
-	\item Generate a signature hash for the key
-	\item Encrypt the symmetric key with the raspberry pi's public key
-	\item Transfer the encrypted symmetric key back to the raspberry pi
-	\item Decrypt the symmetric key using the raspberry pi's private key
-	\item Verify the signature from the decrypted text
-	\item Once signature is verified, use the one-way key from TPM to encrypt and store the symmetric key, which is only decrypted, used and discarded when data collection script starts
+    \item Generate RSA public-private key pair on Raspberry Pi
+    \item Transfer public key over to host machine generating the symmetric key using a secure channel such as Secure Copy (SCP) or Secure File Transfer Protocol (sftp)
+    \item Generate a signature hash for the key
+    \item Encrypt the symmetric key with the raspberry pi's public key
+    \item Transfer the encrypted symmetric key back to the raspberry pi
+    \item Decrypt the symmetric key using the raspberry pi's private key
+    \item Verify the signature from the decrypted text
+    \item Once the signature is verified, use the one-way key from TPM to encrypt and store the symmetric key, which is only decrypted, used and discarded when data collection script starts
 \end{enumerate}
 
 \subsubsection{Disable RPC on geth and swarm if not required}
@@ -1003,18 +1002,18 @@ Remote Procedure Calls are used by remote clients to connect to geth/swarm nodes
 This section describes the sequence of steps performed on the sending and receiving ends of the system and also the process of developing the Smart Contract that will be used to register devices and the methods that will be used to store data in Blockchain as well as IPFS and Swarm.
 
 \subsection{Sequence of Steps}
-The steps to collect and retrieve the sensor data after applying encryption, verification or decryption are explained in the sections below. The Figure \ref{fig:dataflow_diagram} describes these steps at a very basic level.
+The steps to collect and retrieve the sensor data after applying encryption, verification or decryption are explained in the sections below. Figure \ref{fig:dataflow_diagram} describes these steps at a very basic level.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{images/SequenceDiagram.png}
-	\caption{Data Flow Diagram}
-	\label{fig:dataflow_diagram}
+    \centering
+    \includegraphics[scale=0.5]{images/SequenceDiagram.png}
+    \caption{Data Flow Diagram}
+    \label{fig:dataflow_diagram}
 \end{figure}
 
 \newpage
 \subsection{Sensor Data Collection}
-The Algorithm \ref{alg:data_collection} explains the overall steps followed on the Producer side to collect data from the sensor, sign and encrypt it. The data is then saved to IPFS or Swarm and the resulting filehash is stored in Ethereum.
+The Algorithm \ref{alg:data_collection} explains the overall steps followed on the Producer side to collect data from the sensor, sign and encrypt it. The data is then saved to IPFS or Swarm and the resulting file hash is stored in Ethereum.
 
 \begin{algorithm}[Data Collection and Payload Storage]
  \KwData{TPM Private key $tpmPrivKey$, Encrypted AES key $cipherText$}
@@ -1061,7 +1060,7 @@ The Algorithm \ref{alg:data_retrieval} explains the steps followed on the Consum
 This section details our logic used within the smart contract to define access control, store and retrieve file-hashes for payload loaded to IPFS or Swarm. 
 
 \subsubsection{struct to store the collected data}
-Although only filehash is part of the struct, it was left in place for future enhancements, if needed.
+Although only file hash is part of the struct, it was left in place for future enhancements, if needed.
 \begin{verbatim}
     //struct to store the file-hashes which store the actual sensor data
     struct SensorData{
@@ -1079,12 +1078,6 @@ A previous version of the struct in Smart contract when everything was stored on
         uint64 humidity;
         string dataStorageTime;
     }
-\end{verbatim}
-
-\subsubsection{pointer to data}
-An integer value, ID is used as a pointer to refer to our current readings stored/ retrieved by the smart contract.
-\begin{verbatim}
-    uint public currentID;
 \end{verbatim}
 
 \subsubsection{pointer to data}
@@ -1115,7 +1108,7 @@ The ID must be initialized before access and so a constructor is used for this p
     }
 \end{verbatim}
 
-\subsubsection{Modifier to only allow owner to register and de-register ids}
+\subsubsection{Modifier to only allow the owner to register and de-register ids}
 Access to certain Contract methods such as register or de-registering devices must be held only by the administrator. In this case, the contract creator is the admin and so only the address that created the contract is allowed to run methods which enforce the ownerOnly modifier.
 \begin{verbatim}
     //Modify some functions to be executed only by the Contract creator
@@ -1160,7 +1153,7 @@ This method describes how to increment the currentID being used to load data to 
 \end{verbatim}
 
 \subsubsection{Function to set the SensorData filehash}
-This method is used to initiate a transaction to add a new filehash received from the storage system and save it to the mapping we have declared earlier. If the device is not registered, an event with the appropriate message is emitted. On success, another event is triggered which relays that the transaction was successful to all the listeners.
+This method is used to initiate a transaction to add a new file hash received from the storage system and save it to the mapping we have declared earlier. If the device is not registered, an event with the appropriate message is emitted. On success, another event is triggered which relays that the transaction was successful to all the listeners.
 
 \begin{verbatim}
     //Function to store the filehash from swarm
@@ -1195,8 +1188,8 @@ This function returns the latest filehash stored in the blockchain. Using the cu
     }
 \end{verbatim}
 
-\subsubsection{Function to get the SensorData filehash from any ID}
-This method works in a similar fashion to the above method, but retrieves the value associated with the given ID from the sensorDataStore mapping.
+\subsubsection{Function to get the SensorData file hash from any ID}
+This method works in a similar fashion to the above method but retrieves the value associated with the given ID from the sensorDataStore mapping.
 
 \begin{verbatim}
     //Function to get the data stored under some ID
@@ -1213,7 +1206,7 @@ This method works in a similar fashion to the above method, but retrieves the va
 \subsubsection{Methods to register and deregister IoT devices}
 The following methods explain how to check if the device is registered and call register or deregister methods for any device and can be only accessed by the contract owner. 
 The method "devicePresent" returns if the device is registered with the system.
-The methods "registerDevice" and "deregisterDevice" are used to 
+The methods "registerDevice" and "deregisterDevice" are used to register and de-register the IoT device using the Smart Contract respectively.
 \begin{verbatim}
     //function to check if device is registered
     function devicePresent(address addressToAdd) public view returns (bool) {
@@ -1254,7 +1247,7 @@ For IPFS or Swarm, we will be using the provided HTTP proxy to store and retriev
  \label{alg:payload_storage}
 \end{algorithm}
 
-A GET request retrieves the payload from the system using the filehash as input which is explained in Algorithm \ref{alg:payload_retrieval}.
+A GET request retrieves the payload from the system using the file hash as input which is explained in Algorithm \ref{alg:payload_retrieval}.
 
 \begin{algorithm}[getSwarmOrIPFSData]
  \KwData{File hash of Payload $filehash$}
@@ -1266,35 +1259,35 @@ A GET request retrieves the payload from the system using the filehash as input 
 \end{algorithm}
 
 \subsection{Payload Format} \label{ss:payload_format}
-The payload stored in the storage systems from the sensors can be modified at will, and is independent of the data format enforced by the blockchain. It also allows data to be encrypted before storage. Payload is generated and stored in JSON format as referenced in Table \ref{payload_format}. All values are stored as strings and then formatted into either integer, floating-point numbers or timestamp when needed.
+The payload stored in the storage systems from the sensors can be modified at will and is independent of the data format enforced by the blockchain. It also allows data to be encrypted before storage. The payload is generated and stored in JSON format as referenced in Table \ref{payload_format}. All values are stored as strings and then formatted into either integer, floating-point numbers or timestamp when needed.
 \newpage
 
 \begin{table}[!htbp]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Payload Format}
-	\label{payload_format}
-	\centering
-	\begin{tabular}{|c|c|c|c|}
-		\hline
-		\bfseries S.No & \bfseries Payload Item & \bfseries Brief Explanation & \bfseries Example Data \\
-		\hline\hline
-		$1$ & Temperature & Temperature collected from sensor in C & 23 \\ \hline
-		$2$ & Humidity & Humidity collection from the sensor in \% & 44 \\ \hline
-		$3$ & Temperature Units & Units used for temperature (C or F) & F \\ \hline
-		$4$ & Humidity Units & Units used for humidity & \% \\ \hline
-		$6$ & Timestamp & Time stamp of data collection & 2019-03-13 22:06:09 \\ \hline
-		$6$ & Device ID & IoT device ID & IoTProducer1 \\ \hline
-		$7$ & Device Type & IoT device type & RaspberryPi3 B \\ \hline
-		$8$ & Device IP & IP of IoT device& 192.168.0.16 \\ \hline
-		$9$ & Sensor Type & Type of the Sensor Used & DHT11 \\ \hline
-	\end{tabular}
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Payload Format}
+    \label{payload_format}
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \bfseries S.No & \bfseries Payload Item & \bfseries Brief Explanation & \bfseries Example Data \\
+        \hline\hline
+        $1$ & Temperature & Temperature collected from sensor in C & 23 \\ \hline
+        $2$ & Humidity & Humidity collection from the sensor in \% & 44 \\ \hline
+        $3$ & Temperature Units & Units used for temperature (C or F) & F \\ \hline
+        $4$ & Humidity Units & Units used for humidity & \% \\ \hline
+        $6$ & Timestamp & Time stamp of data collection & 2019-03-13 22:06:09 \\ \hline
+        $6$ & Device ID & IoT device ID & IoTProducer1 \\ \hline
+        $7$ & Device Type & IoT device type & RaspberryPi3 B \\ \hline
+        $8$ & Device IP & IP of IoT device& 192.168.0.16 \\ \hline
+        $9$ & Sensor Type & Type of the Sensor Used & DHT11 \\ \hline
+    \end{tabular}
 \end{table}
 
 
 \section{Implementation}
 This section describes the environment setup, the binaries are installed and the extra frameworks and modules installed to help develop the proposed system.
 \subsection{Environment Setup}
-Python3 is used to write scripts that interface with IoT devices, Ethereum blockchain, IPFS and Swarm. Its package manager pip3 is installed in all the devices we use. The environment used in our test devices are tabulated in \ref{environment_setup}. Node.js with its package manager npm, is used to build, compile and deploy Solidity based Smart Contracts. 
+Python3 is used to write scripts that interface with IoT devices, Ethereum blockchain, IPFS, and Swarm. Its package manager pip3 is installed in all the devices we use. The environment used in our test devices is tabulated in \ref{environment_setup}. Node.js with its package manager npm is used to build, compile and deploy Solidity based Smart Contracts. 
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1}
@@ -1312,9 +1305,9 @@ Python3 is used to write scripts that interface with IoT devices, Ethereum block
 \end{table}
 
 \subsection{Software binaries}
-Pre-built Geth binaries are downloaded for the local machine(amd64) as well as the IoT nodes(arm). To ensure uniformity, same versions were used across all devices. Ethereum-Swarm packages are readily available for Ubuntu but not easily available for the Raspberry Pi 3.
+Pre-built Geth binaries are downloaded for the local machine(amd64) as well as the IoT nodes(arm). To ensure uniformity, the same versions were used across all devices. Ethereum-Swarm packages are readily available for Ubuntu but not easily available for the Raspberry Pi 3.
 Raspberry pi 3B doesn't have the capabilities to build these binaries from source.
-Fortunately, Geth and swarm were built using the Go programming language which provides excellent cross-compilation tools. The local machine was used to build the swarm binary and these binaries were installed on the raspberry pis. Table \ref{software_version} provides information on the different versions of geth, swarm and IPFS used in this thesis.
+Fortunately, Geth and swarm were built using the Go programming language which provides excellent cross-compilation tools. The local machine was used to build the swarm binary and these binaries were installed on the raspberry pis. Table \ref{software_version} provides information on the different versions of geth, swarm, and IPFS used in this thesis.
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1}
@@ -1332,40 +1325,40 @@ Fortunately, Geth and swarm were built using the Go programming language which p
 \end{table}
 
 \subsection{Python modules}
-Since python3 is used extensively, a couple of third party python modules are used to help with accessing the blockchain, write data to ipfs or encrypt and decrypt data. Table \ref{python_modules} describes all the modules used in this thesis.
+Since python3 is used extensively, a couple of third-party python modules are used to help with accessing the blockchain, write data to ipfs or encrypt and decrypt data. Table \ref{python_modules} describes all the modules used in this thesis.
 \begin{table}[!htbp]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Third party Python modules}
-	\label{python_modules}
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\bfseries Module Category & \bfseries Module Name & \bfseries Usage \\
-		\hline\hline
-		$Storage$ & web3 & To access smart contract functions or get balances \\ \hline
-		$Storage$ & ipfsapi & To store and retrieve data from IPFS \\ \hline
-		$IoT$ & AdafruitDHT & Get temperature, humidity from DHT \\ \hline
-		$IoT$ & Rpi.GPIO & Control GPIO pins connected to RGB LED \\ \hline
-		$IoT$ & I2C LCD driver & Display data on LCD via I2C interface \\ \hline
-		$Cryptography$ & pycryptodomex & Implementations of Cryptography algorithms \\ \hline
-		$Cryptography$ & zymkey & Encrypt, Decrypt, Sign and Verify data using TPM \\ \hline
-	\end{tabular}
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Third party Python modules}
+    \label{python_modules}
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \bfseries Module Category & \bfseries Module Name & \bfseries Usage \\
+        \hline\hline
+        $Storage$ & web3 & To access smart contract functions or get balances \\ \hline
+        $Storage$ & ipfsapi & To store and retrieve data from IPFS \\ \hline
+        $IoT$ & AdafruitDHT & Get temperature, humidity from DHT \\ \hline
+        $IoT$ & Rpi.GPIO & Control GPIO pins connected to RGB LED \\ \hline
+        $IoT$ & I2C LCD driver & Display data on LCD via I2C interface \\ \hline
+        $Cryptography$ & pycryptodomex & Implementations of Cryptography algorithms \\ \hline
+        $Cryptography$ & zymkey & Encrypt, Decrypt, Sign and Verify data using TPM \\ \hline
+    \end{tabular}
 \end{table}
 
 \subsection{Evaluation Methods}
-Once the network is setup, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, CPU and memory usage.
+Once the network is set up, performance of the system will be tested in terms of Transactions per Second (TPS), cost per transaction, CPU and memory usage.
 
 To test TPS, a data set of 10,000 records formatted in the Payload data format described in \ref{ss:payload_format} is generated.
 
 Three categories of tests are performed with both Ethereum and Swarm/ IPFS.
 \begin{enumerate}
-    \item Data is stored to Swarm/ IPFS and write timings are measured. File hashes are stored in a test file and used while testing read performance.
+    \item Data is stored to Swarm/ IPFS and write timings are measured. File hashes are stored in a text file and used while testing read performance.
     \item Data is stored to Swarm/ IPFS and the received file hash is stored to Ethereum via the Smart contract function. Read and Write times are measured.
-    \item Data is stored to Swarm/IPFS in encrypted format. The retrieved filehash is then stored and retrieved when needed. Encryption Algorithm used for all tests is AES-CBC with PKCS padding. The key used is of 256 bit size.
+    \item Data is stored to Swarm/IPFS in an encrypted format. The retrieved file hash is then stored and retrieved when needed. Encryption Algorithm used for all tests is AES-CBC with PKCS padding. The key used is of 256-bit size.
 \end{enumerate}
 
 \subsubsection{Setup}
-A private network consisting of atleast 3 nodes needs to be setup - a "full" miner node with IoT producer and IoT consumer "light" nodes.
+A private network consisting of at least 3 nodes needs to be set up - a "full" miner node with IoT producer and IoT consumer "light" nodes.
 
 These steps outline the process of setting up a private Ethereum network.
 \begin{enumerate}
@@ -1382,7 +1375,7 @@ These steps outline the process of setting up a private Ethereum network.
 
 
 \subsubsection{Testing}
-To test Ethereum, the primary parameters can be measured for both the filehash and full payload. The primary accounts in all the nodes of the system are transferred 100 Ethereum each to perform these experiments. 
+To test Ethereum, the primary parameters can be measured for both the file hash and full payload. The primary accounts in all the nodes of the system are transferred 100 Ethereum each to perform these experiments. 
 \begin{enumerate}
     \item Cost incurred per transaction
     \item Time taken to transact Set Data method
@@ -1393,28 +1386,28 @@ To test Ethereum, the primary parameters can be measured for both the filehash a
     \item Average block creation time
     \item Average Network Hashrate
 \end{enumerate}
-The network can be fine-tuned to include more transactions per block by adjusting gas limit per transaction.
+The network can be fine-tuned to include more transactions per block by adjusting the gas limit per transaction.
 
 \subsection{IPFS and Swarm}
 Testing IPFS and Swarm can be done using similar methods. The below parameters are considered during testing their individual performance on the proposed system. 
 
 \subsubsection{Setup Swarm Private Network}
-Swarm is closely related to Ethereum and must use the same network ID that was used in Ethereum to setup a private network.
+Swarm is closely related to Ethereum and must use the same network ID that was used in Ethereum to set up a private network.
 The following steps can be followed to setup Swarm for our use.
 \begin{enumerate}
-    \item Export an environment variable, BZZKEY containing the Ethereum address of the node that swarm is being setup.
-    \item Create a trusted bootnode which other nodes (called peers) can connect to. This bootnode can be the miner node which we use for the mining process in Ethereum
+    \item Export an environment variable, BZZKEY containing the Ethereum address of the node that swarm is being set up.
+    \item Create a trusted boot node which other nodes (called peers) can connect to. This boot node can be the miner node which we use for the mining process in Ethereum
     \item Start the swarm node using the same network ID that was used for Ethereum and the geth.ipc file to connect to the Ethereum Name Space (ENS service for distinguishing peers). The startup script must contain the nodiscover flag to prevent other peers from trying to connect to the network.
     \item Verify other peers are able to connect using swarm console. (admin.peers lists all the peers that are currently connected to the node)
 \end{enumerate}
 
 \subsubsection{Setup IPFS Private Network}
-A private IPFS network can be setup in IPFS by removing all the existing bootstrap nodes which help peers to find each other. Then, an authentication key is generated and distributed among all the nodes in the network.
+A private IPFS network can be set up in IPFS by removing all the existing bootstrap nodes which help peers to find each other. Then, an authentication key is generated and distributed among all the nodes in the network.
 
-These steps describe how to setup a private IPFS network.
+These steps describe how to set up a private IPFS network.
 \begin{enumerate}
-    \item Initialize all the nodes. They can also be setup with custom data directories. This process generates a 2048-bit RSA key pair and a peer identity (useful to connect to other peers)
-    \item Generate a ipfs-swarm.key which will be used for authentication and allow access to the network.
+    \item Initialize all the nodes. They can also be set up with custom data directories. This process generates a 2048-bit RSA key pair and a peer identity (useful to connect to other peers)
+    \item Generate an ipfs-swarm.key which will be used for authentication and allow access to the network.
     \item Remove all existing bootstrap nodes.
     \item Add only the generated peer identities to the networks as bootstrap nodes.
     \item Start all the IPFS daemons and test if files stored in one node are able to be read from other nodes.
@@ -1495,12 +1488,12 @@ These steps describe how to setup a private IPFS network.
 
 \chapter{Performance and Cost Analysis}
 \label{chapter:experiment_results}
-We will test both cost incurred by the account calling the transactions and time taken to load and read these records with and without encryption.
+We will test both costs incurred by the account calling the transactions and time taken to load and read these records with and without encryption.
 
 \section{Cost Incurred by Smart Contract Deployment}
-Cost incurred by the Smart contracts depend on a number of factors. There's a flat fee involved and fees for computation as well as storage must be paid. The fee we pay for the deployment depends on the optimization done to a certain degree. 
+The cost incurred by the Smart contracts depends on a number of factors. There's a flat fee involved and fees for computation as well as storage must be paid. The fee we pay for the deployment depends on the optimization done to a certain degree. 
 
-Truffle requires deployment of two contracts, a migration contract and the actual SensorContract. Migration contract identifies the owner of the contract to be deployed and the time stamp of last successful deployment. SensorContract contains all of codes related to registration, writing and reading data from the blockchain. 20 gwei per gas is the set price for private blockchains. This is only being considered in case we want to deploy the same contract to the main Ethereum network.
+Truffle requires the deployment of two contracts, a migration contract, and the actual SensorContract. Migration contract identifies the owner of the contract to be deployed and the time stamp of the last successful deployment. SensorContract contains all of the codes related to registration, writing and reading data from the blockchain. 20 gwei per gas is the set price for private blockchains. This is only being considered in case we want to deploy the same contract to the main Ethereum network.
 
 The total cost to deploy the smart contracts was 0.0232 Eth. At the time of writing, Eth to dollar conversion rate was 182.37 which is an approximate dollar cost of \textbf{ 4.2}
 
@@ -1538,100 +1531,100 @@ A data set consisting of 10,000 records was used to test the performance of the 
 \end{verbatim}
 
 \subsection{Data stored in Swarm}
-When compared with geth and ipfs, swarm utilized the least amount of CPU power and equivalent amount of RAM in each case. The performance of Swarm was really fast as it only depends on a HTTP POST request to receive and host the data. Since the loading and storing we done from a Test Machine, there was a little network latency.
+When compared with geth and ipfs, swarm utilized the least amount of CPU power and an equivalent amount of RAM in each case. The performance of Swarm was really fast as it only depends on an HTTP POST request to receive and host the data. Since the loading and storing we done from a Test Machine, there was a little network latency.
 
-Figure \ref{fig:graph_swarm_readvwrite} shows the read vs write timings for 10,000 records. Barring a few anomalies, read and write times stayed approximately same throughout the tests.
+Figure \ref{fig:graph_swarm_readvwrite} shows the read vs write timings for 10,000 records. Barring a few anomalies, read and write times stayed approximately the same throughout the tests.
 Using data with encryption caused the performance to degrade by a very small amount as shown in Figure \ref{fig:graph_swarm_readvwrite_encr}
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/SwarmRvW.png}
-	\caption{Swarm Read vs Write Performance for 10k records}
-	\label{fig:graph_swarm_readvwrite}
+    \centering
+    \includegraphics[scale=1]{results/SwarmRvW.png}
+    \caption{Swarm Read vs Write Performance for 10k records}
+    \label{fig:graph_swarm_readvwrite}
 \end{figure}
 
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/SwarmRvWEncr.png}
-	\caption{Swarm Read vs Write Performance with Encryption for 10k records}
-	\label{fig:graph_swarm_readvwrite_encr}
+    \centering
+    \includegraphics[scale=1]{results/SwarmRvWEncr.png}
+    \caption{Swarm Read vs Write Performance with Encryption for 10k records}
+    \label{fig:graph_swarm_readvwrite_encr}
 \end{figure}
 
 
 
 \subsection{Data stored in Ethereum and Swarm}
-The geth node for storing information from the IoTProducer (Raspberry Pi) is a light node and depends on a full node for getting its information. However, this node is responsible for submitting the transactions generated by calling the Smart Contract function to store filehashes.
+The geth node for storing information from the IoTProducer (Raspberry Pi) is a light node and depends on a full node for getting its information. However, this node is responsible for submitting the transactions generated by calling the Smart Contract function to store file hashes.
 
 Surprisingly, storing Encrypted data faired a little better in write tests due to the fact that a smaller payload is stored to Swarm.
 
 \subsubsection{Without Encryption}
-We generate a data payload and send it to swarm. The returned filehash is then stored in Ethereum via the smart contract. Figure \ref{fig:graph_eth_swarm_readvwrite} shows the performance difference between read and write without any encryption.
+We generate a data payload and send it to swarm. The returned file hash is then stored in Ethereum via the smart contract. Figure \ref{fig:graph_eth_swarm_readvwrite} shows the performance difference between reading and write without any encryption.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/Eth+SwRvW.png}
-	\caption{Ethereum with Swarm Read vs Write Performance for 10k records}
-	\label{fig:graph_eth_swarm_readvwrite}
+    \centering
+    \includegraphics[scale=1]{results/Eth+SwRvW.png}
+    \caption{Ethereum with Swarm Read vs Write Performance for 10k records}
+    \label{fig:graph_eth_swarm_readvwrite}
 \end{figure}
 
 \subsubsection{With Encryption}
 Using Encryption, a smaller payload was generated and this helped with slight faster read and write times. The process of encrypting the payload did not affect the performance adversely as expected. Figure \ref{fig:graph_eth_swarm_encr_readvwrite} shows the performance difference between read and write with encryption.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/Eth+Sw+EncrRvW.png}
-	\caption{Ethereum with Swarm Read vs Write Performance for 10k records}
-	\label{fig:graph_eth_swarm_encr_readvwrite}
+    \centering
+    \includegraphics[scale=1]{results/Eth+Sw+EncrRvW.png}
+    \caption{Ethereum with Swarm Read vs Write Performance for 10k records}
+    \label{fig:graph_eth_swarm_encr_readvwrite}
 \end{figure}
 \newpage
 
 \subsection{Data stored in IPFS}
 From the very beginning, IPFS performance in write was significantly worse than Swarm. The data set was reduced to 5000 records and then tested with encrypted data as well as without encryption. However, read performance in IPFS was excellent though it was nowhere near the performance observed with Swarm.
 
-Figure \ref{fig:graph_ipfs_readvwrite} shows the performance difference between read and write in IPFS.
+Figure \ref{fig:graph_ipfs_readvwrite} shows the performance difference between reading and writing in IPFS.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/IPFS_read_vs_write.png}
-	\caption{IPFS Read vs Write Performance for 5k records}
-	\label{fig:graph_ipfs_readvwrite}
+    \centering
+    \includegraphics[scale=1]{results/IPFS_read_vs_write.png}
+    \caption{IPFS Read vs Write Performance for 5k records}
+    \label{fig:graph_ipfs_readvwrite}
 \end{figure}
 \newpage
 
 Figure \ref{fig:graph_ipfs_readvwrite_wencr} shows the performance difference between read and write in IPFS with encryption.
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/IPFS_read_vs_write_wencr.png}
-	\caption{IPFS Read vs Write Performance with Encryption for 5k records}
-	\label{fig:graph_ipfs_readvwrite_wencr}
+    \centering
+    \includegraphics[scale=1]{results/IPFS_read_vs_write_wencr.png}
+    \caption{IPFS Read vs Write Performance with Encryption for 5k records}
+    \label{fig:graph_ipfs_readvwrite_wencr}
 \end{figure}
 
 \subsection{Data stored in Ethereum and IPFS}
 Read vs Write faired similarly when compared to just IPFS, confirming that IPFS is indeed being bottle-necked by the CPU on the raspberry pi.
 
-Figure \ref{fig:graph_eth_ipfs_readvwrite} shows the performance difference between read and write using a combination of Ethereum and IPFS.
+Figure \ref{fig:graph_eth_ipfs_readvwrite} shows the performance difference between reading and write using a combination of Ethereum and IPFS.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/Eth_IPFS_read_vs_write.png}
-	\caption{Ethereum with IPFS Read vs Write Performance for 5k records}
-	\label{fig:graph_eth_ipfs_readvwrite}
+    \centering
+    \includegraphics[scale=1]{results/Eth_IPFS_read_vs_write.png}
+    \caption{Ethereum with IPFS Read vs Write Performance for 5k records}
+    \label{fig:graph_eth_ipfs_readvwrite}
 \end{figure}
 \newpage
 
-Figure \ref{fig:graph_eth_ipfs_readvwrite_wencr} shows the performance difference between read and write using a combination of Ethereum and IPFS.
+Figure \ref{fig:graph_eth_ipfs_readvwrite_wencr} shows the performance difference between reading and write using a combination of Ethereum and IPFS.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/Eth_IPFS_read_vs_write_wencr.png}
-	\caption{Ethereum with IPFS Read vs Write Performance with Encryption for 5k records}
-	\label{fig:graph_eth_ipfs_readvwrite_wencr}
+    \centering
+    \includegraphics[scale=1]{results/Eth_IPFS_read_vs_write_wencr.png}
+    \caption{Ethereum with IPFS Read vs Write Performance with Encryption for 5k records}
+    \label{fig:graph_eth_ipfs_readvwrite_wencr}
 \end{figure}
 \newpage
 
 \subsection{Performance Comparisons}
-Reading or Writing data to the system scales linearly over time due to the fact that both Swarm and IPFS use Distributed Hash Tables to store and read data. Overall, reading and writing to Swarm or IPFS took roughly the same time. Generally write speeds are slower compared to read speeds. These tests were conducted over a network and latencies from network read and writes overshadowed any difference between actual read and writes to these storage systems.
+Reading or Writing data to the system scales linearly over time due to the fact that both Swarm and IPFS use Distributed Hash Tables to store and read data. Overall, reading and writing to Swarm or IPFS took roughly the same time. Generally, write speeds are slower compared to read speeds. These tests were conducted over a network and latencies from network read and write overshadowed any difference between actual read and write to these storage systems.
 
 In this section, we compare the read and write times for different types of storage systems we have used including those with and without encryption, decryption and signature verification.
 
@@ -1705,53 +1698,53 @@ Eth + IPFS + Decryption  & 783                 & 6.385696041  & 34.2          & 
 \end{table}
 
 \subsubsection{Performance difference between Swarm and IPFS}
-Using the full version of our proposed system (Ethereum Smart Contract + Swarm) , we have achieved approximately 5 transactions per second for write and 9 for read. This is well within reach of our intended use of 1 transaction per minute per device. We will be able to use this system comfortably for systems where transactions are sent in low to medium frequency.
+Using the full version of our proposed system (Ethereum Smart Contract + Swarm), we have achieved approximately 5 transactions per second for write and 9 for the read test. This is well within reach of our intended use of 1 transaction per minute per device. We will be able to use this system comfortably for systems where transactions are sent in low to medium frequency.
 
 Using IPFS instead of Swarm lead to significantly lower performance due to the fact that IPFS CPU usage on the raspberry pi during write test was incredibly high compared to Swarm.
 
-We include cost incurred for the transactions in Ethereum in the tables \ref{fig:graph_perf_cost_read} and \ref{fig:graph_perf_cost_write}. However, this metric doesn't matter directly as we are using a private ethereum network with no intrinsic money value. However, these metrics help us indirectly. First, since we do not use Arrays, either static or dynamic in this thesis, the cost incurred doesn't increase over time and stays the same throughout our tests. Secondly, we can use the cost measures to easily identify if any unauthorized users have been granted access to the ethereum network.
+We include cost incurred for the transactions in Ethereum in the tables \ref{fig:graph_perf_cost_read} and \ref{fig:graph_perf_cost_write}. However, this metric doesn't matter directly as we are using a private ethereum network with no intrinsic monetary value. However, these metrics help us indirectly. First, since we do not use Arrays, either static or dynamic in this thesis, the cost incurred doesn't increase over time and stays the same throughout our tests. Secondly, we can use the cost measures to easily identify if any unauthorized users have been granted access to the ethereum network.
 
 \subsubsection{Performance Cost for Write}
-Storing only Swarm data was very fast compared to using both the Ethereum Blockchain and Swarm. Adding Encryption did not affect the performance very much. The Figure \ref{fig:graph_perf_cost_write} shows the performance cost of using just Swarm, IPFS, both Ethereum and Swarm and both Ethereum and IPFS to store the test data set.
+Storing only Swarm data was very fast compared to using both the Ethereum Blockchain and Swarm. Adding Encryption did not affect the performance very much. Figure \ref{fig:graph_perf_cost_write} shows the performance cost of using just Swarm, IPFS, both Ethereum and Swarm and both Ethereum and IPFS to store the test data set.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/Eth_IPFS_Swarm_Write.png}
-	\caption{Performance Cost for Writes with different methods}
-	\label{fig:graph_perf_cost_write}
+    \centering
+    \includegraphics[scale=1]{results/Eth_IPFS_Swarm_Write.png}
+    \caption{Performance Cost for Writes with different methods}
+    \label{fig:graph_perf_cost_write}
 \end{figure}
 
 
 \subsubsection{Performance Cost for Read}
-Reading only Swarm data was very extremely fast compared to using the combination of the Ethereum Blockchain and Swarm method. Adding Encryption did drop the performance by a little amount as the signature must be generated and verified on the receiving end. However, there's much more performance degradation when Ethereum Blockchain and IPFS is used. The Figure \ref{fig:graph_perf_cost_read} shows the performance cost of using just Swarm, IPFS, both Ethereum and Swarm and both Ethereum and IPFS to read the test data set.
+Reading only Swarm data was very extremely fast compared to using the combination of the Ethereum Blockchain and Swarm method. Adding Encryption did drop the performance by a little amount as the signature must be generated and verified on the receiving end. However, there's much more performance degradation when Ethereum Blockchain and IPFS is used. Figure \ref{fig:graph_perf_cost_read} shows the performance cost of using just Swarm, IPFS, both Ethereum and Swarm and both Ethereum and IPFS to read the test data set.
 
 \begin{figure}
-	\centering
-	\includegraphics[scale=1]{results/Eth_IPFS_Swarm_Read.png}
-	\caption{Performance Cost for Read with different methods}
-	\label{fig:graph_perf_cost_read}
+    \centering
+    \includegraphics[scale=1]{results/Eth_IPFS_Swarm_Read.png}
+    \caption{Performance Cost for Read with different methods}
+    \label{fig:graph_perf_cost_read}
 \end{figure}
 
 \chapter{Conclusion and Future Work} \label{chapter:conclusion}
 \section{Conclusion}
-We have successfully setup a system where Ethereum is used to register devices and store references to data stored in IPFS or Swarm. Since Ethereum requires registration before data can be saved to it and Swarm/IPFS data is stored in encrypted format, we do not even need a private network to store data and can instead use the main networks of Ethereum, IPFS or Swarm.
+We have successfully set up a system where Ethereum is used to register devices and store references to data stored in IPFS or Swarm. Since Ethereum requires registration before data can be saved to it and Swarm/IPFS data is stored in an encrypted format, we do not even need a private network to store data and can instead use the main networks of Ethereum, IPFS or Swarm.
 
-Performance wise, a combination of Ethereum (to maintain sequence of records) and Swarm (for actual storage) has seen the best performance when compared to IPFS. In both cases, performance can be increased by using the Raspberry pis only to collect data and instead use a powerful machine to actually submit the transactions for writing data. The geth, swarm and ipfs endpoints can be secured using the private PKI we have setup earlier in \ref{priv_pki}.
+Performance wise, a combination of Ethereum (to maintain the sequence of records) and Swarm (for actual storage) has seen the best performance when compared to IPFS. In both cases, performance can be increased by using the Raspberry pis only to collect data and instead use a powerful machine to actually submit the transactions for writing data. The Geth, swarm, and ipfs endpoints can be secured using the private PKI we have set up earlier in \ref{priv_pki}.
 
-The same method of data storage can be extended to many use-cases such as storing records in fields such as Government, Education, Health care etc securely and also increase storage capacity as needed without having to stop the services even momentarily for maintenance.
+The same method of data storage can be extended to many use-cases such as storing records in fields such as Government, Education, Health care, etc securely and also increase storage capacity as needed without having to stop the services even momentarily for maintenance.
 
-Currently though, both Swarm and IPFS are not ready for real-time use yet and are still in the process of developing their respective incentivization layers \cite{ethersphere2016sw3} like Ethereum. Additionally, they are exploring methods to implement Encryption for data stored in the respective systems and would further make the process of setting up and using them easy and secure. Swarm is yet to implement a monitoring method to view networking traffic, status of peers etc while Ethereum and IPFS have good monitoring services to keep track of the network performance.
+Currently, though, both Swarm and IPFS are not ready for real-time use yet and are still in the process of developing their respective incentivization layers \cite{ethersphere2016sw3} like Ethereum. Additionally, they are exploring methods to implement Encryption for data stored in the respective systems and would further make the process of setting up and using them easy and secure. Swarm is yet to implement a monitoring method to view networking traffic, the status of peers, etc while Ethereum and IPFS have good monitoring services to keep track of the network performance.
 
 \section{Future Work}
 The next areas of focus would be to enhance the quality and types of Sensor data stored and retrieved, secure the IoT devices even further and develop a faster Proof of Work algorithm to validate transactions on the Ethereum blockchain. 
 
 A major area of improvement would be to allow multiple producers to send their sensor data to a single time-stamped Swarm link between time intervals. This would allow for much easier processing of data collected from differed sources.
 
-Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum\cite{quorum} instead of a open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
+Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum\cite{quorum} instead of an open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
 
 A fast Proof of Work algorithm could be developed as an aim with the express purpose of developing an algorithm for achieving Consensus which is more suitable for IoT data than that is used currently to approve crypto-currency transactions. This optimization would make the algorithm much faster as the complexity of the smart contract increases. Aside from using Quorum, tests can be repeated on Ethereum itself when the Proof of Stake protocol goes live with the Casper protocol.
 
-IoT devices are usually under powered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of using low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum \cite{DBLP:journals/tosc/CrowleyB18} are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm has been promising in terms of resource utilization and speeds.
+IoT devices are usually underpowered due to power usage limitations. Using resource heavy encryption like RSA and AES (even with hardware acceleration) on these edge devices is counter-intuitive to the idea of using low power devices dedicated for sensing and collecting data. Modern encryption methods like Adiantum \cite{DBLP:journals/tosc/CrowleyB18} are tailored for low powered edge nodes and are slowly gaining momentum. Early tests with this algorithm have been promising in terms of resource utilization and speeds.
 
 %%%
 %%% The bibliography - you can change the alpha to suit your style if you don't like it is it is.
