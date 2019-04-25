@@ -730,13 +730,13 @@ A raspberry pi (Version used is 3B) is a cheap (costs ), credit card sized gener
 Raspbian Stretch Lite was used as the Linux-kernel based OS for the Raspberry Pi. This allows us to run everything from general-purpose programming languages like Python and C to binaries for running software for blockchain and other storage to user-developed code. A full, desktop version is also available for Raspbian (Raspbian Stretch). Figure \ref{fig:rpi} describes a Raspberry Pi 3 (Model B) attached to a power supply.
  
 \subsection{General Purpose I/O}
-A raspberry pi 3B+ model has 40 General Purpose I/O (GPIO) pins used for different purposes like reading data, providing a voltage of 3.3V or 5V or allowing serial protocols such as I2C.
+A raspberry pi 3B+ model has 40 General Purpose I/O (GPIO) pins used for different purposes like reading data, providing a voltage of 3v3 or 5V or allowing serial protocols such as I2C.
 
 Sensors are usually transistors and must be connected to
 \begin{enumerate}
 \item GPIO headers for sending or receiving data
 \item  Ground header 
-\item  3.3V or 5V pins for maintaining voltage
+\item  3v3 or 5V pins for maintaining voltage
 \end{enumerate}
 
 \begin{figure}
@@ -824,12 +824,12 @@ The raspberry pi model used is a Raspberry Pi 3 Model B with a 1.2 GHz quad-core
 \subsubsection{IoT Producer}
 The IoT Producer is used to read data from all the sensors, encrypt and store data in the decentralized network. The geth node running in this machine is a light node which depends on a mining node to get full information about the blocks in the chain. Ethereum is merely used to store references to the data collected by the system. It is set up to be able to connect to instances of either swarm or IPFS, or even run its own instances, depending on our selection and store the actual data in encrypted form.
 
-For testing and demo purposes, a Digital Humidity and Temperature Sensor (DHT11) is attached to the raspberry pi to GPIO22 pin for data, 3.3V for voltage and ground pin.
+For testing and demo purposes, a Digital Humidity and Temperature Sensor (DHT11) is attached to the raspberry pi to GPIO22 pin for data, 3v3 for voltage and ground pin.
 
 \subsubsection{IoT Consumer}
 The IoT Consumer is used for demonstration purposes in this thesis. Like the IoT Producer, it connects to or runs instances of IPFS or Swarm and runs a light version of geth. It retrieves the reference from the Ethereum blockchain and requests the correct information from swarm or IPFS.
 
-Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO4, GPIO3 and GPIO2 pins of the consumer and a ground pin. The second device is an I2C LCD which is connected to the SDA1 and SCL1 pins for I2C bus, 3.3V for power and ground pin.
+Two IoT devices are connected to the consumer for testing and demo purposes, the first is a 3 color LED which is connected to GPIO4, GPIO3 and GPIO2 pins of the consumer and a ground pin. The second device is an I2C LCD which is connected to the SDA1 and SCL1 pins for I2C bus, 3v3 for power and ground pin.
 
 \section{Security Algorithm}
 We use a couple of cryptography techniques to transfer secret keys, encrypt data using these keys as well as use hashing to sign messages and verify them.
@@ -850,7 +850,7 @@ The Equation \ref{cipher_encr} describes the encryption of the Symmetric Key enc
 
 The Equation \ref{transfer_symm} describes the transfer of the Encrypted Symmetric Key from host to the pi.
 \begin{equation} \label{transfer_symm}
-   Host -> Pi : \{SymmetricKey\}_{K_Pi}
+   Host \Rightarrow Pi : \{SymmetricKey\}_{K_Pi}
 \end{equation}
 
 The Equation \ref{decr_cipher} describes the decryption of the Symmetric Key using the Private Key of the raspberry pi. 
@@ -891,13 +891,15 @@ A hash algorithm (HMAC) is used in this thesis to sign the data on the producer 
 
 The Equation \ref{gen_sig} describes the signature generation process using the shared secret key, cipher and Initialization vector generated from the AES encryption process and SHA256 algorithm.
 \begin{equation}\label{gen_sig}
-    signature = {HMAC(K_{secret}, cipher + iv, sha256)}
+    SignatureGeneration = HMAC(K_{secret}, cipher + iv, sha256)
 \end{equation}
 
 The Equation \ref{verify_sig} describes the verification process by comparing the stored signature and generated MAC code on the receiving side.
 \begin{equation}\label{verify_sig}
-    signature == {HMAC(K_{secret}, {decrypted_cipher} + {decrypted_iv}, sha256)}
+    SignatureVerify 
+    = HMAC(K_{secret}, \{decryptedCipher\} + \{decryptedIV\}, sha256)
 \end{equation}
+
 
 \subsection{Private PKI} \label{priv_pki}
 Public Key Infrastructure (PKI) is a formal structure that constitutes policies, and procedures needed to manage, and distribute digital certificates and help in public-key encryption. Its primary purpose is to facilitate secure electronic information transmission. PKI consists of a Certificate Authority, Registration authority, and Central directory.
@@ -936,7 +938,7 @@ TPM typically provide the following functions.
 
 Two TPMs were considered for use with the raspberry pi, the Optiga TPM from Infineon and Zymkey 4i from Zymbit security. Zymkey 4i was ultimately selected for use with the raspberry pi as it had much better support for setup, encryption and setting up LUKS. 4i is the current version of the TPM while 3i and 2i are older versions of the product.
 
-Zymbit 4i is used as the TPM for raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104, and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
+Zymbit 4i is used as the TPM for raspberry pi. It occupies the first 10 GPIO pins, including one 3v3 pin, 2 5V pins, 2 Ground pins, GP104, and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
 
 The first step in setting up the TPM is to pair it with the Raspberry Pi. This pairing process uses a couple of unique features from both the host raspberry pi and the TPM and generates a unique Device ID that binds the TPM to the host. A Linux systemd service zkifc runs on the host raspberry pi when properly paired. It is used to provide access to the keys stored on the TPM via I2C interface and all communications between the TPM and I2C are encrypted. Once the binding process is completed, applications are installed and is ready for deployment, this TPM can be set to a permanent binding mode which locks the TPM to the raspberry pi permanently and cannot be bound to other raspberry pis in the future. This permanently disables the raspberry pi if it is tampered with and the TPM is removed.
 
@@ -1777,7 +1779,7 @@ Currently, though, both Swarm and IPFS are not ready for real-time use yet and a
 \section{Future Work}
 The next areas of focus would be to enhance the quality and types of Sensor data stored and retrieved, secure the IoT devices even further and develop a faster Proof of Work algorithm to validate transactions on the Ethereum blockchain. 
 
-A major area of improvement would be to allow multiple producers to send their sensor data to a single time-stamped Swarm link between time intervals. This would allow for much easier processing of data collected from differed sources.
+A major area of improvement would be to allow multiple producers to send their sensor data to a single time-stamped Swarm link between time intervals. This would allow for much easier processing of data collected from different sources.
 
 Another area of improvement from a blockchain perspective is to use a permissioned blockchain like Quorum\cite{quorum} instead of an open blockchain like Ethereum run in private mode. This allows for much better Access Control and permission for users.
 
