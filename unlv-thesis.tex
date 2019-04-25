@@ -67,7 +67,7 @@ Jawaharlal Nehru Technological University, Hyderabad\\ \vspace*{-0.12in}
 \chair{Yoohwan\ Kim, Ph.D.}
 \memberone{Ju-Yeon\ Jo, Ph.D.}
 \membertwo{Fatma\ Nasoz, Ph.D.}
-\collegerep{Si Jung\ Kim, Ph.D.}
+\collegerep{Satish\ Bhatnagar, Ph.D.}
 
 %----------------------- Macros ----------------------------------------- 
 
@@ -114,7 +114,7 @@ Jawaharlal Nehru Technological University, Hyderabad\\ \vspace*{-0.12in}
 
 Internet of Things (IoT) is a set of technologies that enable network-connected devices to perform an action or share data among several connected devices or to a shared database. The actions can be anything from switching on an Air Conditioning device remotely to turning on the ignition of a car through a command issued from a remote location or asking Alexa or Google Assistant to search for weather conditions in an area. IoT has proved to be game-changing for many industries such as Supply Chain, Shipping and Transportation providing updates on the status of shipments in real time. This has resulted in a huge amount of data created by a lot of these devices all of which need to be processed in real time. 
 
-In this paper, we propose a method to collect sensor data from IoT devices and use blockchain to store and retrieve the collected data in a secure and decentralized fashion within a closed system, suitable for a single enterprise or a group of companies in industries like shipping where sharing data with each other is required. Much like blockchain, we envision a future where IoT devices can connect and disconnect to distributed systems without causing downtime for the data collection or storage or relying on a cloud-based storage system for synchronizing data between devices. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare on low-powered devices like the raspberry pi.
+In this thesis, we propose a method to collect sensor data from IoT devices and use blockchain to store and retrieve the collected data in a secure and decentralized fashion within a closed system, suitable for a single enterprise or a group of companies in industries like shipping where sharing data with each other is required. Much like blockchain, we envision a future where IoT devices can connect and disconnect to distributed systems without causing downtime for the data collection or storage or relying on a cloud-based storage system for synchronizing data between devices. We also look at how the performance of some of these distributed systems like Inter Planetary File System (IPFS) and Ethereum Swarm compare on low-powered devices like the raspberry pi.
 
 \end{thesisabstract}
 
@@ -128,7 +128,7 @@ In this paper, we propose a method to collect sensor data from IoT devices and u
 \begin{thesisacknowledgments}
 I would like to thank my advisor, Dr. Yoohwan Kim, for helping me identify areas of research and picking a Thesis topic that I could identify with. His continuous support and mentorship helped me implement this thesis and write a report that accurately covered everything I have worked on throughout my Master's program. Over the course of this thesis, I have studied topics in IoT, Blockchains, Distributed Systems, and cyber-security and I am grateful to have a mentor whose expertise encompasses all these domains and more.
 
-I would also like to acknowledge  Dr. Ju-Yeon Jo, Dr. Fatma Nasoz and Dr. SJ Kim for their warm support and for being part of my thesis committee. I am thankful to Dr. Ajoy Datta for helping me out whenever I required his assistance. I would also like to thank all my professors for imparting their knowledge through various courses in the fields of Machine Learning, Big Data, Databases, Blockchains, and Algorithms.
+I would also like to acknowledge  Dr. Ju-Yeon Jo, Dr. Fatma Nasoz and Dr. Satish Bhatnagar for their warm support and for being part of my thesis committee. I am thankful to Dr. Ajoy Datta for helping me out whenever I required his assistance. I would also like to thank all my professors for imparting their knowledge through various courses in the fields of Machine Learning, Big Data, Databases, Blockchains, and Algorithms.
 
 I would also like to acknowledge my dad Ramesh Calastry, my mom Vijayalakshmi Calastry Ramesh and my sister Vandhana Calastry Ramesh for being my source of strength and confidence throughout my Master's program at UNLV.
 
@@ -226,7 +226,7 @@ A Blockchain is, put simply, a series of blocks put together in a chain. Most bl
     \centering
     \includegraphics[scale=0.5]{images/statemachine.png}
     \caption{Transaction State}
-    \label{fig:State Change}
+    \label{fig:State Change Diagram}
 \end{figure}
 
 Blockchain or more accurately Distributed Ledger Technology was built to power the storage and transfer of a new form of currency called Crypto-currency, the first of which was called Bitcoin. This technology was invented by a person (or) a group of persons under a pseudo-name called Satoshi Nakamoto \cite{nakamoto2012bitcoin}. Due to the runaway success of Bitcoin, it has become synonymous with blockchain today. But blockchain technology is not limited to serving as the underlying technology for a crypto-currency, rather it is just one subset of a much larger ecosystem consisting of a number of different use-cases. Blockchain has only recently begun to be used in several different applications like supply chains, loyalty programs, data sharing, and real estate.
@@ -311,7 +311,7 @@ Bitcoin and Ethereum were primarily intended to be used as public blockchains \c
 		Anyone can join (permissionless) & Requires permission to join (permissioned) \\ \hline
 	    No one has control & Controlled by a person/organization \\ \hline
         Typically used in Currencies & Used to store private data such as land records \\ \hline
-        Large number of Nodes & Lesser number of nodes \\ \hline
+        Large number of Nodes & Less number of Nodes \\ \hline
         Slower Transactions  & Faster Transactions \\ \hline
         Scalability limited by design  & Design can be tweaked to allow more transactions \\ \hline
         Good for Anonymity of users  & Users must be known \\ \hline
@@ -680,6 +680,7 @@ The Inter-Planetary File System (IPFS) \cite{ipfs2014} is a storage solution, ve
 
 Like Swarm, it returns a file hash for a file stored in the IPFS network. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes.
 
+\newpage
 \subsection{Comparison between Storage Solutions}
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -698,6 +699,8 @@ Like Swarm, it returns a file hash for a file stored in the IPFS network. Unlike
 
 	\end{tabular}
 \end{table}
+
+
 \chapter{IoT Technology}
 \label{chapter:iot_tech}
 \section{IoT Systems and Protocols}
@@ -785,7 +788,7 @@ The primary storage mechanism is a micro SD card which can be easily imaged and 
 \end{figure}
 
 
-\section{IOT Security}
+\section{IoT Security}
 IoT devices are expected to have a huge economic impact in the coming years and are expected to grow exponentially in numbers. This provides a huge incentive for hackers to try and steal sensitive information for sale or other malicious intents. Devices connected to the internet are vulnerable to serious issues if they are not sufficiently protected. Another challenge faced by these edge devices is their weak processing and memory capabilities. We rely on a combination of Public key cryptography, Symmetric encryption, and Hashing to transfer keys securely between devices and encrypt and sign telemetry data. 
 
 \subsection{TPM}
@@ -897,9 +900,13 @@ The Equation \ref{verify_sig} describes the verification process by comparing th
 \end{equation}
 
 \subsection{Private PKI} \label{priv_pki}
-Public Key Infrastructure (PKI) is used to authenticate users of a service and prevent man in the middle attacks in networks. A PKI involves using an external Third party which is universally trusted to sign Digital Certificates in X.509 format. SSL/ TLS use this format for digital certificates which in turn, is the basis for the HTTPS standard.
+Public Key Infrastructure (PKI) is a formal structure that constitutes policies, and procedures needed to manage, and distribute digital certificates and help in public-key encryption. Its primary purpose is to facilitate secure electronic information transmission. PKI consists of a Certificate Authority, Registration authority, and Central directory.
 
-Private PKI is generally used to secure communications between local devices. We have such a use case in our thesis where we must connect to the IoT Consumer node which runs the geth and swarm endpoints. Outside APIs or other devices such as another Raspberry Pi which has an LCD device attached to it (called LCD node) and is used to display the current temperature and humidity readings. To prevent unauthorized access and to encrypt data between the IoT Consumer node and the Display node, we set up a private PKI to sign these digital certificates and routed all communications through a reverse proxy.
+PKI is used to authenticate users of a service and prevent man in the middle attacks in networks. A PKI involves using an external Third party which is universally trusted to sign Digital Certificates in X.509 format. SSL/ TLS use this format for digital certificates which in turn, is the basis for the HTTPS standard.
+
+
+
+Private PKI is generally used to secure communications between local devices. We have a use case in our thesis where we must connect to the IoT Consumer node which runs the geth and swarm endpoints. Outside APIs or other devices such as another Raspberry Pi which has an LCD device attached to it (called LCD node) and is used to display the current temperature and humidity readings. To prevent unauthorized access and to encrypt data between the IoT Consumer node and the Display node, we set up a private PKI to sign these digital certificates and routed all communications through a reverse proxy.
 
 \begin{enumerate}
 	\item Generate a key for the private Root CA and store it very securely.
@@ -915,10 +922,33 @@ Private PKI is generally used to secure communications between local devices. We
 \subsubsection{Reverse Proxy}
 A reverse proxy is an intermediate server that intercepts all or most requests depending on their usage. These intercepted requests are then routed to the correct backend server. In our case, we run a reverse proxy on the IoT Consumer which uses certificates signed by our private PKI and allows HTTPS communication between our LCD node and the IoT Consumer. In this way, the LCD node is allowed to connect to the geth, swarm, and ipfs endpoints and receive data securely. Nginx is a popular server option and can be configured to be used as a reverse proxy.
 
+
+
 \subsection{Hardware Security with TPM}
+Trusted Platform Module (also called TPM or ISO/IEC 11889) is an international standard for a secure micro controller that protects hardware using integrated cryptographic keys. This standard was first developed by Trusted Computing Group (TCG) and was later standardized by International Organization for Standardization (ISO) and International Electrotechnical Commission (IEC) in 2009. The current specification for the standard is TPM 2.0.
+
+TPM typically provide the following functions.
+\begin{enumerate}
+	\item Random number generator
+	\item Generation of cryptographic key
+	\item Disk Encryption
+\end{enumerate}
+
+Two TPMs were considered for use with the raspberry pi, the Optiga TPM from Infineon and Zymkey 4i from Zymbit security. Zymkey 4i was ultimately selected for use with the raspberry pi as it had much better support for setup, encryption and setting up LUKS. 4i is the current version of the TPM while 3i and 2i are older versions of the product.
+
 Zymbit 4i is used as the TPM for raspberry pi. It occupies the first 10 GPIO pins, including one 3.3V pin, 2 5V pins, 2 Ground pins, GP104, and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once this setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on the TPM.
 
-The first step in setting up the TPM is to pair \cite{TPMSetup} it with the Raspberry Pi. This pairing process uses a couple of unique features from both the host raspberry pi and the TPM and generates a unique Device ID that binds the TPM to the host. A Linux systemd service \textbf{zkifc} runs on the host raspberry pi when properly paired. It is used to provide access to the keys stored on the TPM via I2C interface and all communications between the TPM and I2C are encrypted.
+The first step in setting up the TPM is to pair it with the Raspberry Pi. This pairing process uses a couple of unique features from both the host raspberry pi and the TPM and generates a unique Device ID that binds the TPM to the host. A Linux systemd service zkifc runs on the host raspberry pi when properly paired. It is used to provide access to the keys stored on the TPM via I2C interface and all communications between the TPM and I2C are encrypted. Once the binding process is completed, applications are installed and is ready for deployment, this TPM can be set to a permanent binding mode which locks the TPM to the raspberry pi permanently and cannot be bound to other raspberry pis in the future. This permanently disables the raspberry pi if it is tampered with and the TPM is removed.
+
+Figure \ref{fig:blockdiagramtpm} shows the different features offered by a typical TPM.
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.75]{blockdiagramtpm.png}
+	\caption{TPM Block diagram}
+	\label{fig:blockdiagramtpm}
+\end{figure}
+
+
 
 Among other features, TPMs generally provides two important features that were extremely useful for this thesis.
 \subsection{Root File encryption with LUKS}
@@ -934,10 +964,11 @@ Figure \ref{fig:normal_fs} shows how easily the SD card can be read and sensitiv
 \end{figure}
 
 \subsubsection{Boot Sequence of normal LUKS}
+\renewcommand{\theenumi}{\roman{enumi}}%
 \begin{enumerate}
-    \item Kernel initializes initramfs - A single archive loaded into main memory during startup
-    \item initramfs presents decryption key to LUKS
-    \item LUKS decrypts the root file system
+	\item Kernel initializes initramfs - A single archive loaded into main memory during startup
+	\item initramfs presents decryption key to LUKS
+	\item LUKS decrypts the root file system
 \end{enumerate}
 
 There are a couple of issues with the above procedure when Raspberry Pi is involved. First, there is no dedicated key-ring for storing cryptographic keys available in other Operating Systems. Secondly, the decryption key should not be stored in plain text on the removable SD card. To fix these issues, a TPM is used with LUKS \cite{TPMLUKS} for a more secure boot sequence. The Figure \ref{fig:encrypted_fs} shows how an encrypted file system works.
@@ -950,12 +981,21 @@ There are a couple of issues with the above procedure when Raspberry Pi is invol
 \end{figure}
 
 \subsubsection{Boot Sequence of LUKS with TPM}
+\renewcommand{\theenumi}{\roman{enumi}}%
 \begin{enumerate}
-    \item Kernel initializes initramfs
-    \item initramfs present locked LUKS key to TPM
-    \item TPM verifies the key signature and decrypts the LUKS key
-    \item Unlocked LUKS key is used to decrypt the root file system
+	\item Kernel initializes initramfs
+	\item initramfs present locked LUKS key to TPM
+	\item TPM verifies the key signature and decrypts the LUKS key
+	\item Unlocked LUKS key is used to decrypt the root file system
 \end{enumerate}
+
+Figure \ref{fig:tpmenableluks} shows how the root file system is partitioned into an encrypted block and the master keys and user keys are protected by the TPM.
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{LUKS.png}
+	\caption{TPM enabling LUKS encryption}
+	\label{fig:tpmenableluks}
+\end{figure}
 
 \subsubsection{Data Locker for keys}
 This feature allowed us to store all shared secret keys in an encrypted format. The secret keys transferred over to the raspberry pis (the process is explained in \ref{transfer_symm_keys}) are encrypted using the AES key hardcoded to the TPM hardware. Zymbit 4i provides a python module called zymkey which accesses the TPM's AES key and encrypts/ decrypts the stored secret key and locks it to the raspberry pi. The locked key is then used for transferring encrypted data over the network.
@@ -1011,7 +1051,6 @@ The steps to collect and retrieve the sensor data after applying encryption, ver
     \label{fig:dataflow_diagram}
 \end{figure}
 
-\newpage
 \subsection{Sensor Data Collection}
 The Algorithm \ref{alg:data_collection} explains the overall steps followed on the Producer side to collect data from the sensor, sign and encrypt it. The data is then saved to IPFS or Swarm and the resulting file hash is stored in Ethereum.
 
@@ -1298,7 +1337,7 @@ Python3 is used to write scripts that interface with IoT devices, Ethereum block
 		\hline
 		\bfseries Device & \bfseries OS & \bfseries Architecture & \bfseries Python Version & \bfseries Node.js & \bfseries Solidity\\
 		\hline\hline
-		$Local Machine$ & Ubuntu 18.10 & amd64 & Python 3.5 &  Yes & Yes\\ \hline
+		$Local Machine$ & Ubuntu 18.10 & amd64 & Python 3.5 &  Yes & Yes, 0.4.24\\ \hline
 		$IoT Producer$ & Raspbian Stretch Lite & armv7 & Python 3.5 &  No & No\\ \hline
 		$IoT Consumer$ & Raspbian Stretch Lite & armv7 & Python 3.5 &  No & No\\ \hline
 	\end{tabular}
@@ -1768,13 +1807,14 @@ Vinay Kumar Calastry Ramesh\\[1cm]
 \indent Bachelor of Technology in Computer Science 2014\\
 \indent Jawaharlal Nehru Technological University, Hyderabad, India\\
 
-\noindent Thesis Title: Secure Decentralized Storage Using Blockchain\\
+\noindent Thesis Title: Storing IoT Data Securely In A     
+Private Ethereum Blockchain\\
 
 \noindent Thesis Examination Committee:\\
 \indent Chairperson, Dr. Yoohwan Kim, Ph.D.\\
 \indent Committee Member, Dr. Ju-Yeon Jo, Ph.D.\\
 \indent Committee Member, Dr. Fatma Nasoz, Ph.D.\\
-\indent Graduate Faculty Representative, Dr. Si Jung Kim, Ph.D.\\
+\indent Graduate Faculty Representative, Dr. Satish Bhatnagar, Ph.D.\\
 \end{document}
 
 
