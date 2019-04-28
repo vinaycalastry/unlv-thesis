@@ -1033,7 +1033,11 @@ This feature allowed us to store all shared secret keys in an encrypted format. 
 The TPM's AES key is used to encrypt the actual AES secret key and is explained in equation \ref{eq:encryptionofKeyZymbit}
 
 \begin{equation} \label{eq:encryptionofKeyZymbit}
-    zymbitProtectedKey =  E(K_{zymkey}, K_{aesSecret})
+    \{zymkeyEncryptedKey\} =  E(K_{zymkey}, K_{aesSecret})
+\end{equation}
+
+\begin{equation} \label{eq:encryptionofKeyZymbit}
+    SecretKey =  D(K_{zymkey}, K_{aesSecret})
 \end{equation}
 
 We ensure that we never store the keys can never be accessed by unauthorized users even if the raspberry pi is stolen and the encrypted root file is successfully decrypted.
@@ -1077,7 +1081,7 @@ The steps to collect and retrieve the sensor data after applying encryption, ver
 \begin{figure}
     \centering
     \includegraphics[scale=0.5]{images/SequenceDiagram.png}
-    \caption{Data Flow Diagram}
+    \caption{Sequence Diagram}
     \label{fig:dataflow_diagram}
 \end{figure}
 
