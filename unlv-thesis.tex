@@ -1030,13 +1030,13 @@ Figure \ref{fig:tpmenableluks} shows how the root file system is partitioned int
 \subsubsection{Data Locker for keys}
 This feature allowed us to store all shared secret keys in an encrypted format. The secret keys transferred over to the raspberry pis (the process is explained in \ref{transfer_symm_keys}) are encrypted using the AES key hardcoded to the TPM hardware. Zymbit 4i provides a python module called zymkey which accesses the TPM's AES key and encrypts/ decrypts the stored secret key and locks it to the raspberry pi. The locked key is then used for transferring encrypted data over the network.
 
-The TPM's AES key is used to encrypt the actual AES secret key and is explained in equation \ref{eq:encryptionofKeyZymbit}
+The TPM's AES key is used to encrypt and decrypt the actual AES secret key and is explained in equation \ref{eq:encryptionofKeyZymbit} and equation \ref{eq:decryptionofKeyZymbit}.
 
 \begin{equation} \label{eq:encryptionofKeyZymbit}
     \{zymkeyEncryptedKey\} =  E(K_{zymkey}, K_{aesSecret})
 \end{equation}
 
-\begin{equation} \label{eq:encryptionofKeyZymbit}
+\begin{equation} \label{eq:decryptionofKeyZymbit}
     SecretKey =  D(K_{zymkey}, K_{aesSecret})
 \end{equation}
 
