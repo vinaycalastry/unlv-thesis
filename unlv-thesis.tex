@@ -660,11 +660,13 @@ Table \ref{truffle_commands} describes a few commands that allow truffle to comp
 Ganache is a framework which can be useful for testing our smart contract during development. It provides a bootstrapped private blockchain with test accounts with pre-loaded ether.
 
 \section{Alternate Decentralized Storage Solutions}
-Ethereum allows data storage via Smart contract variables. However, this will be demonstrated in \ref{chapter:experiment_results} that this storage comes with a steep cost and as the size of the data being stored increased so will the cost to load the transactions to the blockchain.
+Ethereum allows data storage via Smart contract variables. This storage comes with a steep cost and as the size of the data being stored increases, so will the cost to load the transactions to the blockchain.
 
-Another major disadvantage of using Ethereum as the sole data storage mechanism is that the data stored would have to contend with severe limitations placed on the variables by Solidity. This is by design and storing huge volumes of data on the blockchain is discouraged by Ethereum to prevent abuse by choking the network causing a Denial of Service for others.
+Another major disadvantage of using Ethereum as the sole data storage mechanism is that the data stored would have to contend with severe limitations placed on the variables by Solidity. This is by design and storing huge volumes of data on the blockchain is discouraged by Ethereum to prevent abuse by choking the network causing a Denial of Service for others. The entire data has to be replicated across all nodes and this extreme level of redundancy is not required for our use-case.
 
-To overcome these limitations, data may be stored in alternate decentralized storage solutions such as Ethereum Swarm or Inter Planetary File System. We will compare performance using both these solutions in this thesis. Additional storage schemes such as Siacoin \cite{vorick2014sia}, storj \cite{wilkinsonetal2014storj} etc. are in various stages of development.
+To overcome these limitations, data can be stored in alternate decentralized storage solutions such as Ethereum Swarm or Inter Planetary File System. We will compare performance using both these solutions in this thesis. Additional storage schemes such as Siacoin \cite{vorick2014sia}, storj \cite{wilkinsonetal2014storj} etc. are in various stages of development.
+
+Both Swarm and IPFS offer excellent solutions to establish a decentralized storage layer for the internet utilizing a server-less hosting platform. They offer a layer of incentivization for participating nodes to ensure that they will not delete the data stored in them and also propose a block storage model where larger documents are served in blocks and can be fetched in parallel. They provide integrity protection by content addressing (filehash) and offer decentralized Domain Name Resolution.
 
 \subsection{Ethereum Swarm}
 Ethereum Swarm \cite{swarm} is a storage solution that aims to utilize a bit-torrent like Peer to Peer (P2P) protocol to store data in a decentralized fashion distributed in a large number of nodes. It is part of the geth tool-chain and uses a lot of technologies invented by the Ethereum foundation. The current implementation is at version 0.3.x or Proof of Concept 3. 
@@ -679,7 +681,6 @@ The Inter-Planetary File System (IPFS) \cite{ipfs2014} is a storage solution, ve
 
 Like Swarm, it returns a file hash for a file stored in the IPFS network. Unlike Ethereum Swarm, it provides a new protocol to access content stored in its nodes. It also provides a User Interface to access the files stored on a node graphically.
 
-\newpage
 \subsection{Comparison between Storage Solutions}
 Table \ref{swarm_eth_comparison} shows a simple comparison between different storage solutions including regular Databases.
 
@@ -699,6 +700,25 @@ Table \ref{swarm_eth_comparison} shows a simple comparison between different sto
 		Privacy of Data & No & No & Yes & Yes\\ \hline
 		Speed & Slow & Slow & Fast & Fast\\ \hline
 		Flexibility of Data Stored & Flexible & Flexible & Not Flexible & Flexible \\ \hline
+	\end{tabular}
+\end{table}
+
+Table \ref{swarm_ipfs_technical} shows technical differences between IPFS and Swarm.
+
+\begin{table}[!htbp]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Technical differences between IPFS and Swarm}
+	\label{swarm_ipfs_technical}
+	\centering
+	\begin{tabular}{|c||c|c|}
+		\hline
+		\bfseries Comparison & \bfseries IPFS & \bfseries Swarm \\
+		\hline\hline
+		Storage Component & Distributed Hash Tables & Immutable Content Addressed chunkstore \\ \hline
+		Cloud Hosting Like Service & No & Yes  \\ \hline
+		Integration with Ethereum & None & Full \\ \hline
+		Network Layer & libp2p & devp2p \\ \hline
+		Incentivation Layer & FileCoin & Ethereum \\ \hline
 	\end{tabular}
 \end{table}
 
