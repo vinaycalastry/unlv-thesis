@@ -1384,14 +1384,17 @@ Python 3 is used to write scripts that interface with IoT devices, Ethereum bloc
 	\caption{Environment Setup}
 	\label{environment_setup}
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|}
-		\hline
-		\bfseries Device & \bfseries OS & \bfseries Architecture & \bfseries Python Version & \bfseries Node.js & \bfseries Solidity\\
-		\hline\hline
-		$Local Machine$ & Ubuntu 18.10 & amd64 & Python 3.5 &  Yes & Yes, 0.4.24\\ \hline
-		$IoT Producer$ & Raspbian Stretch Lite & armv7 & Python 3.5 &  No & No\\ \hline
-		$IoT Consumer$ & Raspbian Stretch Lite & armv7 & Python 3.5 &  No & No\\ \hline
-	\end{tabular}
+	\begin{tabular}{|c|c|c|c|c|c|} 
+\hline
+Device           & OS                                                               & Architecture & Python Version & Node.js & Solidity     \\ 
+\hline\hline
+$Local Machine$  & Ubuntu 18.10                                                     & amd64        & Python 3.5     & Yes     & Yes, 0.4.24  \\ 
+\hline
+$IoT Producer$   & \begin{tabular}[c]{@{}c@{}}Raspbian \\Stretch Lite \end{tabular} & armv7        & Python 3.5     & No      & No           \\ 
+\hline
+$IoT Consumer$   & \begin{tabular}[c]{@{}c@{}}Raspbian S\\tretch Lite \end{tabular} & armv7        & Python 3.5     & No      & No           \\
+\hline
+\end{tabular}
 \end{table}
 
 \subsection{Software binaries}
