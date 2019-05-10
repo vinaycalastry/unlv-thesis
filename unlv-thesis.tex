@@ -5,14 +5,17 @@
 \usepackage{tocbibind}
 %\usepackage{algorithm2e} % must be included before unlv-thesis
 \usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{listings}
 \SetKwProg{Fn}{Function}{}{}
 \usepackage{subcaption}
 \usepackage{fancyhdr}
 \usepackage{unlv-thesis}
 \usepackage{adjustbox}
+\usepackage{url}
+\urlstyle{same}
 
 \graphicspath{{./images/}, {./results/}}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \hypersetup{
 	colorlinks=false, %set true if you want colored links
 	linktoc=all,     %set to all if you want both sections and subsections linked
@@ -39,7 +42,7 @@
 %%%
 %%% The name of your thesis and your own name. Title must be in all
 %%% caps and in an inverted triangle
-\thesistitle{STORING IOT DATA SECURELY IN A     
+\thesistitle{STORING IOT DATA SECURELY IN A 
 PRIVATE ETHEREUM BLOCKCHAIN}
 \thesistitlelowercase{Storing IoT Data Securely In A     
 Private Ethereum Blockchain}
@@ -159,6 +162,7 @@ Finally, I am thankful to all my friends, peers, and colleagues who have made my
 \clearpage
 % if you want a list of algorithms, make sure to use the Makefile-loa instead of Makefile.
 \listofalgorithms
+\addcontentsline{toc}{chapter}{List of Algorithms}
 \clearpage
 
 %%%
@@ -262,12 +266,14 @@ Blockchain is decentralized by design \cite{gencer2018decentralization} and havi
 We need to run complex cryptographic algorithms to validate these transactions when using blockchain. This can be done by anyone who runs the blockchain software and once successful in validating these transactions called consensus, a new block can be added to the chain. This process is called mining. A fee is paid to the successful miner in the form of BTC for bitcoin and ether for Ethereum.
 
 Table \ref{differences_bitcoin_ethereum} explains a few differences between Bitcoin and Ethereum, two of the most popular blockchain implementations in existence.
- 
+
+
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Differences between Bitcoin and Ethereum}
 	\label{differences_bitcoin_ethereum}
 	\centering
+	\doublespacing
 	\begin{tabular}{|c||c|c|}
 		\hline
 		\bfseries Characteristic & \bfseries Bitcoin & \bfseries Ethereum\\
@@ -285,9 +291,12 @@ Table \ref{differences_bitcoin_ethereum} explains a few differences between Bitc
 	\end{tabular}
 \end{table}
 
+
+
 \subsection{Blockchain Concepts}
 \subsubsection{Chaining of Blocks}
 Blocks are generated and filled with transactions. When filled up, this block is broadcast over the network and mining is performed. Once complete, this block is chained with the previous block creating a ledger. This process can be repeated infinite number of times to create a never-ending chain of blocks. This process is shown in Figure \ref{fig:Chained Blocks}. Each block stores the hash value of the previous block and if someone changes the contents of a historical block, its hash value changes and will not match the hashes stored in any subsequent blocks. When this chain is replicated across a number of different users, the blockchain copy of the person who changes the contents will not match with the contents of other users, thus creating a permanent, immutable decentralized chain of blocks.
+
 
 \begin{figure}
     \centering
@@ -296,11 +305,13 @@ Blocks are generated and filled with transactions. When filled up, this block is
     \label{fig:Chained Blocks}
 \end{figure}
 
+
 \subsubsection{Peer to Peer Discovery}
 Peer to Peer discovery\cite{inproceedings} is the cornerstone of any blockchain. This is how different peers find each other and synchronize their state of the blockchain with them. P2P isn't new and has been used previously in applications such as Bit Torrent, Napster to name a few.
 
 \subsubsection{Distributed vs Decentralized Systems}
 Distributed Systems \cite{7925332} are still centralized and require a server to connect to each client and share data with them. Blockchains and other related systems are designed to be independent of a server and instead depend on P2P synchronization and group consensus mechanisms to communicate with each other and make decisions.
+
 
 \begin{figure}
     \centering
@@ -308,6 +319,7 @@ Distributed Systems \cite{7925332} are still centralized and require a server to
     \caption{Distributed vs Decentralized Systems}
     \label{fig:Decentralized_Systems}
 \end{figure}
+
 
 \newpage
 \subsubsection{Crypto-currency Mining}\label{crypto-mining}
@@ -321,6 +333,7 @@ Dapps differ from regular web or mobile apps because their back-end logic is wri
 
 \subsection{Private vs Public blockchains}
 Bitcoin and Ethereum were primarily intended to be used as public blockchains \cite{privpubarticle}. It means data stored in the chain is visible for everyone to read and write. However, these networks can be set up to run as private blockchains, process payments and run Smart Contract code. This basically means that an Access Control Layer is built over a regular blockchain to exercise control over who is allowed to read or write data to the blockchain. These private blockchains can also be called permissioned blockchains.
+
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -340,6 +353,7 @@ Bitcoin and Ethereum were primarily intended to be used as public blockchains \c
         Good for Anonymity of users  & Users must be known \\ \hline
 	\end{tabular}
 \end{table}
+
 
 
 \section{Ethereum Blockchain}
@@ -387,7 +401,6 @@ Like any other currency, ethereum is not immune from volatility and ranges widel
 Gas can be defined as a special unit used in Ethereum to calculate costs incurred for executing that transaction. The gas limit must be mentioned in the transaction and must be reasonable. If the limit is too low, it is unlikely that any miners will process that transaction. Once the transaction is executed, the miner that processes that transaction will be paid in ether corresponding to the gas that was spent. The remaining gas is returned to the account that requested the transaction.
 
 Table \ref{eth_denominations} shows different denominations in Ethereum and their respective exchange rate with ether.
-
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Denominations in Ethereum}
@@ -410,7 +423,6 @@ Table \ref{eth_denominations} shows different denominations in Ethereum and thei
 	    $tether$ & $10^{12}$ & - & - \\ \hline
 	\end{tabular}
 \end{table}
-
 \subsection{Mining Algorithm}
 Ethereum uses Eth-Hash algorithm \cite{wood2014yellow} for finding cryptographic hash for a block (process of mining). Before mining starts, a large Directed Acyclic Graph (DAG) is created. The mining process attempts to solve a certain condition in it. This process is Proof of Work (PoW) in ethereum and is designed to be verified by other nodes very fast in linear time on a CPU using fewer resources.
 
@@ -419,7 +431,7 @@ Nonce is guessed by miners to build a block and add it to the chain. Guessing ex
 \subsection{Genesis block}
 Genesis block is the first block of the entire chain and is named block 0 in Ethereum. This has to be created manually for private networks and contains a hash of zeros. This block is represented in the form of a JSON file and is downloaded first when a new node is started and added to an existing Ethereum Network.
 
-\begin{verbatim}
+\begin{lstlisting}[basicstyle=\small,]
     {
         "nonce": "0x0000000000000042",
         "mixhash": 
@@ -439,12 +451,13 @@ Genesis block is the first block of the entire chain and is named block 0 in Eth
             "eip158Block": 0
         }
     }
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Networking Modes in Ethereum}
 \subsubsection{Public Ethereum Network}
 There are two kinds of public networks maintained by Ethereum Foundation. 
 First is the main network with a network id of 1. There are other test networks which can be used by developers to test features of their distributed apps built using ethereum. Table \ref{pub_eth_networks} provides a brief explanation of different main and test networks. 
+
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -462,11 +475,13 @@ First is the main network with a network id of 1. There are other test networks 
 	\end{tabular}
 \end{table}
 
+
 \subsubsection{Private Ethereum Network}
 Private networks can be set up in both closed and open modes. All nodes in this network need to be started with an ID other than the ones used by public networks. Another requirement is that all the nodes in the private network need to be initialized with the same genesis block. A random number of \textbf{63723} was chosen for this thesis. If we require that the private network should not be accessed by anyone with the network id and genesis block, we can turn off the discovery mode for other peers and instead add them manually.
 
 \subsection{Geth}
 Geth is a client for Ethereum, implemented in Golang and used for connecting to the Ethereum network. Other implementations in C++ and Python are also available. Once installed, it can be initiated with genesis block (the first block in the blockchain), started and connected to different networks available in Ethereum. These networks are identified by their network ID. Different nodes with same genesis block and network ID can synchronize with each other and mine transactions. Network ID: 1 is for the main network, 2 and 3 are reserved for Test networks. We can use a different network ID for setting up a private network. Different versions for Windows, Linux, MacOS and Android are available.
+
 
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
@@ -490,6 +505,7 @@ Geth is a client for Ethereum, implemented in Golang and used for connecting to 
         admin & admin.nodeInfo.enode & Gets the ENODE value of the geth node \\ \hline
 	\end{tabular}
 \end{table}
+
 
 \newpage
 \subsection{Geth Synchronization modes}
@@ -533,15 +549,16 @@ A typical Smart Contract looks like a Class definition written in languages like
 \subsubsection{solc compiler}
 Smart Contracts need to be compiled to EVM byte-code and ABI definition before the Virtual Machine in an ethereum-node can access and execute transactions and methods mentioned in the blockchain. Ethereum tools like Remix and Truffle are bundled with this compiler. The version used to compile the smart contract is mentioned at the very top of the solidity code.
 
-\begin{verbatim}
+\begin{lstlisting}
     pragma solidity ^0.4.24;
-\end{verbatim}
+\end{lstlisting}
 
 0.4.24 is the version of the solidity compiler to be used and the symbol before the version number implies that the source file would not be valid above 0.4.24
 
 \subsubsection{Variables}
 Variables in Solidity are statically-typed and must be declared only once. The compiler throws an error if a variable is declared more than once throughout the source file. The table \ref{solidity_data_types} explains some of the commonly used data types available in solidity.
- 
+
+
 \begin{table}[!htbp]
     \renewcommand{\arraystretch}{1.3}
     \caption{Data Types in Solidity}
@@ -558,68 +575,68 @@ Variables in Solidity are statically-typed and must be declared only once. The c
     \end{tabular}
 \end{table}
 
+
 \newpage
 \subsubsection{Arrays}
 Arrays can be of both dynamic or static types. Use of Arrays, either static or dynamic is discouraged in solidity as they can grow to large sizes and require large amounts of gas to process simple operations such as lookup of data.
 
 The below example shows a static array of size 7.
-\begin{verbatim}
-    uint[] a = new uint[](7);
-\end{verbatim}
+\begin{lstlisting}
+uint[] a = new uint[](7);
+\end{lstlisting}
 
 \subsubsection{Mapping}
 Mapping is encouraged to be used within solidity in place of arrays. Mapping is defined as a key-value pair of any data type for both key and value. They can be thought of as hash tables that are initialized when declared, contain every possible value and are mapped initially to a byte representation of all zeros. The key is not stored in the mapping, only its keccak-256 hash is stored and used to match its corresponding value.
 
 The below example shows how mappings can be declared and used.
-\begin{verbatim}
-    //declare the mapping
-    mapping(address => uint) public balances;
-    
-    //store value in a mapping
-    balances[addressSender] = newBalance;
-\end{verbatim}
+\begin{lstlisting}
+//declare the mapping
+mapping(address => uint) public balances;
+
+//store value in a mapping
+balances[addressSender] = newBalance;
+\end{lstlisting}
 
 \subsubsection{Structs}
 Structs are similar to the C language structs and are used to store values of a number of different data types. Structs can be used within the mapping data type and are used extensively in solidity.
 
 An example struct is shown below:
-\begin{verbatim}
-    //struct to store the temperature, humidity, and timeStamp
-    struct SensorData{
-        uint64 temperature;
-        uint64 humidity;
-        string dataStorageTime;
-    }
-    
-\end{verbatim}
+\begin{lstlisting}
+//struct to store the temperature, humidity, and timeStamp
+struct SensorData{
+    uint64 temperature;
+    uint64 humidity;
+    string dataStorageTime;
+}
+\end{lstlisting}
 
 \subsubsection{Constructor}
 Constructors in solidity provide the same functionality as constructors in any other object-oriented programming language. The below example is taken from the smart contract used in this thesis.
-\begin{verbatim}
-    //Constructor for the Smart Contract
-    constructor() public {
-        currentID = 1;
-        createdBy = msg.sender;
-    }
-\end{verbatim}
+\begin{lstlisting}
+//Constructor for the Smart Contract
+constructor() public {
+    currentID = 1;
+    createdBy = msg.sender;
+}
+\end{lstlisting}
 
 \subsubsection{Methods}
 Methods are functions defined within a smart contract and can be used to modify or retrieve state of the blockchain. However, methods that serve as setters, i.e modify state of blockchain cannot return an output. Calling such methods using web3 returns only their transaction hashes and gas must be paid in ether for services used. Methods that do not modify the blockchain and simply return the state of a value stored in their local blockchain copy and do not incur any gas costs. Example of a method to set a value is shown below.
-\begin{verbatim}
-    //register IoT device
-    function registerDevice(address addressToAdd) ownerOnly public {
-        if(devicePresent(addressToAdd)) {
-            emit deviceEvent(addressToAdd, "DEVICE ALREADY REGISTERED");
-        }
-            trustedAddresses[addressToAdd] = true;
-            emit deviceEvent(addressToAdd, "SUCESSFULLY REGISTERED");
+\begin{lstlisting}
+//register IoT device
+function registerDevice(address addressToAdd) ownerOnly public {
+    if(devicePresent(addressToAdd)) {
+        emit deviceEvent(addressToAdd,"DEVICE ALREADY REGISTERED");
     }
-\end{verbatim}
+        trustedAddresses[addressToAdd] = true;
+        emit deviceEvent(addressToAdd,"SUCESSFULLY REGISTERED");
+}
+\end{lstlisting}
 
 
 \subsubsection{Events}
 Events are special methods that can be emitted when a certain condition is met in a Smart Contract. For example, To indicate completion of a successful transaction or to intimate the occurrence of error. These events can be listened to by another smart contract or from other sources through web3. An example event is indicated below.
-\begin{verbatim}
+\begin{lstlisting}
     //Transaction successful
     event setFileHashEvent(
         address indexed _from,
@@ -627,19 +644,19 @@ Events are special methods that can be emitted when a certain condition is met i
     );
     
     //Event triggered using emit keyword
-    emit setFileHashEvent(msg.sender, "FILE HASH TRANSACTION CALLED");
-\end{verbatim}
+    emit setFileHashEvent(msg.sender, "FILEHASH TXN CALLED");
+\end{lstlisting}
 
 
 \subsubsection{Modifiers}
 Modifiers are used when we want to prevent certain kind of users from accessing the blockchain. A basic form of Access Control can be established within a smart contract using Modifiers. These modifiers can then be applied to methods that are run only if the conditions in modifier are met. Example of a modifier is given below.
-\begin{verbatim}
+\begin{lstlisting}
     //Modify some functions to be executed only by Contract creator
     modifier ownerOnly {
         require(msg.sender == createdBy);
         _;
     }
-\end{verbatim}
+\end{lstlisting}
 
 
 \subsection{Web3}
@@ -648,7 +665,7 @@ Web3 is a framework developed by Ethereum Foundation and enables a developer to 
 \subsection{Truffle}
 Truffle is a framework which allows rapid development and deployment of Smart Contracts in Ethereum. Additional functions such as retrieving the smart contract's address and ABI definition can also be done using truffle.
 
-Table \ref{truffle_commands} describes a few commands that allow truffle to compile and deploy smart contracts and Table \ref{truffle_console} provides commands that can run in the truffle console.
+Table \ref{truffle_commands} describes a few commands that allow truffle to compile and deploy smart contracts.
 
 \begin{table}[!htbp]
     \renewcommand{\arraystretch}{1.3}
@@ -665,6 +682,8 @@ Table \ref{truffle_commands} describes a few commands that allow truffle to comp
     \end{tabular}
 \end{table}
 
+Table \ref{truffle_console} provides commands that can be run in the truffle console.
+
 \begin{table}[!htbp]
     \renewcommand{\arraystretch}{1.3}
     \caption{truffle console commands}
@@ -678,6 +697,7 @@ Table \ref{truffle_commands} describes a few commands that allow truffle to comp
         ContractName.abi & Returns the abi metadata of Smart Contract \\ \hline
     \end{tabular}
 \end{table}
+
 
 \subsection{Ganache}
 Ganache is a framework which can be useful for testing Smart Contracts during development. It provides a bootstrapped private blockchain with test accounts pre-loaded with ether.
@@ -706,6 +726,7 @@ Like Swarm, it returns a file hash for data stored in the IPFS network. Unlike E
 \subsection{Comparison between Storage Solutions}
 Table \ref{swarm_eth_comparison} shows a simple comparison between
 different storage solutions including regular Databases.
+
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Comparison of Storage Solutions}
@@ -732,7 +753,9 @@ Speed                                                                & Slow     
 \end{tabular}
 \end{table}
 
+
 Table \ref{swarm_ipfs_technical} shows technical differences between IPFS and Swarm.
+
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Technical differences between IPFS and Swarm}
@@ -750,6 +773,7 @@ Table \ref{swarm_ipfs_technical} shows technical differences between IPFS and Sw
 		Incentivation Layer & FileCoin & Ethereum \\ \hline
 	\end{tabular}
 \end{table}
+
 
 \chapter{IoT Technology}
 \label{chapter:iot_tech}
@@ -818,7 +842,8 @@ An RGB LED can light up individually in colors of RED, BLUE or GREEN or in group
 
 \subsection{I2C LCD}
 I2C is a serial protocol through which low-powered devices such as an LCD can communicate with the host device (raspberry pi) through the general purpose i/o pins. 
-An LCD with 16x2 display matrix and a connected I2C backpack is used to display the latest data saved to blockchain and is used for demonstration purposes. 
+An LCD with 16x2 display matrix and a connected I2C backpack is used to display the latest data saved to blockchain and is used for demonstration purposes.
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.1]{images/i2c_lcd.jpg}
@@ -849,7 +874,7 @@ Two TPMs were considered for use with the raspberry pi, the Optiga TPM from Infi
 Zymbit 4i is used as the TPM for raspberry pi and is pictured in Fig \ref{fig:tpm}  It occupies the first 10 GPIO pins, including one 3v3 pin, 2 5V pins, 2 Ground pins, GP104, and the I2C bus. Before installing it, the I2C interfacing option is first activated on the Raspberry Pi. Finally, the required software modules needed for accessing the hardware keys stored on the TPM device are installed. Once setup is completed, the root file system is encrypted using LUKS and dm-crypt using the private hardware key stored on TPM.
 
 \subsubsection{Data Locker keys}
-Zymkey 4i, provides a public-private ECDSA key pair for signature generation and verification as well as two keys, one-way and shared. \textbf{One-way} key is used to lock down sensitive files such as secret keys to the machine while the \textbf{shared} key is used to encrypt data saved to cloud services such as Azure and Amazon Web Services (AWS). 
+Zymkey 4i, provides a public-private ECDSA key pair for signature generation and verification as well as two keys, one-way and shared. One-way key is used to lock down sensitive files such as secret keys to the machine while the shared key is used to encrypt data saved to cloud services such as Azure and Amazon Web Services (AWS). 
 
 \subsubsection{Linux Unified Key Setup}
 The storage medium (SD card in this case) is encrypted fully using LUKS \cite{cryptoeprint:2016:274} (Linux Unified Key Setup) and dm-crypt. The dm-crypt implementation uses a single Master key to encrypt/decrypt file system contents shared by several users or services. Moreover, this single master key needs to be changed frequently to avoid being cracked. This might not always be feasible and the alternative, LUKS uses a hierarchical key management system to simplify managing keys for each service/user, providing them access to services and revoking them when required. However, all keys are encrypted using the single master key which must be stored on the device storage. Since the SD card can be removed and accessed easily, master key is at risk of being stolen. The Hardware Security Module/ TPM overcomes this issue by locking the LUKS Master key using an encryption key stored within the hardware.
@@ -1005,12 +1030,14 @@ Among other features, TPMs generally provides two important features that were e
 The Root File System is not very secure in a Raspberry Pi. The SD card can be easily imaged and sensitive data like shared keys can be stolen very easily. A viable solution is to encrypt the entire Root File System using Linux Unified Key Setup and dm-crypt.
 
 Figure \ref{fig:normal_fs} shows how easily the SD card can be read and sensitive data can be stolen.
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{images/3_NormalFS.png}
     \caption{Unencrypted File System}
     \label{fig:normal_fs}
 \end{figure}
+
 
 \subsubsection{Boot Sequence of normal LUKS}
 \renewcommand{\theenumi}{\roman{enumi}}%
@@ -1039,6 +1066,8 @@ There are a couple of issues with above procedure when Raspberry Pi is involved.
 \end{enumerate}
 
 Figure \ref{fig:tpmenableluks} shows how root file system is partitioned into an encrypted block and how master keys and user keys are protected by TPM.
+
+
 \begin{figure}
 	\centering
 	\includegraphics[scale=1]{LUKS.png}
@@ -1047,7 +1076,7 @@ Figure \ref{fig:tpmenableluks} shows how root file system is partitioned into an
 \end{figure}
 
 \subsubsection{Data Locker for keys}
-This feature allows to store all shared secret keys in encrypted form. The secret keys transferred over to the raspberry pis (the process is explained in \ref{transfer_symm_keys}) are encrypted using the AES key hardcoded to TPM hardware. Zymkey 4i provides a python module called zymkey which accesses the TPM's AES key and encrypts or decrypts the secret key and locks it to the raspberry pi. The locked key is then used for transferring encrypted data over the network.
+This feature allows to store all shared secret keys in encrypted form. The secret keys transferred over to the raspberry pis (the process is explained in \ref{transfer_symm_keys}) are encrypted using the AES key hard-coded to TPM hardware. Zymkey 4i provides a python module called zymkey which accesses the TPM's AES key and encrypts or decrypts the secret key and locks it to the raspberry pi. The locked key is then used for transferring encrypted data over the network.
 
 The TPM's AES key is used to encrypt and decrypt the actual AES secret key and is explained in equation \ref{eq:encryptionofKeyZymbit} and equation \ref{eq:decryptionofKeyZymbit}.
 
@@ -1152,44 +1181,44 @@ This section details logic used in Smart Contract to define access control, stor
 
 \subsubsection{struct to store the collected data}
 Although only file hash is part of the struct, it was left in place for future enhancements, if needed.
-\begin{verbatim}
+\begin{lstlisting}
 //struct to store the file-hashes which store the actual sensor data
 struct SensorData{
-    //filehash is the swarm handle containing the actual sensor readings
+    //filehash is pointer to data stored in swarm
     string filehash;
 }
-\end{verbatim}
+\end{lstlisting}
 
 A very early version of the Smart Contract used the below struct data-type.
 
-\begin{verbatim}
-//struct to store the temperature, humidity and time when reading occurred
+\begin{lstlisting}
+//struct to store the temperature, humidity and time 
 struct SensorData{
     uint64 temperature;
     uint64 humidity;
     string dataStorageTime;
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{pointer to data}
 An integer value, ID is used as pointer to refer to our current readings stored/ retrieved by smart contract.
-\begin{verbatim}
+\begin{lstlisting}
 uint public currentID;
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Mapping from pointer to struct and addresses registered}
-A Mapping is defined as sensorDataStore from ID to SensorData struct. Another mapping stores registered addresses of IoT devices allowed to write or read data to the system.
-\begin{verbatim}
+A Mapping is defined as sensorStore from ID to SensorData struct. Another mapping stores registered addresses of IoT devices allowed to write or read data to the system.
+\begin{lstlisting}
 //map the struct to an id
-mapping(uint => SensorData) sensorDataStore;
+mapping(uint => SensorData) sensorStore;
 
 //store registered addresses in mapping
 mapping (address => bool) private trustedAddresses;
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Constructor to initialize the ID}
 The ID must be initialized before access and so a constructor is used. 1  is chosen as the start index. Another variable, createdBy is used to store the contract owner and will be responsible for registering and de-registering IoT devices to the system.
-\begin{verbatim}
+\begin{lstlisting}
 //Contract created by
 address private createdBy;
 //Constructor for the Smart Contract
@@ -1197,22 +1226,22 @@ constructor() public {
     currentID = 1;
     createdBy = msg.sender;
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Modifier to only allow owner of Smart Contract to register and de-register ids}
 Access to certain Contract methods such as registering or de-registering devices must be held only by administrator. In this case, the contract creator is designated as admin and so only the address that creates the contract is allowed to run methods which enforce the ownerOnly modifier.
-\begin{verbatim}
+\begin{lstlisting}
 //Modify some functions to be executed only by the Contract creator
 modifier ownerOnly {
     require(msg.sender == createdBy);
     _;
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Events to log Registration and Changing State}
 As explained earlier in Chapter \ref{chapter:background}, transactions aren't capable of returning an output value. So we use events that are emitted in response to certain conditions that occur while a transaction is being executed.
 
-\begin{verbatim}
+\begin{lstlisting}
     //event after registration/de-registration
     event deviceEvent(
         address indexed _from,
@@ -1224,84 +1253,84 @@ As explained earlier in Chapter \ref{chapter:background}, transactions aren't ca
         address indexed _from,
         string _message
     );
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Function to get the current ID}
 This method describes the process of returning the currentID used to load data to the system.
-\begin{verbatim}
+\begin{lstlisting}
 //function to get the currentID
 function getCurrentID() public view returns(uint){
     return currentID;
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Function to increment the current ID}
 This method describes how to increment the currentID being used to load data to the system.
-\begin{verbatim}
+\begin{lstlisting}
 //function to increment the ID used internally for managing file-hashes
 function incrCurrentID() public{
     currentID++;
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Function to set the SensorData filehash}
 This method is used to initiate a transaction to add a new file hash received from the storage system and save it to the mapping we have declared earlier. If the device is not registered, an event with the appropriate message is emitted. On success, another event is triggered which relays that the transaction was successful to all the listeners.
 
-\begin{verbatim}
+\begin{lstlisting}
 //Function to store the filehash from swarm
 function setSensorData(string _filehash) public {
     if(devicePresent(msg.sender)) {
         uint idToStore = getCurrentID();
-        SensorData storage sensorReadings = sensorDataStore[idToStore];
+        SensorData storage sensorReadings = sensorStore[idToStore];
 
         sensorReadings.filehash = _filehash;
    
         incrCurrentID();
         
-        emit setFileHashEvent(msg.sender, "FILE HASH TRANSACTION CALLED");
+        emit setFileHashEvent(msg.sender, "FILEHASH TXN CALLED");
     } else {
         emit setFileHashEvent(msg.sender, "DEVICE NOT REGISTERED");
     }
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Function to get latest SensorData filehash}
-This function returns latest filehash stored in blockchain. Using currentID variable declared earlier, we retrieve value of currentID from sensorDataStore mapping.
+This function returns latest filehash stored in blockchain. Using currentID variable declared earlier, we retrieve value of currentID from sensorStore mapping.
 
-\begin{verbatim}
+\begin{lstlisting}
 //Function to get latest stored data
 function getSensorDataLatest() public view returns (string){
 if(devicePresent(msg.sender)) {
-    SensorData storage sensorReadings = sensorDataStore[getCurrentID()-1];
-
-return sensorReadings.filehash;
+    SensorData storage sensorReadings = sensorStore[getCurrentID()-1];
+    return sensorReadings.filehash;
 }
 return "DEVICE NOT REGISTERED";
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Function to get SensorData file hash from any ID}
 This method works in a similar fashion to the above method but retrieves value associated with ID passed to the function.
 
-\begin{verbatim}
+\begin{lstlisting}
 //Function to get data stored under some ID
 function getSensorDataByID(uint ID) public view returns (string){
     if(devicePresent(msg.sender)) {
-        SensorData storage sensorReadings = sensorDataStore[ID];
+        SensorData storage sensorReadings = sensorStore[ID];
 
         return sensorReadings.filehash;
     }
     return "DEVICE NOT REGISTERED";
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Methods to register and deregister IoT devices}
 The following methods explain how to check if the device is registered and call register or deregister methods for any device and can be only accessed by the contract owner. 
 The method "devicePresent" returns if device is registered with the system.
 The methods "registerDevice" and "deregisterDevice" are used to register and de-register the IoT device using the Smart Contract respectively.
-\begin{verbatim}
+\begin{lstlisting}
 //function to check if device is registered
-function devicePresent(address addressToAdd) public view returns (bool) {
+function devicePresent(address addressToAdd) 
+public view returns (bool) {
         return trustedAddresses[addressToAdd];
 }
 
@@ -1323,7 +1352,7 @@ function deregisterDevice(address addressToRemove) ownerOnly public {
         trustedAddresses[addressToRemove] = false;
         emit deviceEvent(addressToRemove, "SUCESSFULLY DEREGISTERED");
 }
-\end{verbatim}
+\end{lstlisting}
 \newpage
 
 \subsection{IPFS or Swarm Logic}
@@ -1419,6 +1448,7 @@ Raspberry pi 3B doesn't have the hardware to build these binaries from Golang so
 
 \subsection{Python modules}
 Since python 3 is used extensively, a couple of third-party python modules are used to help access the blockchain, write data to ipfs or encrypt and decrypt data. Table \ref{python_modules} describes all the python modules used in this thesis.
+
 \begin{table}[!htbp]
     \renewcommand{\arraystretch}{1.3}
     \caption{Third party Python modules}
@@ -1590,7 +1620,8 @@ Truffle requires deployment of two contracts, a migration contract, and the actu
 
 Total cost to deploy the smart contracts was 0.0232 Eth. At the time of writing, Eth to dollar conversion rate was 182.37 which is an approximate dollar cost of \$4.2
 
-\begin{verbatim}
+
+\begin{lstlisting}
     Gas Spent for MigrationsContract =  277462
     Gas Price = 20 gwei
     Total Cost for MigrationsContract = 277462 * 20
@@ -1605,7 +1636,7 @@ Total cost to deploy the smart contracts was 0.0232 Eth. At the time of writing,
     
     Total Cost for deployment = 0.0055 + 0.0176
                               = 0.0232 Eth
-\end{verbatim}
+\end{lstlisting}
 
 
 \section{Storing and Retrieving data from Proposed System}
@@ -1636,7 +1667,7 @@ Transactions Per Second is usually a bad performance metric for blockchains and 
 A data set consisting of 10,000 records was used to test the performance of the system and see how many devices could theoretically read or write data to the system at a time.
 
 \subsubsection{Sample set}
-\begin{verbatim}
+\begin{lstlisting}
    {
         "Temperature": 30,
         "Humidity": 66,
@@ -1648,7 +1679,7 @@ A data set consisting of 10,000 records was used to test the performance of the 
         "DeviceIP": "192.168.0.16",
         "SensorType": "DHT11"
     }
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Ethereum Solution}
 A new block was generated every 4.5 seconds on average and only 1 transaction was submitted to be mined per block. The mining rate (Network Hash Rate) was around 31 KH/s (Kilo Hash per second) when only the miner1 was running and approximately 51.4 KH/s when both miner1 and miner2 were running on 1 thread each. Using only Ethereum to store the plain text data, a TPS of 13.5 (5000/368) was achieved on the Mining machine and 1.13 Ether was spent to load 5000 records. Average Network Hash Rate rate was improved to 132 KH/s by increasing the number of threads on all miners to 4.
@@ -1662,6 +1693,7 @@ Figure \ref{fig:eth_dashboard}, \ref{fig:eth_hashrate} and \ref{fig:eth_miners} 
     \label{fig:eth_dashboard}
 \end{figure}
 
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/hashrate.png}
@@ -1669,12 +1701,14 @@ Figure \ref{fig:eth_dashboard}, \ref{fig:eth_hashrate} and \ref{fig:eth_miners} 
     \label{fig:eth_hashrate}
 \end{figure}
 
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/miners.png}
     \caption{Miners on the Network}
     \label{fig:eth_miners}
 \end{figure}
+
 
 \subsection{Data stored in Swarm}
 When compared with geth and ipfs, swarm utilized the least amount of CPU power and an equivalent amount of RAM in every test. Performance of Swarm was really fast as it only depends on an HTTP POST request to receive and send data. The data is sent and retrieved from a device set up to serve as the IoT Producer (Raspberry Pi)
@@ -1687,7 +1721,6 @@ Figure \ref{fig:graph_swarm_readvwrite} shows read vs write timings for 10,000 r
     \caption{Swarm Read vs Write Performance for 10k records}
     \label{fig:graph_swarm_readvwrite}
 \end{figure}
-
 
 \begin{figure}
     \centering
@@ -1723,6 +1756,7 @@ The process of encrypting the payload did not affect the performance adversely a
 From the very beginning, IPFS performance in write was significantly worse than Swarm. The data set was reduced to 5000 records and then tested with encrypted data as well as without encryption. However, read performance in IPFS was excellent though it was nowhere near the performance observed when using Swarm.
 
 Figure \ref{fig:graph_ipfs_readvwrite} shows performance difference between reading and writing in IPFS.
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/graphs/IPFS_Read_v_Write.png}
@@ -1730,7 +1764,9 @@ Figure \ref{fig:graph_ipfs_readvwrite} shows performance difference between read
     \label{fig:graph_ipfs_readvwrite}
 \end{figure}
 
+
 Figure \ref{fig:graph_ipfs_readvwrite_wencr} shows performance difference between read and write in IPFS with encryption.
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/graphs/IPFS_Read_v_Write_Encr.png}
@@ -1750,13 +1786,16 @@ Figure \ref{fig:graph_eth_ipfs_readvwrite} shows performance difference between 
     \label{fig:graph_eth_ipfs_readvwrite}
 \end{figure}
 
+
 Figure \ref{fig:graph_eth_ipfs_readvwrite_wencr} shows performance difference between reading and write using a combination of Ethereum and IPFS.
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/graphs/Eth_IPFS_Read_v_Write_Encr.png}
     \caption{Ethereum with IPFS Read vs Write Performance with Encryption for 5k records}
     \label{fig:graph_eth_ipfs_readvwrite_wencr}
 \end{figure}
+
 
 \subsection{Performance Comparisons}
 Reading or Writing data to the system scales linearly over time due to the fact that both Swarm and IPFS use a form of hashing to store data. Overall, reading and writing to Swarm or IPFS took roughly the same time. Generally, write speeds are slower compared to read speeds. These tests were conducted over a network and latencies from network read and write overshadowed any difference between actual read and write to these storage systems.
@@ -1799,6 +1838,7 @@ IPFS                                                                      & 2755
 
 \newpage
 Table \ref{Results for Read tests} shows different metrics captured during the course of Read tests for 5000 transactions on proposed system running on IoT Producer (Raspberry Pi).
+
 \begin{table}[!htbp]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Results for Read tests for 5000 txns}
@@ -1830,6 +1870,7 @@ IPFS                                                                       & 379
 \end{tabular}
 	}
 \end{table}
+
 
 \subsubsection{Performance difference between Swarm and IPFS}
 Using full version of our proposed system (Ethereum + Swarm), we have achieved approximately 5 transactions per second (TPS) for write and 9 for the read test. This is well within reach of our intended use of 1 transaction per minute per device. We will be able to use this system comfortably for systems where transactions are sent in low to medium frequency.
@@ -1873,6 +1914,7 @@ Storing only Swarm data was very fast compared to using both the Ethereum Blockc
 \end{figure}
 
 The slow CPU and limited RAM on the raspberry pi had a significant impact on the performance of the proposed system. The Mining machine is used a reference to test the Write performance difference between the IoT device and a fully powered machine in Figure \ref{fig:graph_perf_cost_write_pi_ref}. The Write performance, as mentioned previously is significantly impacted by the CPU on Raspberry Pi when run on a combination of Ethereum and IPFS.
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/graphs/WriteComp_Pi_v_Ref.png}
@@ -1892,6 +1934,7 @@ Reading only Swarm data was very extremely fast compared to using the combinatio
 \end{figure}
 
 The Mining machine is used a reference to test Read performance difference between IoT device and a fully powered machine in Figure \ref{fig:graph_perf_cost_read_pi_ref}. Read performed similarly and was comparable when run on the RPI and reference machine.
+
 \begin{figure}
     \centering
     \includegraphics[scale=1]{results/graphs/ReadComp_Pi_v_Ref.png}
@@ -1936,7 +1979,7 @@ IoT devices are usually underpowered due to power usage limitations. Using resou
 Graduate College\\
 University of Nevada, Las Vegas\\[1cm]
 Vinay Kumar Calastry Ramesh\\
-calastry@unlv.nevada.edu\\[1cm]
+vinay.calastry@gmail.com\\[1cm]
 \end{center}
 
 \noindent Degrees:\\
